@@ -1,4 +1,5 @@
-# Sadly, I have to do this until global hotkeys work on wayland. (probably dont use on GNOME)
+# Make GTK applications use X
 # GDK_BACKEND=x11
-# And for QT apps. (do not uncomment it if you use KDE)
+# And for QT apps
 # QT_QPA_PLATFORM=xcb
+GTK_USE_PORTAL=1

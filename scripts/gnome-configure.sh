@@ -3,62 +3,86 @@
 # gsettings list-recursively > /tmp/gsettings.before
 # gsettings list-recursively > /tmp/gsettings.after
 # diff /tmp/gsettings.before /tmp/gsettings.after | sed 's/>/gsettings set/;tx;d;:x' > gnome-configure.sh
+set -xe
 
-# Todo set default wallpaper
+# favorite applications
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'chromium.desktop', 'thunderbird.desktop', 'telegramdesktop.desktop', 'com.discordapp.Discord.desktop', 'discord.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'bitwarden.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code-oss.desktop']"
 
-gsettings set org.gnome.gedit.preferences.editor bracket-matching false
-gsettings set org.gnome.gedit.preferences.editor highlight-current-line false
+# application folders
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders folder-children "['space-wasters', 'tools']"
 
-gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.telegram.desktop.desktop', 'org.gnome.Music.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code-oss.desktop', 'jetbrains-clion.desktop']"
-gsettings set org.gnome.shell app-picker-layout "[{'org.gnome.clocks.desktop': <{'position': <0>}>, 'org.gnome.Books.desktop': <{'position': <1>}>, 'org.gnome.Photos.desktop': <{'position': <2>}>, 'org.gnome.Totem.desktop': <{'position': <3>}>, 'com.discordapp.Discord.desktop': <{'position': <4>}>, 'org.gnome.gedit.desktop': <{'position': <5>}>, 'gnome-control-center.desktop': <{'position': <6>}>, 'gnome-system-monitor.desktop': <{'position': <7>}>, 'org.gnome.FileRoller.desktop': <{'position': <8>}>, 'org.gnome.font-viewer.desktop': <{'position': <9>}>, 'org.gnome.Calendar.desktop': <{'position': <10>}>, 'virt-manager.desktop': <{'position': <11>}>, 'steam.desktop': <{'position': <12>}>, 'thunderbird.desktop': <{'position': <13>}>, 'org.qbittorrent.qBittorrent.desktop': <{'position': <14>}>, 'org.gnome.tweaks.desktop': <{'position': <15>}>, 'org.kde.kdenlive.desktop': <{'position': <16>}>, 'com.obsproject.Studio.desktop': <{'position': <17>}>, 'com.github.wwmm.easyeffects.desktop': <{'position': <18>}>, 'timeshift-gtk.desktop': <{'position': <19>}>, 'io.github.shiftey.Desktop.desktop': <{'position': <20>}>, 'gimp.desktop': <{'position': <21>}>, 'org.gnome.Software.desktop': <{'position': <22>}>}, {'org.gnome.Extensions.desktop': <{'position': <0>}>, 'io.github.benjamimgois.goverlay.desktop': <{'position': <1>}>, 'org.gnome.Connections.desktop': <{'position': <2>}>, 'vim.desktop': <{'position': <3>}>, 'org.gnome.Epiphany.desktop': <{'position': <4>}>, 'winetricks.desktop': <{'position': <5>}>, 'Utilities': <{'position': <6>}>, 'simple-scan.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'org.gnome.Weather.desktop': <{'position': <9>}>, 'org.gnome.Maps.desktop': <{'position': <10>}>, 'org.gnome.Contacts.desktop': <{'position': <11>}>, 'org.gnome.Cheese.desktop': <{'position': <12>}>}]"
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/space-wasters/ name 'Space Wasters'
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/space-wasters/ apps "['yelp.desktop', 'cmake-gui.desktop', 'hplip.desktop', 'libreoffice-startcenter.desktop', 'libreoffice-math.desktop', 'libreoffice-base.desktop', 'libreoffice-draw.desktop', 'lstopo.desktop', 'electron14.desktop', 'hp-uiscan.desktop', 'electron13.desktop', 'avahi-discover.desktop', 'bvnc.desktop', 'bssh.desktop', 'nm-connection-editor.desktop', 'org.gnome.Epiphany.desktop', 'qvidcap.desktop', 'qv4l2.desktop', 'qdbusviewer.desktop', 'linguist.desktop', 'designer.desktop', 'assistant.desktop']"
 
-gsettings set org.gnome.system.locale region 'lt_LT.UTF-8'
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ name 'Tools'
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ apps "['winetricks.desktop', 'nvidia-settings.desktop', 'timeshift-gtk.desktop', 'vim.desktop', 'ca.desrt.dconf-editor.desktop', 'tlpui.desktop']"
 
-gsettings set org.gtk.Settings.FileChooser show-hidden true
-gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# gedit
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gedit.preferences.editor bracket-matching false
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gedit.preferences.editor highlight-current-line false
 
-# these 2 dont work
-gsettings set org.gnome.mutter center-new-windows true
-gsettings set org.gnome.mutter attach-modal-dialogs false
+# file chooser
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser show-hidden true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
+# mutter
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter center-new-windows true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter attach-modal-dialogs false
 
-gsettings set org.gnome.desktop.screensaver lock-enabled false
-gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
-gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
-gsettings set org.gnome.desktop.privacy recent-files-max-age 30
-gsettings set org.gnome.desktop.privacy remove-old-temp-files true
-gsettings set org.gnome.desktop.privacy remove-old-trash-files true
-gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
-gsettings set org.gnome.desktop.interface clock-show-seconds true
-gsettings set org.gnome.desktop.interface clock-show-date false
-gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
-gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'ru')]"
-gsettings set org.gnome.desktop.session idle-delay 0
-gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,close"
-gsettings set org.gnome.desktop.wm.preferences audible-bell false
+# cleaning
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-temp-files true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-trash-files true
 
-gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+# theme
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
 
-gsettings set org.gnome.tweaks show-extensions-notice false
+# clock
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-seconds true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-date false
 
-gsettings set org.gnome.nautilus.preferences show-create-link true
-gsettings set org.gnome.nautilus.preferences show-delete-permanently true
+# mouse
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 
-gsettings set com.github.wwmm.easyeffects.streamoutputs plugins "['equalizer']"
-gsettings set com.github.wwmm.easyeffects window-maximized true
-gsettings set com.github.wwmm.easyeffects use-dark-theme true
+# layouts
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'ru')]"
 
-gsettings set org.gnome.gnome-system-monitor show-dependencies true
+# idle delay
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.session idle-delay 1200
 
-gsettings set org.gnome.nautilus.icon-view captions "['size', 'none', 'none']"
-gsettings set org.gnome.nautilus.icon-view default-zoom-level "small"
+# buttons
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,close"
 
-sudo cp ~/script/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
-gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/my-default-wallpaper.jpg'
+# disable fucking bell
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences audible-bell false
+# and event sounds
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
+
+# terminal always dark
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+
+# dont notify
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.tweaks show-extensions-notice false
+
+# nautilus
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.preferences show-create-link true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.preferences show-delete-permanently true
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.icon-view captions "['size', 'none', 'none']"
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.icon-view default-zoom-level "small"
+
+# sys monitor
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gnome-system-monitor show-dependencies true
+
+# add basic templates
+mkdir -p /home/${username}/Templates
+touch /home/${username}/Templates/New\ Document.txt
+
+# wallpaper
+# sudo cp /root/script/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
+# gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/my-default-wallpaper.jpg'
 
 # https://bbs.archlinux.org/viewtopic.php?id=194902
+# disable mouse acceleration for GDM
 echo "[org.gnome.desktop.peripherals.mouse]" | sudo tee /usr/share/glib-2.0/schemas/69_acceleration.gschema.override
 echo "accel-profile='flat'" | sudo tee -a /usr/share/glib-2.0/schemas/69_acceleration.gschema.override
 sudo glib-compile-schemas /usr/share/glib-2.0/schemas
