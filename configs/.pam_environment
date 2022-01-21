@@ -1,0 +1,4 @@
+# Sadly, I have to do this until global hotkeys work on wayland. (probably dont use on GNOME)
+# GDK_BACKEND=x11
+# And for QT apps. (do not uncomment it if you use KDE)
+# QT_QPA_PLATFORM=xcb
