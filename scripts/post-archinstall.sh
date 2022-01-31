@@ -75,6 +75,7 @@ optionsApplications=(
     qbittorrent "An advanced BitTorrent client" on
     code "The Open Source build of Visual Studio Code" on
     code-unlock "Unlock additional features and marketplace (AUR)" on
+    code-dotfiles "Install vscode extensions and copy my settings.json" on
     gimp "GNU Image Manipulation Program" on
     kdenlive "A video editor" on
     obs "Software for live streaming and recording" on
@@ -86,10 +87,10 @@ optionsApplications=(
     element "Instant messaging client implementing the Matrix protocol" on
     onlyoffice "An office suite (AUR)" on
     libreoffice "A free and open-source office suite" off
-    flacon "An Audio File Encoder (AUR)" on
+    flacon "An Audio File Encoder (AUR)" off
     helvum "GTK patchbay for PipeWire" on
-    easyeffects "An advanced audio manipulation tool, equalizer (Flatpak)" off
-    jamesdsp "An audio effect processor, equalizer (AUR)" on
+    easyeffects "An advanced audio manipulation tool, equalizer (Flatpak)" on
+    jamesdsp "An audio effect processor, equalizer (AUR)" off
     gitg "Simple Graphical user interface for git" off
 )
 choicesApplications=$("${cmdApplications[@]}" "${optionsApplications[@]}" 2>&1 >/dev/tty)
@@ -384,7 +385,26 @@ for choice in ${choicesApplications}; do
         pacman -S code --noconfirm --needed
         ;;
     code-unlock)
-        sudo -u ${username} paru -S code-features code-marketplace --noconfirm --needed
+        sudo -u ${username} paru -S code-features code-marketplace code-icons --noconfirm --needed
+        ;;
+    code-dotfiles)
+        pkglist=(
+            ms-vscode.cpptools
+            ms-python.python
+            github.vscode-pull-request-github
+            eamodio.gitlens
+            mhutchie.git-graph
+            vscode-icons-team.vscode-icons
+            dbaeumer.vscode-eslint
+            esbenp.prettier-vscode
+            foxundermoon.shell-format
+        )
+
+        for i in ${pkglist[@]}; do
+            sudo -u ${username} code --install-extension $i
+        done
+
+        curl --create-dirs --output /home/${username}/.config/Code\ -\ OSS/User/settings.json https://raw.githubusercontent.com/richard96292/script/master/configs/settings.json
         ;;
     gimp)
         pacman -S gimp poppler-glib --noconfirm --needed
