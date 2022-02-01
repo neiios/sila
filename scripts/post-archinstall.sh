@@ -197,7 +197,7 @@ for choice in ${choicesGeneral}; do
     9)
         mkdir -pv /${username}/.cache/zsh/
         pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting --noconfirm --needed
-        curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/script/master/configs/.zshrc
+        curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.zshrc
         chsh -s $(which zsh) ${username}
         ;;
     10)
@@ -314,18 +314,18 @@ EOF
         pacman -S breeze --noconfirm --needed
         ;;
     3)
-        curl --output /home/${username}/gnome-configure.sh https://raw.githubusercontent.com/richard96292/script/master/scripts/gnome-configure.sh
+        curl --output /home/${username}/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/gnome-configure.sh
         sed -i "/set -xe/a username='${username}'" /home/${username}/gnome-configure.sh
         sh /home/${username}/gnome-configure.sh
         rm /home/${username}/gnome-configure.sh
         ;;
     4)
-        curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/script/master/configs/monitors.xml
-        sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/script/master/configs/monitors.xml
+        curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
+        sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
         ;;
     5)
-        curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/script/master/configs/.vimrc
-        curl --output /home/${username}/.pam_environment https://raw.githubusercontent.com/richard96292/script/master/configs/.pam_environment
+        curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
+        curl --output /home/${username}/.pam_environment https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.pam_environment
         ;;
     6)
         cat <<EOF >/etc/X11/xorg.conf.d/50-mouse-acceleration.conf
@@ -369,7 +369,7 @@ for choice in ${choicesApplications}; do
         ;;
     keepassxc)
         pacman -S keepassxc xclip wl-clipboard --noconfirm --needed
-        curl --create-dirs --output /home/${username}/.config/keepassxc/keepassxc.ini https://raw.githubusercontent.com/richard96292/script/master/configs/keepassxc.ini
+        curl --create-dirs --output /home/${username}/.config/keepassxc/keepassxc.ini https://raw.githubusercontent.com/richard96292/ALIS/master/configs/keepassxc.ini
         ;;
     bitwarden)
         # flatpak install -y --noninteractive flathub com.bitwarden.desktop
@@ -404,7 +404,7 @@ for choice in ${choicesApplications}; do
             sudo -u ${username} code --install-extension $i
         done
 
-        curl --create-dirs --output /home/${username}/.config/Code\ -\ OSS/User/settings.json https://raw.githubusercontent.com/richard96292/script/master/configs/settings.json
+        curl --create-dirs --output /home/${username}/.config/Code\ -\ OSS/User/settings.json https://raw.githubusercontent.com/richard96292/ALIS/master/configs/settings.json
         ;;
     gimp)
         pacman -S gimp poppler-glib --noconfirm --needed
@@ -466,8 +466,8 @@ for choice in ${choicesGaming}; do
         ;;
     mangohud)
         sudo -u ${username} paru -S mangohud lib32-mangohud --noconfirm --needed
-        curl --create-dirs --output /home/${username}/.config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/script/master/configs/MangoHud.conf
-        curl --create-dirs --output /home/${username}/.var/app/com.valvesoftware.Steam/config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/script/master/configs/MangoHud.conf
+        curl --create-dirs --output /home/${username}/.config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/ALIS/master/configs/MangoHud.conf
+        curl --create-dirs --output /home/${username}/.var/app/com.valvesoftware.Steam/config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/ALIS/master/configs/MangoHud.conf
         ;;
     gamemode)
         pacman -S gamemode lib32-gamemode --noconfirm --needed

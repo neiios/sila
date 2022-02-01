@@ -78,7 +78,7 @@ mkdir -p /home/${username}/Templates
 touch /home/${username}/Templates/New\ Document.txt
 
 # wallpaper
-# sudo cp /root/script/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
+# sudo cp /root/ALIS/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
 # gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/my-default-wallpaper.jpg'
 
 # https://bbs.archlinux.org/viewtopic.php?id=194902

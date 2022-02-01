@@ -39,4 +39,4 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # find /usr -name "*lsp_plug*desktop" 2>/dev/null | cut -f 5 -d '/' | xargs -I {} cp -f /tmp/1 ~/.local/share/applications/{}
 
 # mkdir -pv ~/.config/easyeffects/output/
-# cp ~/script/configs/Audeze\ iSine\ 20\ Harman\ Oratory.json ~/.config/easyeffects/output/Audeze\ iSine\ 20\ Harman\ Oratory.json
+# cp ~/ALIS/configs/Audeze\ iSine\ 20\ Harman\ Oratory.json ~/.config/easyeffects/output/Audeze\ iSine\ 20\ Harman\ Oratory.json

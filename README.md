@@ -17,7 +17,7 @@ It is not necessary to run Stage 1 before executing Stage 2, but it is heavily r
 - **To log in after reboot use "root" as the username and the password you set.**
 
 ```sh
-curl https://raw.githubusercontent.com/richard96292/script/master/scripts/1-archinstall.sh | sh
+curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/1-archinstall.sh | sh
 ```
 
 ## Stage 2:
@@ -34,7 +34,7 @@ sh post-archinstall.sh
 ### If you installed the system manually, run the following:
 
 ```sh
-curl https://raw.githubusercontent.com/richard96292/script/master/scripts/post-archinstall.sh | sh
+curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-archinstall.sh | sh
 ```
 
 ## TODO
