@@ -117,7 +117,9 @@ pacman -S dialog git base-devel --noconfirm --needed
 useradd -m ${username}
 usermod -aG wheel ${username}
 echo ${username}:${password} | chpasswd
+# edit /etc/sudoers (there is 2 different variants)
 sed -i "s/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers
+sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # configure pacman
 sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
@@ -136,6 +138,11 @@ cd /home/${username}/paru-bin
 chown ${username}:${username} /home/${username}/paru-bin
 sudo -u ${username} makepkg -si --noconfirm --needed
 rm -rf /home/${username}/paru-bin
+# currently paru has a nasty bug
+# see: https://github.com/Morganamilo/paru/issues/631#issuecomment-998703406
+# paru needs to be called from a directory owned by the current user
+chown -R ${username}:${username} /home/${username}
+cd /home/${username}
 
 # basic utilities
 pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs acpi acpi_call fwupd bash-completion sof-firmware elfutils patch ffmpeg libdecor --noconfirm --needed
@@ -388,6 +395,7 @@ for choice in ${choicesApplications}; do
         sudo -u ${username} paru -S code-features code-marketplace code-icons --noconfirm --needed
         ;;
     code-dotfiles)
+        chown -R ${username}:${username} /home/${username}
         pkglist=(
             ms-vscode.cpptools
             ms-python.python
@@ -404,7 +412,7 @@ for choice in ${choicesApplications}; do
             sudo -u ${username} code --install-extension $i
         done
 
-        curl --create-dirs --output /home/${username}/.config/Code\ -\ OSS/User/settings.json https://raw.githubusercontent.com/richard96292/ALIS/master/configs/settings.json
+        curl --create-dirs --output "/home/${username}/.config/Code - OSS/User/settings.json" https://raw.githubusercontent.com/richard96292/ALIS/master/configs/settings.json
         ;;
     gimp)
         pacman -S gimp poppler-glib --noconfirm --needed
@@ -501,8 +509,11 @@ done
 # fix permissions
 chown -R ${username}:${username} /home/${username}
 
+# edit /etc/sudoers (there is 2 different variants)
 sed -i "s/%wheel ALL=(ALL) NOPASSWD: ALL/# %wheel ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers
 sed -i "s/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/" /etc/sudoers
+sed -i "s/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
+sed -i "s/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 
 pacman -Syu --noconfirm
 
