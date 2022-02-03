@@ -13,6 +13,10 @@ exec 3>&1
 diskname="/dev/$(dialog --menu "Choose one:" 0 0 0 "${parts[@]}" 2>&1 1>&3)"
 exec 3>&-
 clear
+# not sure if mmcblk works
+if [[ $diskname =~ "nvme|mmcblk" ]]; then
+    literallyLetterP="p"
+fi
 
 options=(
     1 "Ext4 (Recommended)"
@@ -37,40 +41,43 @@ clear
 # wiping existing partition and creating new ones
 sgdisk --zap-all --clear ${diskname}
 sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot $diskname
-sgdisk -n 0:0:0 -t 0:8300 -c 0:root $diskname
+sgdisk -n 0:0:+120GiB -t 0:8300 -c 0:root $diskname
+sgdisk -n 0:0:0 -t 0:8300 -c 0:home $diskname
 sgdisk -p $diskname
 
 case $choice in
-1)
-    mkfs.vfat ${diskname}1 -n boot
-    mkfs.ext4 ${diskname}2 -L root
+*)
+    mkfs.vfat ${diskname}${literallyLetterP}1 -n boot
+    mkfs.ext4 ${diskname}${literallyLetterP}2 -L root
+    mkfs.ext4 ${diskname}${literallyLetterP}3 -L home
 
-    mount ${diskname}2 /mnt
-    mkdir -pv /mnt/boot
-    mount ${diskname}1 /mnt/boot
+    mount ${diskname}${literallyLetterP}2 /mnt
+    mkdir -pv /mnt/{boot,home}
+    mount ${diskname}${literallyLetterP}1 /mnt/boot
+    mount ${diskname}${literallyLetterP}1 /mnt/home
     ;;
-2)
-    # NOTE: genfstab creates both subvolid and subvol (this fucks timeshift up)
-    # NOTE: space_cache doesn't work not sure what the reason is (space_cache=v2 does work)
+    # 2)
+    #     # NOTE: genfstab creates both subvolid and subvol (this fucks timeshift up)
+    #     # NOTE: space_cache doesn't work not sure what the reason is (space_cache=v2 does work)
 
-    mkfs.vfat ${diskname}1 -n boot
-    mkfs.btrfs ${diskname}2 -L root -f
+    #     mkfs.vfat ${diskname}1 -n boot
+    #     mkfs.btrfs ${diskname}2 -L root -f
 
-    mount ${diskname}2 /mnt
-    cd /mnt
-    btrfs subvolume create @
-    btrfs subvolume create @home
-    btrfs subvolume create @var
-    cd /root
-    umount -R /mnt
-    echo "Subvolumes created"
+    #     mount ${diskname}2 /mnt
+    #     cd /mnt
+    #     btrfs subvolume create @
+    #     btrfs subvolume create @home
+    #     btrfs subvolume create @var
+    #     cd /root
+    #     umount -R /mnt
+    #     echo "Subvolumes created"
 
-    mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@ ${diskname}2 /mnt
-    mkdir -pv /mnt/{boot,home,var}
-    mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@home ${diskname}2 /mnt/home
-    mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@var ${diskname}2 /mnt/var
-    mount ${diskname}1 /mnt/boot
-    ;;
+    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@ ${diskname}2 /mnt
+    #     mkdir -pv /mnt/{boot,home,var}
+    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@home ${diskname}2 /mnt/home
+    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@var ${diskname}2 /mnt/var
+    #     mount ${diskname}1 /mnt/boot
+    #     ;;
 esac
 
 # install necessary packages

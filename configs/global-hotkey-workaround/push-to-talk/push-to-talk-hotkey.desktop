@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=python3 [[full path to python file without square brackets]]
+Hidden=false
+X-GNOME-Autostart-enabled=true
+Name=push-to-talk-hotkey
+Comment=custom script

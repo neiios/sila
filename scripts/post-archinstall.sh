@@ -106,6 +106,7 @@ optionsGaming=(
     goverlay "An application to help manage MangoHud" off
     lutris "Open Gaming Platform" on
     lutris-flatpak "Open Gaming Platform (BETA Flatpak)" off
+    gamescope "The micro-compositor" on
 )
 choicesGaming=$("${cmdGaming[@]}" "${optionsGaming[@]}" 2>&1 >/dev/tty)
 clear
@@ -174,6 +175,7 @@ for choice in ${choicesGeneral}; do
         yes y | pacman -S libvirt qemu qemu-arch-extra edk2-ovmf iptables-nft dnsmasq dmidecode bridge-utils openbsd-netcat virt-manager
         systemctl enable libvirtd.service
         usermod -aG libvirt $username
+        virsh net-autostart default
         ;;
     4)
         pacman -S ufw ufw-extras --noconfirm --needed
@@ -314,7 +316,7 @@ EOF
         systemctl enable sddm
         ;;
     2)
-        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus --noconfirm --needed
+        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus --noconfirm --needed
         systemctl enable gdm
         sudo -u ${username} paru -S chrome-gnome-shell gnome-shell-extension-gsconnect gnome-shell-extension-dash-to-dock --noconfirm --needed
         # install breeze theme for apps like kdenlive
@@ -397,15 +399,25 @@ for choice in ${choicesApplications}; do
     code-dotfiles)
         chown -R ${username}:${username} /home/${username}
         pkglist=(
-            ms-vscode.cpptools
-            ms-python.python
-            github.vscode-pull-request-github
-            eamodio.gitlens
-            mhutchie.git-graph
-            vscode-icons-team.vscode-icons
+            cschlosser.doxdocgen
             dbaeumer.vscode-eslint
+            eamodio.gitlens
             esbenp.prettier-vscode
             foxundermoon.shell-format
+            GitHub.vscode-pull-request-github
+            jeff-hykin.better-cpp-syntax
+            mads-hartmann.bash-ide-vscode
+            mhutchie.git-graph
+            ms-python.python
+            ms-python.vscode-pylance
+            ms-toolsai.jupyter
+            ms-vscode-remote.remote-containers
+            ms-vscode-remote.remote-ssh
+            ms-vscode-remote.remote-ssh-edit
+            ms-vscode.cmake-tools
+            ms-vscode.cpptools
+            twxs.cmake
+            vscode-icons-team.vscode-icons
         )
 
         for i in ${pkglist[@]}; do
@@ -502,6 +514,9 @@ for choice in ${choicesGaming}; do
         flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
         flatpak install -y --noninteractive flathub-beta net.lutris.Lutris//beta
         flatpak install -y --noninteractive flathub org.gnome.Platform.Compat.i386 org.freedesktop.Platform.GL32.default org.freedesktop.Platform.GL.default
+        ;;
+    gamescope)
+        pacman -S gamescope --noconfirm --needed
         ;;
     esac
 done
