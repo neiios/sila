@@ -411,12 +411,15 @@ for choice in ${choicesApplications}; do
             ms-python.python
             ms-python.vscode-pylance
             ms-toolsai.jupyter
+            ms-toolsai.jupyter-keymap
+            ms-toolsai.jupyter-renderers
             ms-vscode-remote.remote-containers
             ms-vscode-remote.remote-ssh
             ms-vscode-remote.remote-ssh-edit
             ms-vscode.cmake-tools
             ms-vscode.cpptools
             twxs.cmake
+            monokai.theme-monokai-pro-vscode
             vscode-icons-team.vscode-icons
         )
 

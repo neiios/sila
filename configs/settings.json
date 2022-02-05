@@ -1,10 +1,10 @@
 {
-  "workbench.colorTheme": "Default Dark+",
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "Monokai Pro Icons",
+  "workbench.colorTheme": "Monokai Pro",
   "git.enableSmartCommit": true,
   "diffEditor.renderSideBySide": false,
   "explorer.decorations.badges": false,
-  "editor.fontFamily": "'JetBrains Mono', 'monospace'",
+  "editor.fontFamily": "'JetBrains Mono', 'Droid Sans Mono', 'Consolas', 'Courier New', 'monospace'",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.letterSpacing": 0.5,
@@ -41,5 +41,10 @@
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "telemetry.telemetryLevel": "off"
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "telemetry.telemetryLevel": "off",
+  "workbench.startupEditor": "none",
+  "window.menuBarVisibility": "toggle"
 }
