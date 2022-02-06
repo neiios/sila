@@ -14,7 +14,7 @@ diskname="/dev/$(dialog --menu "Choose one:" 0 0 0 "${parts[@]}" 2>&1 1>&3)"
 exec 3>&-
 clear
 # not sure if mmcblk works
-if [[ $diskname =~ "nvme|mmcblk" ]]; then
+if [[ $diskname =~ nvme|mmcblk ]]; then
     literallyLetterP="p"
 fi
 
@@ -54,7 +54,7 @@ case $choice in
     mount ${diskname}${literallyLetterP}2 /mnt
     mkdir -pv /mnt/{boot,home}
     mount ${diskname}${literallyLetterP}1 /mnt/boot
-    mount ${diskname}${literallyLetterP}1 /mnt/home
+    mount ${diskname}${literallyLetterP}3 /mnt/home
     ;;
     # 2)
     #     # NOTE: genfstab creates both subvolid and subvol (this fucks timeshift up)

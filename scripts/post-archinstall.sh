@@ -32,6 +32,7 @@ optionsGeneral=(
     11 "Additional fonts" on
     12 "This system is a VM (QEMU/KVM)" on
     13 "This system is a VM (Virtualbox)" off
+    14 "Install additional codecs" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
@@ -175,7 +176,6 @@ for choice in ${choicesGeneral}; do
         yes y | pacman -S libvirt qemu qemu-arch-extra edk2-ovmf iptables-nft dnsmasq dmidecode bridge-utils openbsd-netcat virt-manager
         systemctl enable libvirtd.service
         usermod -aG libvirt $username
-        virsh net-autostart default
         ;;
     4)
         pacman -S ufw ufw-extras --noconfirm --needed
@@ -238,6 +238,10 @@ for choice in ${choicesGeneral}; do
         ;;
     13)
         pacman -S virtualbox-guest-utils --noconfirm --needed
+        ;;
+    14)
+        # gstreamer (pulls all releveant codecs)
+        pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
         ;;
     esac
 done
@@ -320,7 +324,7 @@ for choice in ${choicesDesktop}; do
         # for kdeplasma-addons
         pacman -S qt5-webengine quota-tools --noconfirm --needed
         # for plasma-desktop
-        pacman -S ibus kaccounts-integration kscreen scim --noconfirm --needed
+        pacman -S kaccounts-integration kscreen --noconfirm --needed
         # for plasma-vault
         pacman -S cryfs encfs gocryptfs --noconfirm --needed
         # for plasma-workspace
