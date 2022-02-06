@@ -146,7 +146,7 @@ chown -R ${username}:${username} /home/${username}
 cd /home/${username}
 
 # basic utilities
-pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs acpi acpi_call fwupd bash-completion sof-firmware elfutils patch ffmpeg libdecor --noconfirm --needed
+pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs acpi acpi_call bash-completion sof-firmware elfutils patch ffmpeg libdecor --noconfirm --needed
 
 systemctl enable avahi-daemon.service
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
@@ -186,13 +186,8 @@ for choice in ${choicesGeneral}; do
         ufw allow "KDE Connect"
         ufw enable
         ;;
-    5)
-        pacman -S tlp --noconfirm --needed
-        systemctl start tlp.service
-        sudo -u ${username} paru -S tlpui --noconfirm --needed
-        ;;
     6)
-        pacman -S cups cups-pk-helper cups-filters cups-pdf ghostscript gsfonts foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds --noconfirm --needed
+        pacman -S cups cups-pk-helper cups-filters cups-pdf ghostscript gsfonts foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
         systemctl enable cups.socket
         ;;
     7)
@@ -301,12 +296,44 @@ done
 for choice in ${choicesDesktop}; do
     case ${choice} in
     1)
-        # may remove something in the future
-        pacman -S plasma-meta plasma-wayland-session sddm discover packagekit-qt5 gwenview kamera kdegraphics-mobipocket kdegraphics-thumbnailers kolourpaint okular skanlite spectacle svgpart audiocd-kio dragon elisa ffmpegthumbs kamoso kdenlive kdeconnect kdenetwork-filesharing kio-extras kio-gdrive kio-fuse zeroconf-ioslave dolphin-plugins dolphin kcron khelpcenter ksystemlog partitionmanager ark filelight kwrite kcalc kcharselect kdialog kfind konsole kwalletmanager markdownpart print-manager yakuake kwalletmanager --noconfirm --needed
-
-        # various dependencies
-        pacman -S icoutils kactivities-stats kimageformats libappimage openexr perl qt5-imageformats taglib purpose system-config-printer --noconfirm --needed
-
+        # install basic plasma group
+        # https://archlinux.org/groups/x86_64/plasma/
+        pacman -S plasma plasma-wayland-session sddm --noconfirm --needed
+        # phonon backend
+        pacman -S phonon-qt5-gstreamer --noconfirm --needed
+        # plasma applications
+        pacman -S konsole dolphin elisa vlc gwenview kamoso spectacle okular kolourpaint skanlite kdeconnect kwrite kdenlive kcalc ksystemlog partitionmanager kfind kwalletmanager filelight ark print-manager --noconfirm --needed
+        # for kdeconnect
+        pacman -S sshfs --noconfirm --needed
+        # for kio-extras
+        pacman -S kio-gdrive icoutils kimageformats karchive libavif libheif libjxl openexr libappimage qt5-imageformats taglib --noconfirm --needed
+        # for dolphin
+        pacman -S ffmpegthumbs kdegraphics-thumbnailers kdenetwork-filesharing audiocd-kio zeroconf-ioslave --noconfirm --needed
+        # for discover
+        pacman -S fwupd packagekit-qt5 --noconfirm --needed
+        # for ark
+        pacman -S lrzip lzop p7zip unarchiver svgpart --noconfirm --needed
+        # for okular
+        pacman -S ebook-tools kdegraphics-mobipocket --noconfirm --needed
+        # for kdenlive
+        pacman -S opencv opentimelineio --noconfirm --needed
+        # for kdeplasma-addons
+        pacman -S qt5-webengine quota-tools --noconfirm --needed
+        # for plasma-desktop
+        pacman -S ibus kaccounts-integration kscreen scim --noconfirm --needed
+        # for plasma-vault
+        pacman -S cryfs encfs gocryptfs --noconfirm --needed
+        # for plasma-workspace
+        pacman -S appmenu-gtk-module gpsd --noconfirm --needed
+        # for powerdevil
+        pacman -S power-profiles-daemon python-gobject --noconfirm --needed
+        # for kde-gtk-config
+        pacman -S gnome-themes-extra --noconfirm --needed
+        # for gtk tray icons
+        pacman -S libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
+        # various nice-to-haves
+        pacman -S kdialog --noconfirm --needed
+        # configure sddm
         mkdir -p /etc/sddm.conf.d/
         cat <<EOF >/etc/sddm.conf.d/kde_settings.conf
 [Theme]
@@ -316,7 +343,7 @@ EOF
         systemctl enable sddm
         ;;
     2)
-        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus --noconfirm --needed
+        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus power-profiles-daemon fwupd --noconfirm --needed
         systemctl enable gdm
         sudo -u ${username} paru -S chrome-gnome-shell gnome-shell-extension-gsconnect gnome-shell-extension-dash-to-dock --noconfirm --needed
         # install breeze theme for apps like kdenlive
