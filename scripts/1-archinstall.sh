@@ -41,6 +41,15 @@ exec 3>&1
 passwordLuks=$(dialog --inputbox "Enter the password to encrypt the drive:" 0 0 2>&1 1>&3)
 exec 3>&-
 clear
+
+optionsBootloader=(
+    1 "systemd-boot"
+    2 "GRUB (select if you want to dual boot)"
+)
+exec 3>&1
+choiceBootloader=$(dialog --menu "Select the bootloader you want to use:" 0 0 0 "${optionsBootloader[@]}" 2>&1 1>&3)
+exec 3>&-
+clear
 # ----------------------------- inputs -----------------------------
 
 # wiping existing partition and creating new ones
@@ -106,7 +115,8 @@ curl --output /mnt/root/2-archinstall.sh https://raw.githubusercontent.com/richa
 sed -i "/set -xe/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a literallyLetterP='${literallyLetterP}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a choiceBootloader='${choiceBootloader}'" /mnt/root/2-archinstall.sh
 chmod +x /mnt/root/2-archinstall.sh
 
 arch-chroot /mnt /root/2-archinstall.sh
