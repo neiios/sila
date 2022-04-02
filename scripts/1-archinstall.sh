@@ -41,20 +41,30 @@ clear
 # wiping existing partition and creating new ones
 sgdisk --zap-all --clear ${diskname}
 sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot $diskname
-sgdisk -n 0:0:+120GiB -t 0:8300 -c 0:root $diskname
-sgdisk -n 0:0:0 -t 0:8300 -c 0:home $diskname
+sgdisk -n 0:0:0 -t 0:8300 -c 0:luks $diskname
 sgdisk -p $diskname
 
 case $choice in
 *)
+    # format boot
     mkfs.vfat ${diskname}${literallyLetterP}1 -n boot
-    mkfs.ext4 ${diskname}${literallyLetterP}2 -L root
-    mkfs.ext4 ${diskname}${literallyLetterP}3 -L home
-
-    mount ${diskname}${literallyLetterP}2 /mnt
-    mkdir -pv /mnt/{boot,home}
+    # encrypt second partition
+    cryptsetup luksFormat ${diskname}${literallyLetterP}2
+    cryptsetup luksOpen ${diskname}${literallyLetterP}2 luks
+    # configure lvm
+    pvcreate /dev/mapper/luks
+    vgcreate vg0 /dev/mapper/luks
+    # create logical volumes
+    lvcreate -L 128G vg0 -n root
+    lvcreate -l 100%FREE vg0 -n home
+    # format partitions
+    mkfs.ext4 -L root /dev/mapper/vg0-root
+    mkfs.ext4 -L home /dev/mapper/vg0-home
+    # mount partitions
+    mount /dev/mapper/vg0-root /mnt
+    mkdir -pv /mnt/{boot, home}
     mount ${diskname}${literallyLetterP}1 /mnt/boot
-    mount ${diskname}${literallyLetterP}3 /mnt/home
+    mount /dev/mapper/vg0-home /mnt/home
     ;;
     # 2)
     #     # NOTE: genfstab creates both subvolid and subvol (this fucks timeshift up)
@@ -81,7 +91,7 @@ case $choice in
 esac
 
 # install necessary packages
-pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano dialog
+pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano lvm2 networkmanager dialog
 # generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -89,6 +99,8 @@ curl --output /mnt/root/post-archinstall.sh https://raw.githubusercontent.com/ri
 curl --output /mnt/root/2-archinstall.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/2-archinstall.sh
 sed -i "/set -xe/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a literallyLetterP='${literallyLetterP}'" /mnt/root/2-archinstall.sh
 chmod +x /mnt/root/2-archinstall.sh
 
 arch-chroot /mnt /root/2-archinstall.sh
