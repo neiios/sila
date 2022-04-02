@@ -92,11 +92,12 @@ case $choice in
     #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@home ${diskname}2 /mnt/home
     #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@var ${diskname}2 /mnt/var
     #     mount ${diskname}1 /mnt/boot
+    #     btrfsPackages=btrfs-progs
     #     ;;
 esac
 
 # install necessary packages
-pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano lvm2 networkmanager dialog
+pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano lvm2 networkmanager dialog efibootmgr ${btrfsPackages}
 # generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 

@@ -32,25 +32,25 @@ sed -i 's/keyboard/& encrypt lvm2/' /etc/mkinitcpio.conf
 mkinitcpio -P
 
 # install and configure systemd-boot
-bootctl install
+# bootctl install
 
-cat <<EOF >/boot/loader/loader.conf
-default arch.conf
-timeout 0
-console-mode max
-editor no
-EOF
+# cat <<EOF >/boot/loader/loader.conf
+# default arch.conf
+# timeout 0
+# console-mode max
+# editor no
+# EOF
 
-cat <<EOF >/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks root=/dev/mapper/vg0-root rw
-EOF
+# cat <<EOF >/boot/loader/entries/arch.conf
+# title Arch Linux
+# linux /vmlinuz-linux
+# initrd /initramfs-linux.img
+# options cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks root=/dev/mapper/vg0-root rw
+# EOF
 
 # install grub
-# pacman -S grub efibootmgr os-prober grub-btrfs btrfs-progs --noconfirm --needed
-# # install grub and generate a config
-# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-# echo "GRUB_DISABLE_OS_PROBER=false" >>/etc/default/grub
-# grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S grub os-prober grub-btrfs --noconfirm --needed
+sed -i "s/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks"/" /etc/default/grub
+sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
