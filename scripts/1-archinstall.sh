@@ -36,6 +36,11 @@ exec 3>&1
 password=$(dialog --inputbox "Enter the password for the root user:" 0 0 2>&1 1>&3)
 exec 3>&-
 clear
+
+exec 3>&1
+passwordLuks=$(dialog --inputbox "Enter the password to encrypt the drive:" 0 0 2>&1 1>&3)
+exec 3>&-
+clear
 # ----------------------------- inputs -----------------------------
 
 # wiping existing partition and creating new ones
@@ -47,10 +52,10 @@ sgdisk -p $diskname
 case $choice in
 *)
     # format boot
-    mkfs.vfat ${diskname}${literallyLetterP}1 -n boot
+    mkfs.vfat ${diskname}${literallyLetterP}1 -n BOOT
     # encrypt second partition
-    cryptsetup luksFormat ${diskname}${literallyLetterP}2
-    cryptsetup luksOpen ${diskname}${literallyLetterP}2 luks
+    echo "${passwordLuks}" | cryptsetup -q luksFormat ${diskname}${literallyLetterP}2
+    echo "${passwordLuks}" | cryptsetup luksOpen ${diskname}${literallyLetterP}2 luks
     # configure lvm
     pvcreate /dev/mapper/luks
     vgcreate vg0 /dev/mapper/luks
@@ -62,7 +67,7 @@ case $choice in
     mkfs.ext4 -L home /dev/mapper/vg0-home
     # mount partitions
     mount /dev/mapper/vg0-root /mnt
-    mkdir -pv /mnt/{boot, home}
+    mkdir -pv /mnt/{boot,home}
     mount ${diskname}${literallyLetterP}1 /mnt/boot
     mount /dev/mapper/vg0-home /mnt/home
     ;;
