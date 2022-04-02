@@ -35,9 +35,10 @@ mkinitcpio -P
 bootctl install
 
 cat <<EOF >/boot/loader/loader.conf
-default arch
-timeout 3
-editor 0
+default arch.conf
+timeout 0
+console-mode max
+editor no
 EOF
 
 cat <<EOF >/boot/loader/entries/arch.conf
