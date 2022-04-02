@@ -28,7 +28,7 @@ pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
 # add hooks
-sed -i 's/keyboard/& encrypt lvm2/' /etc/mkinitcpio.conf
+sed -i 's/keyboard/& encrypt/' /etc/mkinitcpio.conf
 mkinitcpio -P
 
 if [ ${choiceBootloader} == 1 ]; then
@@ -45,8 +45,9 @@ EOF
     cat <<EOF >/boot/loader/entries/arch.conf
 title Arch Linux
 linux /vmlinuz-linux
+initrd /${choiceCPU}-ucode.img
 initrd /initramfs-linux.img
-options cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks root=/dev/mapper/vg0-root rw
+options cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks root=/dev/mapper/luks rootflags=subvol=@ rw
 EOF
 else
     # install grub

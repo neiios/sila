@@ -18,15 +18,6 @@ if [[ $diskname =~ nvme|mmcblk ]]; then
     literallyLetterP="p"
 fi
 
-options=(
-    1 "Ext4 (Recommended)"
-    2 "Btrfs (NOT SUPPORTED)"
-)
-exec 3>&1
-choice=$(dialog --menu "Select the file system type you want to use:" 0 0 0 "${options[@]}" 2>&1 1>&3)
-exec 3>&-
-clear
-
 exec 3>&1
 hostname=$(dialog --inputbox "Enter the hostname for this computer:" 0 0 2>&1 1>&3)
 exec 3>&-
@@ -50,6 +41,15 @@ exec 3>&1
 choiceBootloader=$(dialog --menu "Select the bootloader you want to use:" 0 0 0 "${optionsBootloader[@]}" 2>&1 1>&3)
 exec 3>&-
 clear
+
+optionsManufacturer=(
+    amd "AMD"
+    intel "Intel"
+)
+exec 3>&1
+choiceCPU=$(dialog --menu "Select your CPU manufacturer:" 0 0 0 "${optionsManufacturer[@]}" 2>&1 1>&3)
+exec 3>&-
+clear
 # ----------------------------- inputs -----------------------------
 
 # wiping existing partition and creating new ones
@@ -58,55 +58,33 @@ sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot $diskname
 sgdisk -n 0:0:0 -t 0:8300 -c 0:luks $diskname
 sgdisk -p $diskname
 
-case $choice in
-*)
-    # format boot
-    mkfs.vfat ${diskname}${literallyLetterP}1 -n BOOT
-    # encrypt second partition
-    echo "${passwordLuks}" | cryptsetup -q luksFormat ${diskname}${literallyLetterP}2
-    echo "${passwordLuks}" | cryptsetup luksOpen ${diskname}${literallyLetterP}2 luks
-    # configure lvm
-    pvcreate /dev/mapper/luks
-    vgcreate vg0 /dev/mapper/luks
-    # create logical volumes
-    lvcreate -L 128G vg0 -n root
-    lvcreate -l 100%FREE vg0 -n home
-    # format partitions
-    mkfs.ext4 -L root /dev/mapper/vg0-root
-    mkfs.ext4 -L home /dev/mapper/vg0-home
-    # mount partitions
-    mount /dev/mapper/vg0-root /mnt
-    mkdir -pv /mnt/{boot,home}
-    mount ${diskname}${literallyLetterP}1 /mnt/boot
-    mount /dev/mapper/vg0-home /mnt/home
-    ;;
-    # 2)
-    #     # NOTE: genfstab creates both subvolid and subvol (this fucks timeshift up)
-    #     # NOTE: space_cache doesn't work not sure what the reason is (space_cache=v2 does work)
-
-    #     mkfs.vfat ${diskname}1 -n boot
-    #     mkfs.btrfs ${diskname}2 -L root -f
-
-    #     mount ${diskname}2 /mnt
-    #     cd /mnt
-    #     btrfs subvolume create @
-    #     btrfs subvolume create @home
-    #     btrfs subvolume create @var
-    #     cd /root
-    #     umount -R /mnt
-    #     echo "Subvolumes created"
-
-    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@ ${diskname}2 /mnt
-    #     mkdir -pv /mnt/{boot,home,var}
-    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@home ${diskname}2 /mnt/home
-    #     mount -o noatime,compress=zstd,discard=async,space_cache=v2,subvol=@var ${diskname}2 /mnt/var
-    #     mount ${diskname}1 /mnt/boot
-    #     btrfsPackages=btrfs-progs
-    #     ;;
-esac
+# format boot
+mkfs.vfat ${diskname}${literallyLetterP}1 -n EFI
+# encrypt second partition
+echo "${passwordLuks}" | cryptsetup -q luksFormat ${diskname}${literallyLetterP}2
+echo "${passwordLuks}" | cryptsetup luksOpen ${diskname}${literallyLetterP}2 luks
+# format partition
+mkfs.btrfs /dev/mapper/luks -L root -f
+# create subvolumes
+mount /dev/mapper/luks /mnt
+btrfs sub create /mnt/@
+btrfs sub create /mnt/@home
+btrfs sub create /mnt/@var
+btrfs sub create /mnt/@tmp
+btrfs sub create /mnt/@snapshots
+umount -R /mnt
+# mount subvolumes
+mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
+mkdir -pv /mnt/{boot,home,var,tmp,.snapshots}
+mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
+mount -o noatime,nodiratime,compress=zstd,subvol=@var /dev/mapper/luks /mnt/var
+mount -o noatime,nodiratime,compress=zstd,subvol=@tmp /dev/mapper/luks /mnt/tmp
+mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+# mount boot
+mount ${diskname}${literallyLetterP}1 /mnt/boot
 
 # install necessary packages
-pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano lvm2 networkmanager dialog efibootmgr ${btrfsPackages}
+pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim nano lvm2 networkmanager dialog efibootmgr btrfs-progs ${choiceCPU}-ucode
 # generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -117,6 +95,7 @@ sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a choiceBootloader='${choiceBootloader}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a choiceCPU='${choiceCPU}'" /mnt/root/2-archinstall.sh
 chmod +x /mnt/root/2-archinstall.sh
 
 arch-chroot /mnt /root/2-archinstall.sh

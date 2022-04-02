@@ -153,7 +153,8 @@ sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable cronie.service
 systemctl enable reflector.timer
 systemctl enable paccache.timer
-systemctl enable fstrim.timer
+# dont enable on an encrypted drive
+# systemctl enable fstrim.timer
 # TODO: remove ntfs-3g
 pacman -S ntfs-3g --noconfirm --needed
 
