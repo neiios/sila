@@ -217,7 +217,7 @@ for choice in ${choicesGeneral}; do
         ;;
     11)
         # bitmap
-        pacman -S dina-font tamsyn-font terminus-font bdf-unifont --noconfirm --needed
+        pacman -S dina-font tamsyn-font terminus-font --noconfirm --needed
         # latin script
         pacman -S ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid gnu-free-fonts ttf-ibm-plex ttf-liberation libertinus-font noto-fonts ttf-roboto tex-gyre-fonts ttf-ubuntu-font-family ttf-caladea ttf-carlito --noconfirm --needed
         # monospaced
