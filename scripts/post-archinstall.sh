@@ -30,9 +30,7 @@ optionsGeneral=(
     9 "Install and configure zsh" on
     10 "Configure ZRAM" on
     11 "Additional fonts" on
-    12 "This system is a VM (QEMU/KVM)" on
-    13 "This system is a VM (Virtualbox)" off
-    14 "Install additional codecs" on
+    12 "Install additional codecs" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
@@ -159,8 +157,12 @@ systemctl enable fstrim.timer
 # TODO: remove ntfs-3g
 pacman -S ntfs-3g --noconfirm --needed
 
-# ah, yes
-pacman -S neofetch --noconfirm --needed
+# check hypervisor
+if [ $(dmesg | grep "Hypervisor detected" | wc -l) -ne 0 ]; then
+    echo "Virtual machine detected. Installing additional tools."
+    pacman -S qemu-guest-agent spice-vdagent virtualbox-guest-utils --noconfirm --needed
+    systemctl enable qemu-guest-agent.service
+fi
 
 for choice in ${choicesGeneral}; do
     case ${choice} in
@@ -208,7 +210,7 @@ for choice in ${choicesGeneral}; do
     10)
         pacman -S zram-generator --noconfirm --needed
         echo "[zram0]" >/etc/systemd/zram-generator.conf
-        echo "zram-size = min(ram / 2, 2048)" >>/etc/systemd/zram-generator.conf
+        echo "zram-size = min(ram / 2, 4096)" >>/etc/systemd/zram-generator.conf
         systemctl daemon-reload
         systemctl start /dev/zram0
         zramctl
@@ -234,13 +236,6 @@ for choice in ${choicesGeneral}; do
         pacman -S otf-latin-modern otf-latinmodern-math --noconfirm --needed
         ;;
     12)
-        pacman -S qemu-guest-agent spice-vdagent --noconfirm --needed
-        systemctl enable qemu-guest-agent.service
-        ;;
-    13)
-        pacman -S virtualbox-guest-utils --noconfirm --needed
-        ;;
-    14)
         # gstreamer (pulls all releveant codecs)
         pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
         ;;
@@ -297,7 +292,7 @@ EOF
         ;;
     6)
         pacman -S nvidia-prime --noconfirm --needed
-	paru -S envycontrol --noconfirm --needed
+        paru -S envycontrol --noconfirm --needed
         ;;
     esac
 done
@@ -572,5 +567,12 @@ sed -i "s/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 pacman -Syu --noconfirm
 
 rm -rf /root/post-archinstall.sh
+
+# the most important step
+pacman -S neofetch --noconfirm --needed
+clear
+neofetch
+sleep 5
+
 dialog --title "Congratulations" --yes-label "Reboot" --no-label "Cancel" --yesno "The installation has finished succesfully!\\n\\nDo you want to reboot your computer now?" 0 0
 reboot
