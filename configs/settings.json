@@ -1,6 +1,5 @@
 {
-  "workbench.iconTheme": "Monokai Pro Icons",
-  "workbench.colorTheme": "Monokai Pro",
+  "workbench.iconTheme": "vscode-icons",
   "git.enableSmartCommit": true,
   "diffEditor.renderSideBySide": false,
   "explorer.decorations.badges": false,
@@ -14,7 +13,6 @@
   "editor.occurrencesHighlight": true,
   "editor.cursorStyle": "line",
   "editor.showFoldingControls": "always",
-  "editor.wordWrap": "wordWrapColumn",
   "editor.matchBrackets": "always",
   "editor.bracketPairColorization.enabled": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -26,6 +24,10 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.minimap.enabled": false,
+  "telemetry.telemetryLevel": "off",
+  "workbench.startupEditor": "none",
+  "window.menuBarVisibility": "toggle",
+  "explorer.confirmDragAndDrop": false,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -44,7 +46,10 @@
   "[cpp]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
-  "telemetry.telemetryLevel": "off",
-  "workbench.startupEditor": "none",
-  "window.menuBarVisibility": "toggle"
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  }
 }

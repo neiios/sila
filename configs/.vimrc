@@ -1,3 +1,8 @@
-" Allow saving of files as sudo when I forgot to start vim using sudo.
+" save files if not run with sudo
 cmap w!! w !sudo tee > /dev/null %
-syntax on
+
+syntax enable
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set expandtab

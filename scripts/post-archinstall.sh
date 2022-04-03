@@ -435,11 +435,15 @@ for choice in ${choicesApplications}; do
             dbaeumer.vscode-eslint
             eamodio.gitlens
             esbenp.prettier-vscode
+            formulahendry.code-runner
             foxundermoon.shell-format
             GitHub.vscode-pull-request-github
+            haskell.haskell
             jeff-hykin.better-cpp-syntax
+            justusadam.language-haskell
             mads-hartmann.bash-ide-vscode
             mhutchie.git-graph
+            ms-azuretools.vscode-docker
             ms-python.python
             ms-python.vscode-pylance
             ms-toolsai.jupyter
@@ -451,7 +455,6 @@ for choice in ${choicesApplications}; do
             ms-vscode.cmake-tools
             ms-vscode.cpptools
             twxs.cmake
-            monokai.theme-monokai-pro-vscode
             vscode-icons-team.vscode-icons
         )
 
