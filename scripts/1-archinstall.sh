@@ -69,16 +69,12 @@ mkfs.btrfs /dev/mapper/luks -L root -f
 mount /dev/mapper/luks /mnt
 btrfs sub create /mnt/@
 btrfs sub create /mnt/@home
-btrfs sub create /mnt/@var
-btrfs sub create /mnt/@tmp
 btrfs sub create /mnt/@snapshots
 umount -R /mnt
 # mount subvolumes
 mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
-mkdir -pv /mnt/{boot,home,var,tmp,.snapshots}
+mkdir -pv /mnt/{boot,home,.snapshots}
 mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
-mount -o noatime,nodiratime,compress=zstd,subvol=@var /dev/mapper/luks /mnt/var
-mount -o noatime,nodiratime,compress=zstd,subvol=@tmp /dev/mapper/luks /mnt/tmp
 mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
 # mount boot
 mount ${diskname}${literallyLetterP}1 /mnt/boot
