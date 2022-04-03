@@ -73,6 +73,7 @@ optionsApplications=(
     bitwarden "A secure and free password manager (Flatpak)" off
     thunderbird "Standalone mail and news reader from Mozilla" on
     qbittorrent "An advanced BitTorrent client" on
+    fragments "A minimal torrent client for Gnome" off
     code "The Open Source build of Visual Studio Code" on
     code-unlock "Unlock additional features and marketplace (AUR)" on
     code-dotfiles "Install vscode extensions and copy my settings.json" on
@@ -393,6 +394,9 @@ for choice in ${choicesApplications}; do
     firefox)
         pacman -S firefox firefox-ublock-origin --noconfirm --needed
         ;;
+    fragments)
+        pacman -S fragments --noconfirm --needed
+        ;;
     chromium)
         pacman -S chromium --noconfirm --needed
         ;;
@@ -477,7 +481,7 @@ for choice in ${choicesApplications}; do
         sudo -u ${username} paru -S timeshift --noconfirm --needed
         ;;
     clion)
-        sudo -u ${username} paru -S clion clion-jre --noconfirm --needed
+        sudo -u ${username} paru -S clion clion-cmake clion-gdb clion-lldb clion-jre --noconfirm --needed
         ;;
     discord)
         pacman -S discord --noconfirm --needed
