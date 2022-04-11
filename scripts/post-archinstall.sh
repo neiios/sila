@@ -81,6 +81,7 @@ optionsApplications=(
     kdenlive "A video editor" on
     obs "Software for live streaming and recording" on
     timeshift "A system restore utility (AUR)" on
+    timeshift-autosnap "Create a snapshot before system upgrade (use only with BTRFS)" on
     clion "C/C++ IDE" off
     discord "All-in-one voice and text chat" off
     discord-flatpak "All-in-one voice and text chat (Flatpak)" on
@@ -479,6 +480,9 @@ for choice in ${choicesApplications}; do
         ;;
     timeshift)
         sudo -u ${username} paru -S timeshift --noconfirm --needed
+        ;;
+    timeshift-autosnap)
+        sudo -u ${username} paru -S timeshift-autosnap --noconfirm --needed
         ;;
     clion)
         sudo -u ${username} paru -S clion clion-cmake clion-gdb clion-lldb clion-jre --noconfirm --needed
