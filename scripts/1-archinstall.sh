@@ -91,7 +91,7 @@ curl --output /mnt/root/2-archinstall.sh https://raw.githubusercontent.com/richa
 sed -i "/set -xe/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
+sed -i "/set -xe/a literallyLetterP='${literallyLetterP}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a choiceBootloader='${choiceBootloader}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a choiceCPU='${choiceCPU}'" /mnt/root/2-archinstall.sh
 chmod +x /mnt/root/2-archinstall.sh
