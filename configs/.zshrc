@@ -36,6 +36,9 @@ promptinit
 setopt PROMPT_SUBST
 PROMPT=' %F{11}%n%f %F{15}in %U${PWD/#$HOME/~}%u ${vcs_info_msg_0_} > '
 
+## case-insensitive,partial-word and then substring completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 # useful aliases
 alias ls='ls -lah --color=auto'
 alias grep='grep --color=auto'
