@@ -27,33 +27,26 @@ echo root:${password} | chpasswd
 pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
-# add hooks
-sed -i 's/keyboard/& encrypt/' /etc/mkinitcpio.conf
+# generate a key to not enter password twice
+dd bs=512 count=4 if=/dev/urandom of=/crypto_keyfile.bin
+echo "${passwordLuks}" | cryptsetup luksAddKey ${rootPartition} /crypto_keyfile.bin
+chmod 000 /crypto_keyfile.bin
+
+# bootloader (GRUB)
+sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
+sed -i "s|FILES=()|FILES=(/crypto_keyfile.bin)|" /etc/mkinitcpio.conf
 mkinitcpio -P
 
-if [ ${choiceBootloader} == 1 ]; then
-    # install and configure systemd-boot
-    bootctl install
-
-    cat <<EOF >/boot/loader/loader.conf
-default arch.conf
-timeout 0
-console-mode max
-editor no
-EOF
-
-    cat <<EOF >/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /${choiceCPU}-ucode.img
-initrd /initramfs-linux.img
-options cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks root=/dev/mapper/luks rootflags=subvol=@ rw
-EOF
+pacman -S grub os-prober grub-btrfs --noconfirm --needed
+sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
+echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
+sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
+sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
+if [ ${UEFIBIOS} == 1 ]; then
+    pacman -S efibootmgr --noconfirm --needed
+    grub-install --target=x86_64-efi ${diskname} --efi-directory=/efi --recheck
 else
-    # install grub
-    pacman -S grub os-prober grub-btrfs --noconfirm --needed
-    sed -i "s/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${diskname}${literallyLetterP}2):luks"/" /etc/default/grub
-    sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    grub-mkconfig -o /boot/grub/grub.cfg
+    grub-install ${diskname}
 fi
+
+grub-mkconfig -o /boot/grub/grub.cfg
