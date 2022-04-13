@@ -23,7 +23,6 @@ optionsGeneral=(
     2 "Bluetooth" on
     3 "Set up software needed for VMs" on
     4 "Enable firewall (ufw)" on
-    5 "Power management for laptops (tlp)" off
     6 "Printing support (CUPS)" on
     7 "HP printer support" off
     8 "Flatpak support" on
@@ -55,6 +54,9 @@ optionsDesktop=(
     4 "Configure my monitors on Gnome" off
     5 "Copy the dotfiles" on
     6 "Disable Mouse acceleration (for login managers)" on
+    7 "Power profiles daemon" on
+    8 "TLP" off
+    9 "tlp-rdw" off
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -332,8 +334,6 @@ for choice in ${choicesDesktop}; do
         pacman -S cryfs encfs gocryptfs --noconfirm --needed
         # for plasma-workspace
         pacman -S appmenu-gtk-module gpsd --noconfirm --needed
-        # for powerdevil
-        pacman -S power-profiles-daemon python-gobject --noconfirm --needed
         # for kde-gtk-config
         pacman -S gnome-themes-extra --noconfirm --needed
         # for gtk tray icons
@@ -350,7 +350,7 @@ EOF
         systemctl enable sddm
         ;;
     2)
-        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus power-profiles-daemon fwupd --noconfirm --needed
+        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus fwupd --noconfirm --needed
         systemctl enable gdm
         sudo -u ${username} paru -S chrome-gnome-shell gnome-shell-extension-gsconnect gnome-shell-extension-dash-to-dock --noconfirm --needed
         # install breeze theme for apps like kdenlive
@@ -380,6 +380,20 @@ Section "InputClass"
 	Option "AccelSpeed" "0"
 EndSection
 EOF
+        ;;
+    7)
+        pacman -S power-profiles-daemon python-gobject --noconfirm --needed
+        ;;
+    8)
+        pacman -S tlp ethtool smartmontools --noconfirm --needed
+        sudo -u ${username} paru -S tlpui --noconfirm --needed
+        systemctl enable tlp.service
+        ;;
+    9)
+        pacman -S tlp-rdw --noconfirm --needed
+        systemctl enable NetworkManager-dispatcher.service
+        systemctl mask systemd-rfkill.service
+        systemctl mask systemd-rfkill.socket
         ;;
     esac
 done
