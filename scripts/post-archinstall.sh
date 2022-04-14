@@ -72,6 +72,7 @@ optionsApplications=(
     firefox "Standalone web browser from Mozilla" on
     mpv "A minimalistic media player" on
     yt-dlp "Download videos from YouTube and a few more sites" on
+    tauon "Tauon music player (Flatpak)" on
     spotify "A proprietary music streaming service (Flatpak)" off
     keepassxc "Cross-platform port of Keepass password manager" on
     bitwarden "A secure and free password manager (Flatpak)" off
@@ -86,10 +87,10 @@ optionsApplications=(
     obs "Software for live streaming and recording" on
     timeshift "A system restore utility (AUR)" on
     timeshift-autosnap "Create a snapshot before system upgrade (use only with BTRFS)" on
-    clion "C/C++ IDE" off
+    clion "C/C++ IDE (AUR)" off
     discord "All-in-one voice and text chat" off
     discord-flatpak "All-in-one voice and text chat (Flatpak)" on
-    telegram "Official Telegram Desktop client" on
+    telegram "Official Telegram Desktop client (Flatpak)" on
     element "Instant messaging client implementing the Matrix protocol" on
     onlyoffice "An office suite (AUR)" on
     libreoffice "A free and open-source office suite" off
@@ -432,6 +433,9 @@ for choice in ${choicesApplications}; do
     yt-dlp)
         pacman -S yt-dlp atomicparsley ffmpeg python-pycryptodome rtmpdump --noconfirm --needed
         ;;
+    tauon)
+        flatpak install -y --noninteractive flathub com.github.taiko2k.tauonmb
+        ;;
     spotify)
         flatpak install -y --noninteractive flathub com.spotify.Client
         ;;
@@ -517,7 +521,7 @@ for choice in ${choicesApplications}; do
         flatpak install -y --noninteractive flathub dcom.discordapp.Discord
         ;;
     telegram)
-        pacman -S telegram-desktop webkit2gtk --noconfirm --needed
+        flatpak install -y --noninteractive flathub org.telegram.desktop
         ;;
     element)
         pacman -S element-desktop --noconfirm --needed
