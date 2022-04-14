@@ -155,7 +155,7 @@ chown -R ${username}:${username} /home/${username}
 cd /home/${username}
 
 # basic utilities
-pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs acpi acpi_call bash-completion sof-firmware elfutils patch ffmpeg libdecor net-tools openssh wget htop --noconfirm --needed
+pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs bash-completion sof-firmware elfutils patch ffmpeg libdecor net-tools openssh wget htop --noconfirm --needed
 
 systemctl enable avahi-daemon.service
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
