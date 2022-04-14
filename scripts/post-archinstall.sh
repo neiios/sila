@@ -356,7 +356,6 @@ EOF
     2)
         pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus fwupd --noconfirm --needed
         systemctl enable gdm
-        sudo -u ${username} paru -S chrome-gnome-shell gnome-shell-extension-gsconnect gnome-shell-extension-dash-to-dock --noconfirm --needed
         # install breeze theme for apps like kdenlive
         pacman -S breeze --noconfirm --needed
         ;;
