@@ -68,6 +68,7 @@ cmdApplications=(dialog --separate-output --checklist "Select the applications y
 optionsApplications=(
     devel "Basic packages for development (gcc, clang, llvm, cmake...)" on
     flatseal "Manage Flatpak permissions (Flatpak)" on
+    gnome-extension-manager "Unofficaial, but great extension manager for gnome" off
     chromium "A web browser from Google" on
     librewolf "Privacy-oriented fork of Firefox (Flatpak)" on
     firefox "Standalone web browser from Mozilla" on
@@ -418,6 +419,9 @@ for choice in ${choicesApplications}; do
         ;;
     flatseal)
         flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
+        ;;
+    gnome-extension-manager)
+        flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager
         ;;
     firefox)
         pacman -S firefox firefox-ublock-origin --noconfirm --needed
