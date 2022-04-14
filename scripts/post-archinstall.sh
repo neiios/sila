@@ -57,6 +57,8 @@ optionsDesktop=(
     7 "Power profiles daemon" on
     8 "TLP" off
     9 "tlp-rdw" off
+    10 "AX210 fix" off
+    11 "Blacklist mei_me kernel module" off
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -394,6 +396,12 @@ EOF
         systemctl enable NetworkManager-dispatcher.service
         systemctl mask systemd-rfkill.service
         systemctl mask systemd-rfkill.socket
+        ;;
+    10)
+        rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
+        ;;
+    11)
+        echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
         ;;
     esac
 done
