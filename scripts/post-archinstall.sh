@@ -59,6 +59,7 @@ optionsDesktop=(
     9 "tlp-rdw" off
     10 "AX210 fix" off
     11 "Blacklist mei_me kernel module" off
+    12 "Install adw-gtk3 theme for gnome" off
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -403,6 +404,10 @@ EOF
         ;;
     11)
         echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
+        ;;
+    12)
+        sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
+        sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
         ;;
     esac
 done

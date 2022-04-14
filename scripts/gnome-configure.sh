@@ -35,7 +35,7 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desk
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-trash-files true
 
 # theme
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # clock
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-seconds true
