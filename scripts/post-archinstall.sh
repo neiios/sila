@@ -481,6 +481,7 @@ for choice in ${choicesApplications}; do
             ms-vscode-remote.remote-ssh-edit
             ms-vscode.cmake-tools
             ms-vscode.cpptools
+            piousdeer.adwaita-theme
             twxs.cmake
             vscode-icons-team.vscode-icons
         )

@@ -1,5 +1,4 @@
 {
-  "workbench.iconTheme": "vscode-icons",
   "git.enableSmartCommit": true,
   "diffEditor.renderSideBySide": false,
   "explorer.decorations.badges": false,
@@ -22,11 +21,9 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "diffEditor.ignoreTrimWhitespace": false,
   "editor.minimap.enabled": false,
   "telemetry.telemetryLevel": "off",
   "workbench.startupEditor": "none",
-  "window.menuBarVisibility": "toggle",
   "explorer.confirmDragAndDrop": false,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -51,5 +48,17 @@
   },
   "[dockerfile]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  }
+  },
+  "vsicons.dontShowNewVersionMessage": true,
+  "C_Cpp.clang_format_fallbackStyle": "Chromium",
+  "editor.tabSize": 2,
+  "cmake.configureOnOpen": true,
+  "window.titleBarStyle": "native",
+  "window.menuBarVisibility": "toggle",
+  "breadcrumbs.enabled": false,
+  "editor.renderLineHighlight": "none",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.tree.indent": 12,
+  "workbench.colorTheme": "Adwaita Dark & default syntax highlighting",
+  "diffEditor.ignoreTrimWhitespace": false
 }
