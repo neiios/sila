@@ -64,6 +64,10 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.Term
 # dont notify
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.tweaks show-extensions-notice false
 
+# disable automatic updates
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.software download-updates false
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.software download-updates-notify false
+
 # nautilus
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.preferences show-create-link true
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.preferences show-delete-permanently true
