@@ -58,6 +58,12 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desk
 # and event sounds
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
 
+# set monospace font to jetbrains mono
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 10'
+
+# disable animations
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface enable-animations false
+
 # terminal always dark
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
 
