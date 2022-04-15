@@ -42,6 +42,7 @@ sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
 echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
 sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
 sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
+sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 if [ ${UEFIBIOS} == 1 ]; then
     pacman -S efibootmgr --noconfirm --needed
     grub-install --target=x86_64-efi ${diskname} --efi-directory=/efi --recheck
