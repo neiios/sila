@@ -6,24 +6,16 @@
 set -xe
 
 # favorite applications
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'chromium.desktop', 'thunderbird.desktop', 'telegramdesktop.desktop', 'com.discordapp.Discord.desktop', 'discord.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'bitwarden.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code-oss.desktop']"
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'chromium.desktop', 'thunderbird.desktop', 'telegramdesktop.desktop', 'org.telegram.desktop.desktop', 'com.github.taiko2k.tauonmb.desktop', 'com.discordapp.Discord.desktop', 'discord.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'bitwarden.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code-oss.desktop']"
 
 # application folders
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders folder-children "['space-wasters', 'tools']"
 
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/space-wasters/ name 'Space Wasters'
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/space-wasters/ apps "['yelp.desktop', 'cmake-gui.desktop', 'hplip.desktop', 'libreoffice-startcenter.desktop', 'libreoffice-math.desktop', 'libreoffice-base.desktop', 'libreoffice-draw.desktop', 'lstopo.desktop', 'electron.desktop', 'electron16.desktop', 'electron15.desktop', 'electron14.desktop', 'electron13.desktop', 'hp-uiscan.desktop', 'avahi-discover.desktop', 'bvnc.desktop', 'bssh.desktop', 'nm-connection-editor.desktop', 'org.gnome.Epiphany.desktop', 'qvidcap.desktop', 'qv4l2.desktop', 'qdbusviewer.desktop', 'linguist.desktop', 'designer.desktop', 'assistant.desktop']"
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/space-wasters/ apps "['yelp.desktop', 'cmake-gui.desktop', 'hplip.desktop', 'libreoffice-startcenter.desktop', 'libreoffice-math.desktop', 'libreoffice-base.desktop', 'libreoffice-draw.desktop', 'lstopo.desktop', 'electron.desktop', 'electron18.desktop', 'electron17.desktop', 'electron16.desktop', 'electron15.desktop', 'electron14.desktop', 'electron13.desktop', 'hp-uiscan.desktop', 'avahi-discover.desktop', 'bvnc.desktop', 'bssh.desktop', 'nm-connection-editor.desktop', 'org.gnome.Epiphany.desktop', 'qvidcap.desktop', 'qv4l2.desktop', 'qdbusviewer.desktop', 'linguist.desktop', 'designer.desktop', 'assistant.desktop']"
 
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ name 'Tools'
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ apps "['winetricks.desktop', 'nvidia-settings.desktop', 'timeshift-gtk.desktop', 'vim.desktop', 'ca.desrt.dconf-editor.desktop', 'tlpui.desktop']"
-
-# gedit
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gedit.preferences.editor bracket-matching false
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gedit.preferences.editor highlight-current-line false
-
-# file chooser
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser show-hidden true
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
 # mutter
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter center-new-windows true
@@ -49,9 +41,6 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desk
 
 # idle delay
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.session idle-delay 1200
-
-# buttons
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,close"
 
 # disable fucking bell
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences audible-bell false
