@@ -28,7 +28,7 @@ pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
 # generate a key to not enter password twice
-dd bs=512 count=4 if=/dev/urandom of=/crypto_keyfile.bin
+dd bs=512 count=2 if=/dev/urandom of=/crypto_keyfile.bin
 echo "${passwordLuks}" | cryptsetup luksAddKey ${rootPartition} /crypto_keyfile.bin
 chmod 000 /crypto_keyfile.bin
 

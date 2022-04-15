@@ -25,7 +25,6 @@ optionsGeneral=(
     4 "Enable firewall (ufw)" on
     6 "Printing support (CUPS)" on
     7 "HP printer support" off
-    8 "Flatpak support" on
     9 "Install and configure zsh" on
     10 "Configure ZRAM" on
     11 "Additional fonts" on
@@ -60,6 +59,7 @@ optionsDesktop=(
     10 "AX210 fix" off
     11 "Blacklist mei_me kernel module" off
     12 "Install adw-gtk3 theme for gnome" off
+    13 "Flatpak support" on
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -177,7 +177,7 @@ fi
 for choice in ${choicesGeneral}; do
     case ${choice} in
     1)
-        yes y | pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire helvum
+        yes y | pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire
         # multilib
         yes y | pacman -S lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2
         ;;
@@ -206,10 +206,6 @@ for choice in ${choicesGeneral}; do
     7)
         # not tested (and probably never will be)
         pacman -S hplip python-pillow python-pyqt5 python-reportlab python-reportlab sane --noconfirm --needed
-        ;;
-    8)
-        # need to explicitly install gtk portal, because flatpak pulls gnome portal and its dependencies without it
-        pacman -S flatpak flatpak-xdg-utils flatpak-builder xdg-desktop-portal-gtk elfutils patch --noconfirm --needed
         ;;
     9)
         mkdir -pv /${username}/.cache/zsh/
@@ -372,7 +368,6 @@ EOF
         ;;
     5)
         curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
-        curl --output /home/${username}/.pam_environment https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.pam_environment
         ;;
     6)
         cat <<EOF >/etc/X11/xorg.conf.d/50-mouse-acceleration.conf
@@ -408,6 +403,9 @@ EOF
     12)
         sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
         sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+        ;;
+    13)
+        pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch --noconfirm --needed
         ;;
     esac
 done
