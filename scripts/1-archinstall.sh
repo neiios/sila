@@ -64,7 +64,7 @@ if [ ${UEFIBIOS} == 1 ]; then
     # format boot
     mkfs.vfat ${bootPartition}
     # encrypt second partition
-    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 ${rootPartition}
+    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 --iter-time 1000 ${rootPartition}
     echo "${passwordLuks}" | cryptsetup open ${rootPartition} luks
     # format partition
     mkfs.btrfs /dev/mapper/luks -f
@@ -93,7 +93,7 @@ EOF
     rootPartition=${diskname}${literallyLetterP}1
 
     # specify type as luks1 as grub currently does not support luks2
-    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 ${rootPartition}
+    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 --iter-time 1000 ${rootPartition}
     echo "${passwordLuks}" | cryptsetup open ${rootPartition} luks
     # format partition
     mkfs.btrfs /dev/mapper/luks -L root -f
