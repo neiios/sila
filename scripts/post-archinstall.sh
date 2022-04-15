@@ -33,7 +33,7 @@ optionsGeneral=(
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
 
-cmdDrivers=(dialog --separate-output --checklist "Select you videocard:" 16 64 4)
+cmdDrivers=(dialog --separate-output --checklist "Select you videocard:" 0 0 0)
 optionsDrivers=(
     1 "AMD" on
     2 "Nvidia" off
@@ -45,7 +45,7 @@ optionsDrivers=(
 choicesDrivers=$("${cmdDrivers[@]}" "${optionsDrivers[@]}" 2>&1 >/dev/tty)
 clear
 
-cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 16 64 4)
+cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
     1 "KDE Plasma" on
     2 "GNOME" off
