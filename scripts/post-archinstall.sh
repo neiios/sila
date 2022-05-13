@@ -186,7 +186,7 @@ for choice in ${choicesGeneral}; do
         systemctl enable bluetooth.service
         ;;
     3)
-        yes y | pacman -S libvirt qemu qemu-arch-extra edk2-ovmf iptables-nft dnsmasq dmidecode bridge-utils openbsd-netcat virt-manager
+        yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
         systemctl enable libvirtd.service
         usermod -aG libvirt $username
         ;;
