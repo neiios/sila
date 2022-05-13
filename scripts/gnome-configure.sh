@@ -19,7 +19,6 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desk
 
 # mutter
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter center-new-windows true
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter attach-modal-dialogs false
 
 # cleaning
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
@@ -75,6 +74,9 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gnom
 # add basic templates
 mkdir -p /home/${username}/Templates
 touch /home/${username}/Templates/New\ Document.txt
+
+# detach modal dialogs
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter attach-modal-dialogs false
 
 # wallpaper
 # sudo cp /root/ALIS/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
