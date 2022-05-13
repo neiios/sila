@@ -47,7 +47,13 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desk
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
 
 # set monospace font to jetbrains mono
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface font-name 'Ubuntu 11'
+
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface document-font-name 'Sans 11'
+
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 10'
+
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Ubuntu Bold 11'
 
 # disable animations
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface enable-animations false
@@ -57,10 +63,6 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.Term
 
 # dont notify
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.tweaks show-extensions-notice false
-
-# disable automatic updates
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.software download-updates false
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.software download-updates-notify false
 
 # nautilus
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.nautilus.preferences show-create-link true

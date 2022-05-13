@@ -179,6 +179,7 @@ if [ $(dmesg | grep "Hypervisor detected" | wc -l) -ne 0 ]; then
     echo "Virtual machine detected. Installing additional tools."
     pacman -S qemu-guest-agent spice-vdagent virtualbox-guest-utils --noconfirm --needed
     systemctl enable qemu-guest-agent.service
+    sleep 5
 fi
 
 for choice in ${choicesGeneral}; do
