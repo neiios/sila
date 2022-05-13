@@ -28,7 +28,8 @@ optionsGeneral=(
     9 "Install and configure zsh" on
     10 "Configure ZRAM" on
     11 "Additional fonts" on
-    12 "Install additional codecs" on
+    gstreamer "Install additional codecs" on
+    flatpak "Flatpak support" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
@@ -47,20 +48,16 @@ clear
 
 cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
-    1 "KDE Plasma" off
+    kde "KDE Plasma" off
     gnome "GNOME" on
     gnome-additional-apps "Some additional apps (can be installed later)" off
     3 "Configure GNOME settings (my config)" on
     4 "Configure my monitors on Gnome" off
     5 "Copy the dotfiles" on
-    6 "Disable Mouse acceleration (for login managers)" on
     7 "Power profiles daemon" on
     8 "TLP" off
     9 "tlp-rdw" off
-    10 "AX210 fix" off
-    11 "Blacklist mei_me kernel module" off
     12 "Install adw-gtk3 theme for gnome" off
-    13 "Flatpak support" on
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -120,6 +117,14 @@ optionsGaming=(
     gamescope "The micro-compositor" on
 )
 choicesGaming=$("${cmdGaming[@]}" "${optionsGaming[@]}" 2>&1 >/dev/tty)
+
+cmdFixes=(dialog --separate-output --checklist "Select the applications you want to install:" 0 0 0)
+optionsFixes=(
+    ax210 "AX210 fix" off
+    accel "Disable Mouse acceleration (Xorg override)" on
+    mei_me "Blacklist mei_me kernel module" off
+)
+choicesFixes=$("${cmdFixes[@]}" "${optionsFixes[@]}" 2>&1 >/dev/tty)
 clear
 # ----------------------------- inputs -----------------------------
 
@@ -243,9 +248,12 @@ for choice in ${choicesGeneral}; do
         # math
         pacman -S otf-latin-modern otf-latinmodern-math --noconfirm --needed
         ;;
-    12)
+    gstreamer)
         # gstreamer (pulls all releveant codecs)
         pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
+        ;;
+    flatpak)
+        pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch --noconfirm --needed
         ;;
     esac
 done
@@ -307,7 +315,7 @@ done
 
 for choice in ${choicesDesktop}; do
     case ${choice} in
-    1)
+    kde)
         # install basic plasma group
         # https://archlinux.org/groups/x86_64/plasma/
         pacman -S plasma plasma-wayland-session sddm --noconfirm --needed
@@ -385,17 +393,7 @@ EOF
     5)
         curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
         ;;
-    6)
-        cat <<EOF >/etc/X11/xorg.conf.d/50-mouse-acceleration.conf
-Section "InputClass"
-	Identifier "My Mouse"
-	Driver "libinput"
-	MatchIsPointer "yes"
-	Option "AccelProfile" "flat"
-	Option "AccelSpeed" "0"
-EndSection
-EOF
-        ;;
+
     7)
         pacman -S power-profiles-daemon python-gobject --noconfirm --needed
         ;;
@@ -410,19 +408,11 @@ EOF
         systemctl mask systemd-rfkill.service
         systemctl mask systemd-rfkill.socket
         ;;
-    10)
-        rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
-        ;;
-    11)
-        echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
-        ;;
     12)
         sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
         sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
         ;;
-    13)
-        pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch --noconfirm --needed
-        ;;
+
     esac
 done
 
@@ -577,7 +567,7 @@ for choice in ${choicesGaming}; do
     wine)
         pacman -S wine-staging wine-gecko wine-nine wine-mono winetricks --noconfirm --needed
         # additional dependencies (taken from lutris docs https://github.com/lutris/docs/blob/master/WineDependencies.md)
-        sudo pacman -S --needed vkd3d lib32-vkd3d giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader lib32-gst-plugins-base lib32-gst-plugins-good lib32-libcups --noconfirm --needed
+        pacman -S --needed vkd3d lib32-vkd3d giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader lib32-gst-plugins-base lib32-gst-plugins-good lib32-libcups --noconfirm --needed
         ;;
     mangohud)
         sudo -u ${username} paru -S mangohud-common-x11 mangohud-x11 lib32-mangohud-x11 --noconfirm --needed
@@ -614,6 +604,28 @@ for choice in ${choicesGaming}; do
         ;;
     gamescope)
         pacman -S gamescope --noconfirm --needed
+        ;;
+    esac
+done
+
+for choice in ${choicesFixes}; do
+    case ${choice} in
+    ax210)
+        rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
+        ;;
+    accel)
+        cat <<EOF >/etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+Section "InputClass"
+	Identifier "My Mouse"
+	Driver "libinput"
+	MatchIsPointer "yes"
+	Option "AccelProfile" "flat"
+	Option "AccelSpeed" "0"
+EndSection
+EOF
+        ;;
+    mei_me)
+        echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
         ;;
     esac
 done
