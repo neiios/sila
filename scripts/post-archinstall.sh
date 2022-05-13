@@ -111,6 +111,7 @@ optionsGaming=(
     mangohud "An overlay layer for monitoring FPS and more" on
     gamemode "Allows games to request a set of optimisations be temporarily applied to the host OS" on
     steam "Valve's digital software store" on
+    proton-ge "ProtonGE (AUR)" off
     steam-flatpak "Valve's digital software store (Flatpak)" off
     goverlay "An application to help manage MangoHud" off
     lutris "Open Gaming Platform" on
@@ -576,6 +577,8 @@ for choice in ${choicesGaming}; do
         ;;
     steam)
         pacman -S steam --noconfirm --needed
+        ;;
+    proton-ge)
         sudo -u ${username} paru -S proton-ge-custom-bin --noconfirm --needed
         ;;
     steam-flatpak)
