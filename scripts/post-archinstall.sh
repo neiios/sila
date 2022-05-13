@@ -254,7 +254,7 @@ for choice in ${choicesGeneral}; do
         pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
         ;;
     flatpak)
-        pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch --noconfirm --needed
+        pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
         ;;
     esac
 done
