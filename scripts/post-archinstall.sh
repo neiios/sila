@@ -47,9 +47,10 @@ clear
 
 cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
-    1 "KDE Plasma" on
-    2 "GNOME" off
-    3 "Configure GNOME settings (my config)" off
+    1 "KDE Plasma" off
+    gnome "GNOME" on
+    gnome-additional-apps "Some additional apps (can be installed later)" off
+    3 "Configure GNOME settings (my config)" on
     4 "Configure my monitors on Gnome" off
     5 "Copy the dotfiles" on
     6 "Disable Mouse acceleration (for login managers)" on
@@ -156,7 +157,7 @@ chown -R ${username}:${username} /home/${username}
 cd /home/${username}
 
 # basic utilities
-pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs bash-completion sof-firmware elfutils patch ffmpeg libdecor net-tools openssh wget htop --noconfirm --needed
+pacman -S xorg pacman-contrib reflector man-db man-pages texinfo curl wget cronie openssh sshfs rsync efibootmgr dosfstools mtools nfs-utils inetutils libusb usbutils usbguard libusb-compat avahi nss-mdns xdg-utils xdg-user-dirs bash-completion sof-firmware elfutils patch ffmpeg libdecor net-tools openssh wget htop fwupd --noconfirm --needed
 
 systemctl enable avahi-daemon.service
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
@@ -351,11 +352,25 @@ CursorTheme=breeze_cursors
 EOF
         systemctl enable sddm
         ;;
-    2)
-        pacman -S gnome gnome-tweaks xdg-desktop-portal-gnome gnome-software-packagekit-plugin gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 seahorse gvfs-goa dconf-editor gnome-themes-extra gnome-shell-extensions webp-pixbuf-loader python-nautilus fwupd --noconfirm --needed
+    gnome)
+        # essential
+        pacman -S gnome-shell mutter gdm xdg-desktop-portal-gnome gnome-keyring gnome-control-center gnome-session gnome-menus gnome-settings-daemon --noconfirm --needed
+        # basics
+        pacman -S gnome-shell-extensions gnome-system-monitor gnome-terminal gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
+        # tray icons
+        pacman -S gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
+        # other
+        pacman -S gnome-themes-extra gnome-backgrounds gnome-video-effects webp-pixbuf-loader python-nautilus --noconfirm --needed
+        # gvfs and grilo
+        pacman -S grilo-plugins gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb --noconfirm --needed
+        # install breeze theme and qt5ct to configure qt apps
+        pacman -S breeze qt5ct --noconfirm --needed
+        # enable gdm
         systemctl enable gdm
-        # install breeze theme for apps like kdenlive
-        pacman -S breeze --noconfirm --needed
+        ;;
+    gnome-additional-apps)
+        # other apps
+        pacman -S baobab gnome-books gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather gnome-software gnome-software-packagekit-plugin --noconfirm --needed
         ;;
     3)
         curl --output /home/${username}/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/gnome-configure.sh
