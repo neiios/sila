@@ -22,7 +22,6 @@ optionsGeneral=(
     1 "Sound server (pipewire)" on
     2 "Bluetooth" on
     3 "Set up software needed for VMs" on
-    4 "Enable firewall (ufw)" on
     6 "Printing support (CUPS)" on
     7 "HP printer support" off
     9 "Install and configure zsh" on
@@ -197,15 +196,6 @@ for choice in ${choicesGeneral}; do
         yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
         systemctl enable libvirtd.service
         usermod -aG libvirt $username
-        ;;
-    4)
-        pacman -S ufw ufw-extras --noconfirm --needed
-        systemctl enable ufw.service
-        ufw default allow outgoing
-        ufw default deny incoming
-        ufw allow Bonjour
-        ufw allow "KDE Connect"
-        ufw enable
         ;;
     6)
         pacman -S cups cups-pk-helper cups-filters cups-pdf ghostscript gsfonts foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
