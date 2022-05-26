@@ -27,6 +27,7 @@ optionsGeneral=(
     9 "Install and configure zsh" on
     10 "Configure ZRAM" on
     11 "Additional fonts" on
+    ms-fonts "Install microsoft fonts (ttf-ms-fonts)" on
     gstreamer "Install additional codecs" on
     flatpak "Flatpak support" on
 )
@@ -238,6 +239,9 @@ for choice in ${choicesGeneral}; do
         pacman -S ttf-font-awesome noto-fonts-emoji ttf-joypixels --noconfirm --needed
         # math
         pacman -S otf-latin-modern otf-latinmodern-math --noconfirm --needed
+        ;;
+    ms-fonts)
+        sudo -u ${username} paru -S ttf-ms-fonts --noconfirm --needed
         ;;
     gstreamer)
         # gstreamer (pulls all releveant codecs)
