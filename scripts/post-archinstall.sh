@@ -325,7 +325,7 @@ for choice in ${choicesDesktop}; do
         # for dolphin
         pacman -S ffmpegthumbs kdegraphics-thumbnailers kdenetwork-filesharing audiocd-kio zeroconf-ioslave --noconfirm --needed
         # for discover
-        pacman -S fwupd packagekit-qt5 --noconfirm --needed
+        pacman -S fwupd --noconfirm --needed
         # for ark
         pacman -S lrzip lzop p7zip unarchiver svgpart --noconfirm --needed
         # for okular
@@ -373,7 +373,7 @@ EOF
         ;;
     gnome-additional-apps)
         # other apps
-        pacman -S baobab gnome-books gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather gnome-software gnome-software-packagekit-plugin --noconfirm --needed
+        pacman -S baobab gnome-books gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather gnome-software --noconfirm --needed
         ;;
     3)
         curl --output /home/${username}/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/gnome-configure.sh
