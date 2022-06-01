@@ -49,7 +49,6 @@ optionsDesktop=(
     kde "KDE Plasma" off
     gnome "GNOME" on
     gnome-additional-apps "Some additional apps (can be installed later)" off
-    3 "Configure GNOME settings (my config)" on
     4 "Configure my monitors on Gnome" off
     5 "Copy the dotfiles" on
     7 "Power profiles daemon" on
@@ -334,9 +333,11 @@ EOF
         # essential
         pacman -S gnome-shell mutter gdm xdg-desktop-portal-gnome gnome-keyring gnome-control-center gnome-session gnome-menus gnome-settings-daemon --noconfirm --needed
         # basics
-        pacman -S gnome-shell-extensions gnome-system-monitor gnome-terminal gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
+        pacman -S gnome-shell-extensions gnome-system-monitor gnome-terminal gnome-software gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
         # tray icons
         pacman -S gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
+        # you do need this, right?
+        pacman -S gnome-calculator gnome-calendar gnome-clocks --noconfirm --needed
         # other
         pacman -S gnome-themes-extra gnome-backgrounds gnome-video-effects webp-pixbuf-loader python-nautilus --noconfirm --needed
         # gvfs and grilo
@@ -345,16 +346,12 @@ EOF
         pacman -S breeze qt5ct --noconfirm --needed
         # enable gdm
         systemctl enable gdm
+        # set default settings
+        curl --create-dirs --output /tmp/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/gnome-configure.sh && source /tmp/gnome-configure.sh
         ;;
     gnome-additional-apps)
         # other apps
-        pacman -S baobab gnome-books gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather gnome-software --noconfirm --needed
-        ;;
-    3)
-        curl --output /home/${username}/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/gnome-configure.sh
-        sed -i "/set -xe/a username='${username}'" /home/${username}/gnome-configure.sh
-        sh /home/${username}/gnome-configure.sh
-        rm /home/${username}/gnome-configure.sh
+        pacman -S baobab gnome-books gnome-characters gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather --noconfirm --needed
         ;;
     4)
         curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
@@ -363,17 +360,13 @@ EOF
     5)
         curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
         ;;
-
     7)
         pacman -S power-profiles-daemon python-gobject --noconfirm --needed
         ;;
     8)
-        pacman -S tlp ethtool smartmontools --noconfirm --needed
+        pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
         sudo -u ${username} paru -S tlpui --noconfirm --needed
         systemctl enable tlp.service
-        ;;
-    9)
-        pacman -S tlp-rdw --noconfirm --needed
         systemctl enable NetworkManager-dispatcher.service
         systemctl mask systemd-rfkill.service
         systemctl mask systemd-rfkill.socket
@@ -382,7 +375,6 @@ EOF
         sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
         sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
         ;;
-
     esac
 done
 
