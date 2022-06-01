@@ -26,8 +26,6 @@ optionsGeneral=(
     7 "HP printer support" off
     9 "Install and configure zsh" on
     10 "Configure ZRAM" on
-    11 "Additional fonts" on
-    ms-fonts "Install microsoft fonts (ttf-ms-fonts)" on
     gstreamer "Install additional codecs" on
     flatpak "Flatpak support" on
 )
@@ -220,29 +218,6 @@ for choice in ${choicesGeneral}; do
         systemctl start /dev/zram0
         zramctl
         ;;
-    11)
-        # bitmap
-        pacman -S dina-font tamsyn-font terminus-font --noconfirm --needed
-        # latin script
-        pacman -S ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid gnu-free-fonts ttf-ibm-plex ttf-liberation libertinus-font noto-fonts ttf-roboto tex-gyre-fonts ttf-ubuntu-font-family ttf-caladea ttf-carlito --noconfirm --needed
-        # monospaced
-        pacman -S ttf-anonymous-pro ttf-cascadia-code ttf-fantasque-sans-mono ttf-fira-mono ttf-fira-code ttf-inconsolata ttc-iosevka ttf-jetbrains-mono adobe-source-code-pro-fonts --noconfirm --needed
-        # sans-serif
-        pacman -S cantarell-fonts ttf-fira-sans inter-font ttf-opensans adobe-source-sans-fonts --noconfirm --needed
-        # serif
-        pacman -S gentium-plus-font libertinus-font adobe-source-serif-fonts --noconfirm --needed
-        # unsorted
-        pacman -S ttf-junicode --noconfirm --needed
-        # asian
-        pacman -S adobe-source-han-sans-otc-fonts adobe-source-han-sans-cn-fonts adobe-source-han-sans-tw-fonts adobe-source-han-serif-otc-fonts adobe-source-han-serif-cn-fonts adobe-source-han-serif-tw-fonts wqy-microhei wqy-zenhei wqy-bitmapfont ttf-arphic-ukai ttf-arphic-uming opendesktop-fonts ttf-hannom adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts otf-ipafont ttf-hanazono ttf-sazanami adobe-source-han-sans-kr-fonts adobe-source-han-serif-kr-fonts ttf-baekmuk ttf-indic-otf ttf-khmer ttf-tibetan-machine noto-fonts-cjk --noconfirm --needed
-        # emoji and symbols
-        pacman -S ttf-font-awesome noto-fonts-emoji ttf-joypixels --noconfirm --needed
-        # math
-        pacman -S otf-latin-modern otf-latinmodern-math --noconfirm --needed
-        ;;
-    ms-fonts)
-        sudo -u ${username} paru -S ttf-ms-fonts --noconfirm --needed
-        ;;
     gstreamer)
         # gstreamer (pulls all releveant codecs)
         pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
@@ -410,6 +385,9 @@ EOF
 
     esac
 done
+
+# install fonts
+curl --create-dirs --output /tmp/fonts.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/fonts.sh && source /tmp/fonts.sh
 
 for choice in ${choicesApplications}; do
     case ${choice} in

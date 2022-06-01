@@ -16,8 +16,8 @@ It is not necessary to run Stage 1 before executing Stage 2, but it is heavily r
 - **Stage 1 DOES NOT create any additional users (only the root user will be available after reboot).**
 - **To log in after reboot use "root" as the username and the password you set.**
 
-```sh
-curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/1-archinstall.sh | sh
+```bash
+curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/1-archinstall.sh | bash
 ```
 
 ## Stage 2:
@@ -27,14 +27,14 @@ curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/1-archin
 
 ### On a system installed using stage 1, run the following:
 
-```sh
-sh post-archinstall.sh
+```bash
+bash post-archinstall.sh
 ```
 
 ### If you installed the system manually, run the following:
 
-```sh
-curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-archinstall.sh | sh
+```bash
+curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-archinstall.sh | bash
 ```
 
 ## TODO
@@ -45,3 +45,4 @@ curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-arc
 - [x] GNOME desktop
 - [ ] Make everything a function
 - [x] Pre apply sddm config when installing Plasma
+- [ ] Add ninja, meson
