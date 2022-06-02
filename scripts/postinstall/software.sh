@@ -2,28 +2,11 @@
 
 for choice in ${choicesApplications}; do
   case ${choice} in
-  devel)
-    # TODO: https://wiki.archlinux.org/title/Java#Better_font_rendering
-    pacman -S git \
-      python \
-      gcc gdb clang llvm lldb openmp cmake ninja meson doxygen elfutils \
-      rust \
-      jre-openjdk jdk-openjdk openjdk-src java-openjfx java-openjfx-src \
-      vala \
-      eslint prettier npm nodejs \
-      docker docker-compose --noconfirm --needed
-    ;;
-  flatseal)
-    flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
-    ;;
-  gnome-extension-manager)
-    flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager
-    ;;
   firefox)
     pacman -S firefox firefox-ublock-origin --noconfirm --needed
     ;;
-  fragments)
-    pacman -S fragments --noconfirm --needed
+  firefox-nightly)
+    sudo -u ${username} paru -S firefox-nightly firefox-ublock-origin --noconfirm --needed
     ;;
   chromium)
     pacman -S chromium --noconfirm --needed
@@ -56,6 +39,9 @@ for choice in ${choicesApplications}; do
     ;;
   qbittorrent)
     pacman -S qbittorrent --noconfirm --needed
+    ;;
+  fragments)
+    pacman -S fragments --noconfirm --needed
     ;;
   code)
     pacman -S code --noconfirm --needed

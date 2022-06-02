@@ -2,6 +2,17 @@
 
 for choice in ${choicesGeneral}; do
   case ${choice} in
+  devel)
+    # TODO: https://wiki.archlinux.org/title/Java#Better_font_rendering
+    pacman -S git \
+      python \
+      gcc gdb clang llvm lldb openmp cmake ninja meson doxygen elfutils \
+      rust \
+      jre-openjdk jdk-openjdk openjdk-src java-openjfx java-openjfx-src \
+      vala \
+      eslint prettier npm nodejs \
+      docker docker-compose --noconfirm --needed
+    ;;
   pipewire)
     pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
       pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire pipewire-x11-bell \
@@ -18,6 +29,7 @@ for choice in ${choicesGeneral}; do
     ;;
   flatpak)
     pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
+    flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
     ;;
   vm)
     yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
@@ -113,6 +125,8 @@ EOF
     pacman -S breeze qt5ct --noconfirm --needed
     # enable gdm
     systemctl enable gdm
+    # and some flatpaks
+    flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
     # set default settings
     curl --create-dirs --output /tmp/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/gnome-configure.sh && source /tmp/gnome-configure.sh
     ;;
