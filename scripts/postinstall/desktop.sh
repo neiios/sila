@@ -20,7 +20,7 @@ for choice in ${choicesGeneral}; do
     pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
     ;;
   vm)
-    yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat --noconfirm --needed
+    yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
     systemctl enable libvirtd.service
     usermod -aG libvirt ${username}
     ;;
