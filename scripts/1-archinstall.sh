@@ -74,7 +74,7 @@ if [ ${UEFIBIOS} == 1 ]; then
     btrfs sub create /mnt/@home
     btrfs sub create /mnt/@log
     btrfs sub create /mnt/@pkg
-    btrfs sub create /mnt/@.snapshots
+    btrfs sub create /mnt/@snapshots
     umount -R /mnt
     # mount subvolumes
     mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
@@ -82,7 +82,7 @@ if [ ${UEFIBIOS} == 1 ]; then
     mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
     mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
     mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
-    mount -o noatime,nodiratime,compress=zstd,subvol=@.snapshots /dev/mapper/luks /mnt/.snapshots
+    mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
 
     mount ${bootPartition} /mnt/efi
 else
@@ -103,7 +103,7 @@ EOF
     btrfs sub create /mnt/@home
     btrfs sub create /mnt/@log
     btrfs sub create /mnt/@pkg
-    btrfs sub create /mnt/@.snapshots
+    btrfs sub create /mnt/@snapshots
     umount -R /mnt
     # mount subvolumes
     mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
@@ -111,7 +111,7 @@ EOF
     mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
     mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
     mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
-    mount -o noatime,nodiratime,compress=zstd,subvol=@.snapshots /dev/mapper/luks /mnt/.snapshots
+    mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
 fi
 
 # install necessary packages
