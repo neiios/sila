@@ -1,5 +1,54 @@
 #!/bin/bash
 
+for choice in ${choicesGeneral}; do
+  case ${choice} in
+  pipewire)
+    pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
+      pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire pipewire-x11-bell \
+      lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 \
+      qpwgraph --noconfirm --needed
+    ;;
+  bluetooth)
+    pacman -S bluez bluez-utils --noconfirm --needed
+    systemctl enable bluetooth.service
+    ;;
+  gstreamer)
+    # gstreamer (pulls all releveant codecs)
+    pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
+    ;;
+  flatpak)
+    pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
+    ;;
+  vm)
+    yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat --noconfirm --needed
+    systemctl enable libvirtd.service
+    usermod -aG libvirt ${username}
+    ;;
+  cups)
+    pacman -S cups cups-pk-helper cups-filters cups-pdf \
+      ghostscript gsfonts \
+      foomatic-db-engine foomatic-db foomatic-db-ppds \
+      foomatic-db-nonfree foomatic-db-nonfree-ppds \
+      gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
+    systemctl enable cups.socket
+    ;;
+  zsh)
+    mkdir -pv /${username}/.cache/zsh/
+    pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting --noconfirm --needed
+    curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.zshrc
+    chsh -s $(which zsh) ${username}
+    ;;
+  zram)
+    pacman -S zram-generator --noconfirm --needed
+    echo "[zram0]" >/etc/systemd/zram-generator.conf
+    echo "zram-size = min(ram / 2, 4096)" >>/etc/systemd/zram-generator.conf
+    systemctl daemon-reload
+    systemctl start /dev/zram0
+    zramctl
+    ;;
+  esac
+done
+
 for choice in ${choicesDesktop}; do
   case ${choice} in
   kde)
@@ -71,75 +120,23 @@ EOF
     # other apps
     pacman -S baobab gnome-books gnome-characters gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather --noconfirm --needed
     ;;
-  4)
-    curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
-    sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
+  adw-gtk3)
+    sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
+    sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
     ;;
-  5)
+  dotfiles)
     curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
     ;;
-  7)
+  ppd)
     pacman -S power-profiles-daemon python-gobject --noconfirm --needed
     ;;
-  8)
+  tlp)
     pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
     sudo -u ${username} paru -S tlpui --noconfirm --needed
     systemctl enable tlp.service
     systemctl enable NetworkManager-dispatcher.service
     systemctl mask systemd-rfkill.service
     systemctl mask systemd-rfkill.socket
-    ;;
-  12)
-    sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
-    sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
-    ;;
-  esac
-done
-
-for choice in ${choicesGeneral}; do
-  case ${choice} in
-  1)
-    yes y | pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire
-    # multilib
-    yes y | pacman -S lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2
-    ;;
-  2)
-    pacman -S bluez bluez-utils --noconfirm --needed
-    systemctl enable bluetooth.service
-    ;;
-  3)
-    yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
-    systemctl enable libvirtd.service
-    usermod -aG libvirt $username
-    ;;
-  6)
-    pacman -S cups cups-pk-helper cups-filters cups-pdf ghostscript gsfonts foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
-    systemctl enable cups.socket
-    ;;
-  7)
-    # not tested (and probably never will be)
-    pacman -S hplip python-pillow python-pyqt5 python-reportlab python-reportlab sane --noconfirm --needed
-    ;;
-  9)
-    mkdir -pv /${username}/.cache/zsh/
-    pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting --noconfirm --needed
-    curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.zshrc
-    chsh -s $(which zsh) ${username}
-    ;;
-  10)
-    pacman -S zram-generator --noconfirm --needed
-    echo "[zram0]" >/etc/systemd/zram-generator.conf
-    echo "zram-size = min(ram / 2, 4096)" >>/etc/systemd/zram-generator.conf
-    systemctl daemon-reload
-    systemctl start /dev/zram0
-    zramctl
-    ;;
-  gstreamer)
-    # gstreamer (pulls all releveant codecs)
-    pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
-    ;;
-  flatpak)
-    pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
     ;;
   esac
 done

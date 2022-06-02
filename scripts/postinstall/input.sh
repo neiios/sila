@@ -12,15 +12,14 @@ clear
 
 cmd=(dialog --separate-output --checklist "Select what you want to install:" 0 0 0)
 optionsGeneral=(
-  1 "Sound server (pipewire)" on
-  2 "Bluetooth" on
-  3 "Set up software needed for VMs" on
-  6 "Printing support (CUPS)" on
-  7 "HP printer support" off
-  9 "Install and configure zsh" on
-  10 "Configure ZRAM" on
+  pipewire "Audio/video server" on
+  bluetooth "Bluetooth" on
   gstreamer "Install additional codecs" on
-  flatpak "Flatpak support" on
+  flatpak "Flatpak support (will break the script if deselected)" on
+  vm "VMs (Qemu+KVM)" on
+  cups "Printing support (CUPS)" on
+  zsh "Zsh" on
+  zram "ZRAM" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
@@ -39,15 +38,13 @@ clear
 
 cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
-  kde "KDE Plasma" off
   gnome "GNOME" on
   gnome-additional-apps "Some additional apps (can be installed later)" off
-  4 "Configure my monitors on Gnome" off
-  5 "Copy the dotfiles" on
-  7 "Power profiles daemon" on
-  8 "TLP" off
-  9 "tlp-rdw" off
-  12 "Install adw-gtk3 theme for gnome" off
+  adw-gtk3 "Install adw-gtk3 theme for gnome" off
+  kde "KDE Plasma" off
+  dotfiles "Copy my dotfiles" on
+  ppd "Power profiles daemon" on
+  tlp "TLP" off
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 clear
@@ -110,9 +107,10 @@ choicesGaming=$("${cmdGaming[@]}" "${optionsGaming[@]}" 2>&1 >/dev/tty)
 
 cmdFixes=(dialog --separate-output --checklist "Select the applications you want to install:" 0 0 0)
 optionsFixes=(
-  ax210 "AX210 fix" off
-  accel "Disable Mouse acceleration (Xorg override)" on
+  ax210-firmware "AX210 firmware fix" off
+  xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" on
   mei_me "Blacklist mei_me kernel module" off
+  gnome-monitors "Configure my desktop monitors on gnome" off
 )
 choicesFixes=$("${cmdFixes[@]}" "${optionsFixes[@]}" 2>&1 >/dev/tty)
 clear
