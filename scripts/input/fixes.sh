@@ -6,6 +6,8 @@ optionsFixes=(
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" on
   mei_me "Blacklist mei_me kernel module" off
   gnome-monitors "Configure my desktop monitors on gnome" off
+  tearfree-amd "Xorg TearFree AMD" off
+  tearfree-intel "Xorg TearFree Intel" off
 )
 choicesFixes=$("${cmdFixes[@]}" "${optionsFixes[@]}" 2>&1 >/dev/tty)
 clear

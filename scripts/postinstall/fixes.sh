@@ -23,5 +23,23 @@ EOF
     curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
     sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
     ;;
+  tearfree-amd)
+    cat <<EOF >/etc/X11/xorg.conf.d/20-amdgpu.conf
+Section "Device"
+	Identifier "AMD GPU"
+	Driver "amdgpu"
+	Option "TearFree" "true"
+EndSection
+EOF
+    ;;
+  tearfree-intel)
+    cat <<EOF >/etc/X11/xorg.conf.d/20-intel.conf
+Section "Device"
+	Identifier "Intel GPU"
+	Driver "intel"
+	Option "TearFree" "true"
+EndSection
+EOF
+    ;;
   esac
 done

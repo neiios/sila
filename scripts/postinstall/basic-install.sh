@@ -35,7 +35,7 @@ pacman -S xorg htop bash-completion vim neovim \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
   pacman-contrib reflector \
-  libdecor \
+  libdecor libva-utils \
   sof-firmware --noconfirm --needed
 
 systemctl enable avahi-daemon.service
