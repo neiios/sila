@@ -39,10 +39,6 @@ curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-arc
 
 ## TODO
 
-- [x] Make it possible to run scripts without cloning the repository
-- [x] Nvidia drivers (Needs testing)
-- [x] Intel drivers (Needs testing)
-- [x] GNOME desktop
-- [ ] Make everything a function
-- [x] Pre apply sddm config when installing Plasma
-- [ ] Add ninja, meson
+- [x] Split input
+- [ ] Split applications
+- [ ] Run postinstall before reboot

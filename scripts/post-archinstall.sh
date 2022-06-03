@@ -38,6 +38,9 @@ curl --create-dirs --output /tmp/fonts.sh https://raw.githubusercontent.com/rich
 # software
 curl --create-dirs --output /tmp/software.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/software.sh && source /tmp/software.sh
 
+# gaming
+curl --create-dirs --output /tmp/gaming.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/gaming.sh && source /tmp/gaming.sh
+
 # fixes
 curl --create-dirs --output /tmp/fixes.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/fixes.sh && source /tmp/fixes.sh
 
