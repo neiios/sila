@@ -81,12 +81,12 @@ btrfs sub create /mnt/@pkg
 btrfs sub create /mnt/@snapshots
 umount -R /mnt
 # mount subvolumes
-mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
+mount -o noatime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
 mkdir -pv /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
-mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
-mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
-mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
-mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+mount -o noatime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
+mount -o noatime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
+mount -o noatime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
+mount -o noatime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
 # mount boot
 mount ${bootPartition} /mnt/boot
 
