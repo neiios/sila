@@ -12,7 +12,7 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.shel
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders folder-children "['tools']"
 
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ name 'Tools'
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ apps ['winetricks.desktop', 'nvidia-settings.desktop', 'cmake-gui.desktop', 'timeshift-gtk.desktop', 'vim.desktop', 'ca.desrt.dconf-editor.desktop', 'tlpui.desktop', 'qt5ct.desktop', 'qt6ct.desktop']
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/tools/ apps "['winetricks.desktop', 'nvidia-settings.desktop', 'cmake-gui.desktop', 'timeshift-gtk.desktop', 'vim.desktop', 'ca.desrt.dconf-editor.desktop', 'tlpui.desktop', 'qt5ct.desktop', 'qt6ct.desktop']"
 
 # mutter
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter center-new-windows true
