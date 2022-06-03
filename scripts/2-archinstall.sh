@@ -28,24 +28,24 @@ pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
 # generate a key to not enter password twice
-dd bs=512 count=2 if=/dev/urandom of=/crypto_keyfile.bin
-echo "${passwordLuks}" | cryptsetup luksAddKey ${rootPartition} /crypto_keyfile.bin
-chmod 000 /crypto_keyfile.bin
+# dd bs=512 count=2 if=/dev/urandom of=/crypto_keyfile.bin
+# echo "${passwordLuks}" | cryptsetup luksAddKey ${rootPartition} /crypto_keyfile.bin
+# chmod 000 /crypto_keyfile.bin
 
 # bootloader (GRUB)
 sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
-sed -i "s|FILES=()|FILES=(/crypto_keyfile.bin)|" /etc/mkinitcpio.conf
+# sed -i "s|FILES=()|FILES=(/crypto_keyfile.bin)|" /etc/mkinitcpio.conf
 mkinitcpio -P
 
 pacman -S grub os-prober grub-btrfs --noconfirm --needed
 sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
 echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
-sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
+# sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
 sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 if [ ${UEFIBIOS} == 1 ]; then
     pacman -S efibootmgr --noconfirm --needed
-    grub-install --target=x86_64-efi ${diskname} --efi-directory=/efi --recheck
+    grub-install --target=x86_64-efi ${diskname} --efi-directory=/boot --recheck
 else
     grub-install ${diskname}
 fi

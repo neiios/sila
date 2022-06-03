@@ -57,62 +57,38 @@ if [ ${UEFIBIOS} == 1 ]; then
     sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:efi ${diskname}
     sgdisk -n 0:0:0 -t 0:8300 -c 0:luks ${diskname}
     sgdisk -p ${diskname}
-
-    bootPartition=${diskname}${literallyLetterP}1
-    rootPartition=${diskname}${literallyLetterP}2
-
-    # format boot
-    mkfs.vfat ${bootPartition}
-    # encrypt second partition
-    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 --iter-time 1000 ${rootPartition}
-    echo "${passwordLuks}" | cryptsetup open ${rootPartition} luks
-    # format partition
-    mkfs.btrfs /dev/mapper/luks -f
-    # create subvolumes
-    mount /dev/mapper/luks /mnt
-    btrfs sub create /mnt/@
-    btrfs sub create /mnt/@home
-    btrfs sub create /mnt/@log
-    btrfs sub create /mnt/@pkg
-    btrfs sub create /mnt/@snapshots
-    umount -R /mnt
-    # mount subvolumes
-    mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
-    mkdir -pv /mnt/{efi,home,var/log,var/cache/pacman/pkg,.snapshots}
-    mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
-    mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
-    mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
-    mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
-
-    mount ${bootPartition} /mnt/efi
 else
     # BIOS
-    sfdisk --label dos ${diskname} <<EOF
-;
-EOF
-    rootPartition=${diskname}${literallyLetterP}1
-
-    # specify type as luks1 as grub currently does not support luks2
-    echo "${passwordLuks}" | cryptsetup -q luksFormat --type luks1 --iter-time 1000 ${rootPartition}
-    echo "${passwordLuks}" | cryptsetup open ${rootPartition} luks
-    # format partition
-    mkfs.btrfs /dev/mapper/luks -L root -f
-    # create subvolumes
-    mount /dev/mapper/luks /mnt
-    btrfs sub create /mnt/@
-    btrfs sub create /mnt/@home
-    btrfs sub create /mnt/@log
-    btrfs sub create /mnt/@pkg
-    btrfs sub create /mnt/@snapshots
-    umount -R /mnt
-    # mount subvolumes
-    mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
-    mkdir -pv /mnt/{home,var/log,var/cache/pacman/pkg,.snapshots}
-    mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
-    mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
-    mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
-    mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+    echo -e 'size=512M\n size=+\n' | sfdisk --label dos ${diskname}
 fi
+
+bootPartition=${diskname}${literallyLetterP}1
+rootPartition=${diskname}${literallyLetterP}2
+
+# format boot
+mkfs.vfat ${bootPartition}
+# encrypt second partition
+echo "${passwordLuks}" | cryptsetup -q luksFormat ${rootPartition}
+echo "${passwordLuks}" | cryptsetup open ${rootPartition} luks
+# format partition
+mkfs.btrfs /dev/mapper/luks -f
+# create subvolumes
+mount /dev/mapper/luks /mnt
+btrfs sub create /mnt/@
+btrfs sub create /mnt/@home
+btrfs sub create /mnt/@log
+btrfs sub create /mnt/@pkg
+btrfs sub create /mnt/@snapshots
+umount -R /mnt
+# mount subvolumes
+mount -o noatime,nodiratime,compress=zstd,subvol=@ /dev/mapper/luks /mnt
+mkdir -pv /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
+mount -o noatime,nodiratime,compress=zstd,subvol=@home /dev/mapper/luks /mnt/home
+mount -o noatime,nodiratime,compress=zstd,subvol=@log /dev/mapper/luks /mnt/var/log
+mount -o noatime,nodiratime,compress=zstd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
+mount -o noatime,nodiratime,compress=zstd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+# mount boot
+mount ${bootPartition} /mnt/boot
 
 # install necessary packages
 pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim dialog btrfs-progs ${choiceCPU}-ucode
