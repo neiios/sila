@@ -41,5 +41,11 @@ Section "Device"
 EndSection
 EOF
     ;;
+  elan-trackpad)
+    # https://bbs.archlinux.org/viewtopic.php?id=266406
+    echo "blacklist elan_i2c" >>/etc/modprobe.d/blacklist.conf
+    # simillar bug report
+    # https://gitlab.freedesktop.org/libinput/libinput/-/issues/694
+    ;;
   esac
 done
