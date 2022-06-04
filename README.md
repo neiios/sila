@@ -33,6 +33,6 @@ bash post-archinstall.sh
 
 ## TODO
 
-- [x] Split input
+- [ ] Divide gnome configuration
 - [ ] Split applications
 - [ ] Run postinstall before reboot
