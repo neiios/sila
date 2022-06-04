@@ -29,13 +29,14 @@ chown -R ${username}:${username} /home/${username}
 cd /home/${username}
 
 pacman -S xorg htop bash-completion vim neovim \
+  mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   ntfs-3g dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh sshfs rsync nfs-utils avahi \
   cronie curl wget inetutils net-tools nss-mdns \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
   pacman-contrib reflector \
-  libdecor libva-utils \
+  libdecor \
   sof-firmware --noconfirm --needed
 
 systemctl enable avahi-daemon.service
