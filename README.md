@@ -9,33 +9,27 @@ The ALIS consists of two stages:
 - Stage 1 installs a minimal Arch Linux system.
 - Stage 2 configures the user, installs various DEs and user applications.
 
-It is not necessary to run Stage 1 before executing Stage 2, but it is heavily recommended.
-
-## Stage 1:
+## Stage 1
 
 - **Stage 1 DOES NOT create any additional users (only the root user will be available after reboot).**
 - **To log in after reboot use "root" as the username and the password you set.**
 
 ```bash
-curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/1-archinstall.sh | bash
+curl alis.neiio.xyz | bash
 ```
 
-## Stage 2:
+## Stage 2
 
 - **The script should be run as root.**
-- **If you are running an Nvidia graphics card, you are better off selecting Xorg session in your display manager.**
-
-### On a system installed using stage 1, run the following:
 
 ```bash
 bash post-archinstall.sh
 ```
 
-### If you installed the system manually, run the following:
+## Screenshots
 
-```bash
-curl https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-archinstall.sh | bash
-```
+![Disk selection](https://github.com/richard96292/ALIS/blob/master/screenshots/disk.png)
+![Hostname selection](https://github.com/richard96292/ALIS/blob/master/screenshots/hostname.png)
 
 ## TODO
 
