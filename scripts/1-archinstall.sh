@@ -5,6 +5,8 @@ timedatectl set-ntp true
 pacman -Syy
 pacman -S dialog archlinux-keyring --noconfirm
 # ----------------------------- inputs -----------------------------
+dialog --title "Tutorial" --yes-label "Ok" --no-label "Cancel" --yesno "Use:\nARROW KEYS to navigate this menu\nTAB to switch to the next item \nENTER to confirm the selection" 0 0
+
 parts=()
 while read -r disk data; do
     parts+=("$disk" "$data")
@@ -109,7 +111,7 @@ arch-chroot /mnt /root/2-archinstall.sh
 
 rm /mnt/root/2-archinstall.sh
 
-dialog --title "Congratulations" --yes-label "Reboot" --no-label "Cancel" --yesno "First part of the installation has finished succesfully!\\n\\nDo you want to reboot your computer now?" 0 0
+dialog --title "Congratulations" --yes-label "Reboot" --no-label "Cancel" --yesno "First part of the installation has finished succesfully\!\n\nYou will have to log in as a root user after rebooting.\n\nDo you want to reboot your computer now?" 0 0
 
 umount -R /mnt
 reboot

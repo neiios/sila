@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdFixes=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select some fixes/workarounds you want to apply:" 0 0 0)
+cmdFixes=(dialog --separate-output --checklist "Select some fixes/workarounds you want to apply:" 0 0 0)
 optionsFixes=(
   ax210-firmware "AX210 firmware fix" off
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" on

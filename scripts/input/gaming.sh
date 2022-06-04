@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdGaming=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select applications to install:" 0 0 0)
+cmdGaming=(dialog --separate-output --checklist "Select applications to install:" 0 0 0)
 optionsGaming=(
   wine "A compatibility layer for running Windows programs" on
   mangohud "An overlay layer for monitoring FPS and more" off

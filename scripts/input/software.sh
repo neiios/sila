@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdApplications=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select applications to install:" 0 0 0)
+cmdApplications=(dialog --separate-output --checklist "Select applications to install:" 0 0 0)
 optionsApplications=(
   firefox "Standalone web browser from Mozilla" on
   firefox-nightly "Nightly Firefox (AUR)" on
