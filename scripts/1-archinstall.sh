@@ -10,7 +10,7 @@ while read -r disk data; do
     parts+=("$disk" "$data")
 done < <(lsblk --nodeps -lno name,model,type,size | grep -v -e loop -e sr)
 exec 3>&1
-diskname="/dev/$(dialog --menu "Choose one:" 0 0 0 "${parts[@]}" 2>&1 1>&3)"
+diskname="/dev/$(dialog --title "WARNING: all data on the selected drive will be wiped" --menu "Choose the drive for the installation:" 0 0 0 "${parts[@]}" 2>&1 1>&3)"
 exec 3>&-
 clear
 # not sure if mmcblk works

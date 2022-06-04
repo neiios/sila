@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdDrivers=(dialog --separate-output --checklist "Select you videocard:" 0 0 0)
+cmdDrivers=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select the drivers you want to use:" 0 0 0)
 optionsDrivers=(
   amd "AMD" on
   nvidia-proprietary "Nvidia (proprietary)" off

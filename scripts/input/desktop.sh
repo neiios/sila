@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd=(dialog --separate-output --checklist "Select what you want to install:" 0 0 0)
+cmd=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
 optionsGeneral=(
   devel "A lot of development tools" on
   pipewire "Audio/video server" on
@@ -15,7 +15,7 @@ optionsGeneral=(
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 clear
 
-cmdDesktop=(dialog --separate-output --title "Select enties with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
+cmdDesktop=(dialog --separate-output --title "Select entries with space, confirm with enter" --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
   gnome "GNOME" on
   gnome-additional-apps "Some additional apps (can be installed later)" off
