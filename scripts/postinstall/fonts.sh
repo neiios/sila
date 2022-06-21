@@ -11,6 +11,3 @@ pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-crosco
   libertinus-font tex-gyre-fonts otf-latin-modern otf-latinmodern-math \
   adobe-source-code-pro-fonts adobe-source-serif-fonts adobe-source-sans-fonts \
   ttf-junicode --noconfirm --needed
-
-# Should probably make ms-fonts optional, but I am too lazy to do that.
-sudo -u ${username} paru -S ttf-ms-win11-auto --noconfirm --needed

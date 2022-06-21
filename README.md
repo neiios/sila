@@ -36,3 +36,5 @@ bash post-archinstall.sh
 - [ ] Divide gnome configuration
 - [ ] Split applications
 - [ ] Run postinstall before reboot
+- [ ] Split devel packages
+- [ ] Add more programming languages

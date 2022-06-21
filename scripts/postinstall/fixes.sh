@@ -47,5 +47,8 @@ EOF
     # simillar bug report
     # https://gitlab.freedesktop.org/libinput/libinput/-/issues/694
     ;;
+  ms-fonts)
+    sudo -u ${username} paru -S ttf-ms-fonts --noconfirm --needed
+    ;;
   esac
 done

@@ -5,6 +5,15 @@
 # diff /tmp/gsettings.before /tmp/gsettings.after | sed 's/>/gsettings set/;tx;d;:x' > gnome-configure.sh
 set -xe
 
+# /org/gnome/desktop/wm/keybindings/switch-applications
+#   @as []
+# /org/gnome/desktop/wm/keybindings/switch-applications-backward
+#   @as []
+# /org/gnome/desktop/wm/keybindings/switch-windows
+#   ['<Alt>Tab']
+# /org/gnome/desktop/wm/keybindings/switch-windows-backward
+#   ['<Shift><Alt>Tab']
+
 # favorite applications
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'chromium.desktop', 'thunderbird.desktop', 'telegramdesktop.desktop', 'org.telegram.desktop.desktop', 'com.github.taiko2k.tauonmb.desktop', 'com.discordapp.Discord.desktop', 'discord.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'bitwarden.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code-oss.desktop']"
 

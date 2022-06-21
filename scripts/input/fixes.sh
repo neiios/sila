@@ -9,6 +9,7 @@ optionsFixes=(
   tearfree-amd "Xorg TearFree AMD" off
   tearfree-intel "Xorg TearFree Intel" off
   elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
+  ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
 )
 choicesFixes=$("${cmdFixes[@]}" "${optionsFixes[@]}" 2>&1 >/dev/tty)
 clear
