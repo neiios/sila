@@ -15,10 +15,31 @@ hwclock --systohc
 
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#en_IE.UTF-8 UTF-8/en_IE.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#lt_LT.UTF-8 UTF-8/lt_LT.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#lv_LV.UTF-8 UTF-8/lv_LV.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#uk_UA.UTF-8 UTF-8/uk_UA.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
-echo "LANG=en_IE.UTF-8" >/etc/locale.conf
+
+# create locale.conf
+cat <<EOF >/etc/locale.conf
+# use us locale because some software may freak out when locale is set to something else
+LANG="en_US.UTF-8"
+# sort dotfiles, then uppercase, then lowercase
+LC_COLLATE="C.UTF-8"
+# better date and time
+LC_TIME="en_IE.UTF-8"
+# metric system
+LC_MEASUREMENT="lt_LT.UTF-8"
+LC_PAPER="lt_LT.UTF-8"
+# euro
+LC_MONETARY="lt_LT.UTF-8"
+EOF
 
 # configure root password
 echo root:${password} | chpasswd
