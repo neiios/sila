@@ -5,6 +5,7 @@ pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-crosco
   ttf-fira-code woff2-fira-code ttf-fira-mono otf-fira-mono ttf-fira-sans otf-fira-sans \
   ttf-cascadia-code woff2-cascadia-code otf-cascadia-code \
   ttf-jetbrains-mono \
+  gentium-plus-font \
   gnu-free-fonts ttf-liberation inter-font \
   ttf-ibm-plex ttf-ubuntu-font-family \
   ttf-caladea ttf-roboto ttf-roboto-mono ttf-anonymous-pro ttf-inconsolata ttf-opensans \
