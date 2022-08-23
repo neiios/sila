@@ -28,7 +28,7 @@ rm -rf /home/${username}/paru-bin
 chown -R ${username}:${username} /home/${username}
 cd /home/${username}
 
-pacman -S xorg htop bash-completion vim neovim \
+pacman -S htop bash-completion vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   ntfs-3g dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh sshfs rsync nfs-utils avahi \
