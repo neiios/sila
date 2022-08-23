@@ -87,7 +87,7 @@ touch /home/${username}/Templates/New\ Document.txt
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter attach-modal-dialogs false
 
 # wallpaper
-# sudo cp /root/ALIS/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
+# sudo cp /root/alis/configs/my-default-wallpaper.jpg /usr/share/backgrounds/my-default-wallpaper.jpg
 # gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/my-default-wallpaper.jpg'
 
 # https://bbs.archlinux.org/viewtopic.php?id=194902

@@ -10,8 +10,8 @@ for choice in ${choicesGaming}; do
   mangohud)
     sudo -u ${username} paru -S mangohud mangoapp --noconfirm --needed
     sudo -u ${username} paru -S lib32-mangohud --noconfirm --needed
-    curl --create-dirs --output /home/${username}/.config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/ALIS/master/configs/MangoHud.conf
-    curl --create-dirs --output /home/${username}/.var/app/com.valvesoftware.Steam/config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/ALIS/master/configs/MangoHud.conf
+    curl --create-dirs --output /home/${username}/.config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/alis/master/configs/MangoHud.conf
+    curl --create-dirs --output /home/${username}/.var/app/com.valvesoftware.Steam/config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/alis/master/configs/MangoHud.conf
     ;;
   gamemode)
     pacman -S gamemode lib32-gamemode --noconfirm --needed

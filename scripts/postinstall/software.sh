@@ -28,7 +28,7 @@ for choice in ${choicesApplications}; do
     ;;
   keepassxc)
     pacman -S keepassxc xclip wl-clipboard --noconfirm --needed
-    curl --create-dirs --output /home/${username}/.config/keepassxc/keepassxc.ini https://raw.githubusercontent.com/richard96292/ALIS/master/configs/keepassxc.ini
+    curl --create-dirs --output /home/${username}/.config/keepassxc/keepassxc.ini https://raw.githubusercontent.com/richard96292/alis/master/configs/keepassxc.ini
     ;;
   bitwarden)
     # flatpak install -y --noninteractive flathub com.bitwarden.desktop
@@ -84,7 +84,7 @@ for choice in ${choicesApplications}; do
       sudo -u ${username} code --install-extension $i
     done
 
-    curl --create-dirs --output "/home/${username}/.config/Code - OSS/User/settings.json" https://raw.githubusercontent.com/richard96292/ALIS/master/configs/settings.json
+    curl --create-dirs --output "/home/${username}/.config/Code - OSS/User/settings.json" https://raw.githubusercontent.com/richard96292/alis/master/configs/settings.json
     ;;
   gimp)
     pacman -S gimp poppler-glib --noconfirm --needed

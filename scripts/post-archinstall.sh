@@ -21,28 +21,28 @@ pacman -Syyu dialog git curl archlinux-keyring --noconfirm --needed
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # all inputs
-curl --create-dirs --output /tmp/input.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/input.sh && source /tmp/input.sh
+curl --create-dirs --output /tmp/input.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/input.sh && source /tmp/input.sh
 
 # basic packages
-curl --create-dirs --output /tmp/basic-install.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/basic-install.sh && source /tmp/basic-install.sh
+curl --create-dirs --output /tmp/basic-install.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/basic-install.sh && source /tmp/basic-install.sh
 
 # drivers
-curl --create-dirs --output /tmp/drivers.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/drivers.sh && source /tmp/drivers.sh
+curl --create-dirs --output /tmp/drivers.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/drivers.sh && source /tmp/drivers.sh
 
 # desktops/wms
-curl --create-dirs --output /tmp/desktop.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/desktop.sh && source /tmp/desktop.sh
+curl --create-dirs --output /tmp/desktop.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/desktop.sh && source /tmp/desktop.sh
 
 # fonts
-curl --create-dirs --output /tmp/fonts.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/fonts.sh && source /tmp/fonts.sh
+curl --create-dirs --output /tmp/fonts.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/fonts.sh && source /tmp/fonts.sh
 
 # software
-curl --create-dirs --output /tmp/software.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/software.sh && source /tmp/software.sh
+curl --create-dirs --output /tmp/software.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/software.sh && source /tmp/software.sh
 
 # gaming
-curl --create-dirs --output /tmp/gaming.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/gaming.sh && source /tmp/gaming.sh
+curl --create-dirs --output /tmp/gaming.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/gaming.sh && source /tmp/gaming.sh
 
 # fixes
-curl --create-dirs --output /tmp/fixes.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/fixes.sh && source /tmp/fixes.sh
+curl --create-dirs --output /tmp/fixes.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/fixes.sh && source /tmp/fixes.sh
 
 # fix permissions
 chown -R ${username}:${username} /home/${username}

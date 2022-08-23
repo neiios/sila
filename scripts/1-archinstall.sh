@@ -97,8 +97,8 @@ pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim dialog 
 # generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 
-curl --output /mnt/root/post-archinstall.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/post-archinstall.sh
-curl --output /mnt/root/2-archinstall.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/2-archinstall.sh
+curl --output /mnt/root/post-archinstall.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/post-archinstall.sh
+curl --output /mnt/root/2-archinstall.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/2-archinstall.sh
 sed -i "/set -xe/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
 sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh

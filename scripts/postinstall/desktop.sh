@@ -47,7 +47,7 @@ for choice in ${choicesGeneral}; do
   zsh)
     mkdir -pv /${username}/.cache/zsh/
     pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting --noconfirm --needed
-    curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.zshrc
+    curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/alis/master/configs/.zshrc
     chsh -s $(which zsh) ${username}
     ;;
   zram)
@@ -128,7 +128,7 @@ EOF
     # and some flatpaks
     flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
     # set default settings
-    curl --create-dirs --output /tmp/gnome-configure.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/postinstall/gnome-configure.sh && source /tmp/gnome-configure.sh
+    curl --create-dirs --output /tmp/gnome-configure.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/gnome-configure.sh && source /tmp/gnome-configure.sh
     ;;
   gnome-additional-apps)
     # other apps
@@ -139,7 +139,7 @@ EOF
     sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
     ;;
   dotfiles)
-    curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/ALIS/master/configs/.vimrc
+    curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/alis/master/configs/.vimrc
     ;;
   ppd)
     pacman -S power-profiles-daemon python-gobject --noconfirm --needed

@@ -28,8 +28,8 @@ bash post-archinstall.sh
 
 ## Screenshots
 
-![Disk selection](https://github.com/richard96292/ALIS/blob/master/screenshots/disk.png)
-![Hostname selection](https://github.com/richard96292/ALIS/blob/master/screenshots/hostname.png)
+![Disk selection](https://github.com/richard96292/alis/blob/master/screenshots/disk.png)
+![Hostname selection](https://github.com/richard96292/alis/blob/master/screenshots/hostname.png)
 
 ## TODO
 

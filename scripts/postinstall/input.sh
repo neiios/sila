@@ -11,16 +11,16 @@ exec 3>&-
 clear
 
 # drivers input
-curl --create-dirs --output /tmp/input-drivers.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/input/drivers.sh && source /tmp/input-drivers.sh
+curl --create-dirs --output /tmp/input-drivers.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/drivers.sh && source /tmp/input-drivers.sh
 
 # desktop input
-curl --create-dirs --output /tmp/input-desktop.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/input/desktop.sh && source /tmp/input-desktop.sh
+curl --create-dirs --output /tmp/input-desktop.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/desktop.sh && source /tmp/input-desktop.sh
 
 # software input
-curl --create-dirs --output /tmp/input-software.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/input/software.sh && source /tmp/input-software.sh
+curl --create-dirs --output /tmp/input-software.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/software.sh && source /tmp/input-software.sh
 
 # gaming input
-curl --create-dirs --output /tmp/input-gaming.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/input/gaming.sh && source /tmp/input-gaming.sh
+curl --create-dirs --output /tmp/input-gaming.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/gaming.sh && source /tmp/input-gaming.sh
 
 # fixes input
-curl --create-dirs --output /tmp/input-fixes.sh https://raw.githubusercontent.com/richard96292/ALIS/master/scripts/input/fixes.sh && source /tmp/input-fixes.sh
+curl --create-dirs --output /tmp/input-fixes.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/fixes.sh && source /tmp/input-fixes.sh

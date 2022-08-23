@@ -20,8 +20,8 @@ EOF
     echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
     ;;
   gnome-monitors)
-    curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
-    sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/ALIS/master/configs/monitors.xml
+    curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/alis/master/configs/monitors.xml
+    sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/alis/master/configs/monitors.xml
     ;;
   tearfree-amd)
     cat <<EOF >/etc/X11/xorg.conf.d/20-amdgpu.conf
