@@ -15,7 +15,7 @@ The ALIS consists of two stages:
 - **To log in after reboot use "root" as the username and the password you set.**
 
 ```bash
-curl alis.neiio.xyz | bash
+curl -L alis.segf.lt | bash
 ```
 
 ## Stage 2
