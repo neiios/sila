@@ -30,11 +30,3 @@ bash post-archinstall.sh
 
 ![Disk selection](https://github.com/richard96292/alis/blob/master/screenshots/disk.png)
 ![Hostname selection](https://github.com/richard96292/alis/blob/master/screenshots/hostname.png)
-
-## TODO
-
-- [ ] Divide gnome configuration
-- [ ] Split applications
-- [ ] Run postinstall before reboot
-- [ ] Split devel packages
-- [ ] Add more programming languages

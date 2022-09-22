@@ -1,0 +1,6 @@
+- Add an option to set cpu governor to performance
+- Divide gnome configuration
+- Split applications
+- Run postinstall before reboot
+- Split devel packages
+- Add more programming languages
