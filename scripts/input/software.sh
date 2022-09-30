@@ -17,7 +17,6 @@ optionsApplications=(
   fragments "A minimal torrent client for Gnome" off
   code "The Open Source build of Visual Studio Code" on
   code-unlock "Unlock additional features and marketplace (AUR)" on
-  code-dotfiles "Install vscode extensions and copy my settings.json" on
   gimp "GNU Image Manipulation Program" on
   kdenlive "A video editor" on
   obs "Software for live streaming and recording" on
