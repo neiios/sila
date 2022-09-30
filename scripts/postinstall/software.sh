@@ -49,43 +49,6 @@ for choice in ${choicesApplications}; do
   code-unlock)
     sudo -u ${username} paru -S code-features code-marketplace code-icons --noconfirm --needed
     ;;
-  code-dotfiles)
-    chown -R ${username}:${username} /home/${username}
-    pkglist=(
-      cschlosser.doxdocgen
-      dbaeumer.vscode-eslint
-      eamodio.gitlens
-      esbenp.prettier-vscode
-      formulahendry.code-runner
-      foxundermoon.shell-format
-      GitHub.vscode-pull-request-github
-      haskell.haskell
-      jeff-hykin.better-cpp-syntax
-      justusadam.language-haskell
-      mads-hartmann.bash-ide-vscode
-      mhutchie.git-graph
-      ms-azuretools.vscode-docker
-      ms-python.python
-      ms-python.vscode-pylance
-      ms-toolsai.jupyter
-      ms-toolsai.jupyter-keymap
-      ms-toolsai.jupyter-renderers
-      ms-vscode-remote.remote-containers
-      ms-vscode-remote.remote-ssh
-      ms-vscode-remote.remote-ssh-edit
-      ms-vscode.cmake-tools
-      ms-vscode.cpptools
-      piousdeer.adwaita-theme
-      twxs.cmake
-      vscode-icons-team.vscode-icons
-    )
-
-    for i in ${pkglist[@]}; do
-      sudo -u ${username} code --install-extension $i
-    done
-
-    curl --create-dirs --output "/home/${username}/.config/Code - OSS/User/settings.json" https://raw.githubusercontent.com/richard96292/alis/master/configs/settings.json
-    ;;
   gimp)
     pacman -S gimp poppler-glib --noconfirm --needed
     ;;
