@@ -79,6 +79,9 @@ sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.naut
 # sys monitor
 sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gnome-system-monitor show-dependencies true
 
+# make timeout larger
+sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter check-alive-timeout 60000
+
 # add basic templates
 mkdir -p /home/${username}/Templates
 touch /home/${username}/Templates/New\ Document.txt
