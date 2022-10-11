@@ -4,3 +4,5 @@
 - Run postinstall before reboot
 - Split devel packages
 - Add more programming languages
+- Create a sway profile
+- Give an option to create an unencrypted drive
