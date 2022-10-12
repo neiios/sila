@@ -1,14 +1,7 @@
 #!/bin/bash
 
-exec 3>&1
-username=$(dialog --inputbox "Enter the username:" 0 0 2>&1 1>&3)
-exec 3>&-
-clear
-
-exec 3>&1
-password=$(dialog --inputbox "Enter the password for your user:" 0 0 2>&1 1>&3)
-exec 3>&-
-clear
+username=$(whiptail --title "Username" --inputbox "Enter the username:" 0 0 3>&1 1>&2 2>&3)
+password=$(whiptail --title "User password" --inputbox "Enter the password for your user:" 0 0 3>&1 1>&2 2>&3)
 
 # drivers input
 curl --create-dirs --output /tmp/input-drivers.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/input/drivers.sh && source /tmp/input-drivers.sh

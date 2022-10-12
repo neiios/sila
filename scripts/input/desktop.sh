@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd=(dialog --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
+cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
 optionsGeneral=(
   devel "A lot of development tools" on
   pipewire "Audio/video server" on
@@ -13,9 +13,8 @@ optionsGeneral=(
   zram "ZRAM" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
-clear
 
-cmdDesktop=(dialog --separate-output --checklist "Select the desktop environment you want to install:" 0 0 0)
+cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:" 0 0 0)
 optionsDesktop=(
   gnome "GNOME" on
   gnome-additional-apps "Some additional apps (can be installed later)" off
@@ -26,4 +25,3 @@ optionsDesktop=(
   tlp "TLP" off
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
-clear

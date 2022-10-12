@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdApplications=(dialog --separate-output --checklist "Select applications to install:" 0 0 0)
+cmdApplications=(whiptail --separate-output --checklist "Select applications to install:" 0 0 0)
 optionsApplications=(
   firefox "Standalone web browser from Mozilla" on
   firefox-nightly "Nightly Firefox (AUR)" on
@@ -36,4 +36,3 @@ optionsApplications=(
   gitg "Simple Graphical user interface for git" off
 )
 choicesApplications=$("${cmdApplications[@]}" "${optionsApplications[@]}" 2>&1 >/dev/tty)
-clear

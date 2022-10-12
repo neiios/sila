@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdFixes=(dialog --separate-output --checklist "Select some fixes/workarounds you want to apply:" 0 0 0)
+cmdFixes=(whiptail --separate-output --checklist "Select some fixes/workarounds you want to apply:" 0 0 0)
 optionsFixes=(
   ax210-firmware "AX210 firmware fix" off
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" on
@@ -12,4 +12,3 @@ optionsFixes=(
   ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
 )
 choicesFixes=$("${cmdFixes[@]}" "${optionsFixes[@]}" 2>&1 >/dev/tty)
-clear

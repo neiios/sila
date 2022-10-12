@@ -15,7 +15,7 @@ fi
 # fi
 
 # install dependencies
-pacman -Syyu dialog git curl archlinux-keyring --noconfirm --needed
+pacman -Syyu libnewt git curl archlinux-keyring --noconfirm --needed
 
 # use sudo without password (should be reverted at the end of the script)
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
@@ -51,6 +51,7 @@ chown -R ${username}:${username} /home/${username}
 sed -i "s/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 sed -i "s/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 
+# one final update
 pacman -Syu --noconfirm
 
 rm -rf /root/post-archinstall.sh
@@ -61,5 +62,4 @@ clear
 neofetch
 sleep 5
 
-dialog --title "Congratulations" --yes-label "Reboot" --no-label "Cancel" --yesno "The installation has finished succesfully!\\n\\nDo you want to reboot your computer now?" 0 0
-reboot
+whiptail --title "Congratulations" --yesno "The installation has finished succesfully\!\n\nDo you want to reboot your computer now?" 0 0 && reboot

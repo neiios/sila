@@ -4,8 +4,6 @@ timedatectl set-ntp true
 
 # root of the github repository to download files from
 gur="https://raw.githubusercontent.com/richard96292/alis/master"
-# install dialog
-pacman -Syu dialog --noconfirm
 
 # get user input
 curl --output /tmp/get-user-input.sh "${gur}/scripts/1-archinstall/get-user-input.sh"
@@ -16,7 +14,7 @@ curl --output /tmp/work-with-drives.sh "${gur}/scripts/1-archinstall/work-with-d
 source /tmp/work-with-drives.sh
 
 # install basic packages
-pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim dialog btrfs-progs ${choiceCPU}-ucode
+pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim libnewt btrfs-progs
 # generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -40,8 +38,10 @@ arch-chroot /mnt /root/2-archinstall.sh
 # clean up
 rm /mnt/root/2-archinstall.sh
 
-dialog --title "Congratulations" --yes-label "Reboot" --no-label "Cancel" --yesno "First part of the installation has finished succesfully\!\n\nYou will have to log in as a root user after rebooting.\n\nDo you want to reboot your computer now?" 0 0
-
-# unmount the drive before rebooting
-umount -R /mnt
-reboot
+# final notice
+if (whiptail --title "Congratulations" --yesno "First part of the installation has finished succesfully\!\n\nDo you want to reboot your computer now?" 0 0); then
+  whiptail --title "Important\!" --msgbox "You will have to log in as a root user after rebooting.\n\n" 0 0
+  # unmount the drive before rebooting
+  umount -R /mnt
+  reboot
+fi
