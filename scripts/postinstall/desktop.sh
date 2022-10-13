@@ -76,7 +76,7 @@ for choice in ${choicesDesktop}; do
     # for kio-extras
     pacman -S kio-gdrive icoutils kimageformats karchive libavif libheif libjxl openexr libappimage qt5-imageformats taglib --noconfirm --needed
     # for dolphin
-    pacman -S ffmpegthumbs kdegraphics-thumbnailers kdenetwork-filesharing audiocd-kio zeroconf-ioslave --noconfirm --needed
+    pacman -S ffmpegthumbs kdegraphics-thumbnailers kdenetwork-filesharing audiocd-kio kio-zeroconf --noconfirm --needed
     # for discover
     pacman -S fwupd --noconfirm --needed
     # for ark
