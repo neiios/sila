@@ -8,6 +8,7 @@ optionsFixes=(
   gnome-monitors "Configure my desktop monitors on gnome" off
   tearfree-amd "Xorg TearFree AMD" off
   tearfree-intel "Xorg TearFree Intel" off
+  sddm-wayland "Run sddm on wayland" off
   elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
   ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
 )

@@ -3,7 +3,6 @@
 cmdApplications=(whiptail --separate-output --checklist "Select applications to install:" 0 0 0)
 optionsApplications=(
   firefox "Standalone web browser from Mozilla" on
-  firefox-nightly "Nightly Firefox (AUR)" on
   thunderbird "Standalone mail and news reader from Mozilla" on
   chromium "A web browser from Google" on
   librewolf "Privacy-oriented fork of Firefox (Flatpak)" on
@@ -33,6 +32,5 @@ optionsApplications=(
   helvum "GTK patchbay for PipeWire" on
   easyeffects "An advanced audio manipulation tool, equalizer (Flatpak)" on
   jamesdsp "An audio effect processor, equalizer (AUR)" off
-  gitg "Simple Graphical user interface for git" off
 )
 choicesApplications=$("${cmdApplications[@]}" "${optionsApplications[@]}" 2>&1 >/dev/tty)

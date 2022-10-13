@@ -11,6 +11,6 @@ optionsGaming=(
   gamescope "The micro-compositor" off
   goverlay "An application to help manage MangoHud" off
   lutris "Open Gaming Platform" off
-  lutris-flatpak "Open Gaming Platform (BETA Flatpak)" off
+  lutris-flatpak "Open Gaming Platform (Flatpak)" off
 )
 choicesGaming=$("${cmdGaming[@]}" "${optionsGaming[@]}" 2>&1 >/dev/tty)

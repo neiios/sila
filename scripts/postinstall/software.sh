@@ -5,9 +5,6 @@ for choice in ${choicesApplications}; do
   firefox)
     pacman -S firefox firefox-ublock-origin --noconfirm --needed
     ;;
-  firefox-nightly)
-    sudo -u ${username} paru -S firefox-nightly firefox-ublock-origin --noconfirm --needed
-    ;;
   chromium)
     pacman -S chromium --noconfirm --needed
     ;;
@@ -28,10 +25,8 @@ for choice in ${choicesApplications}; do
     ;;
   keepassxc)
     pacman -S keepassxc xclip wl-clipboard --noconfirm --needed
-    curl --create-dirs --output /home/${username}/.config/keepassxc/keepassxc.ini https://raw.githubusercontent.com/richard96292/alis/master/configs/keepassxc.ini
     ;;
   bitwarden)
-    # flatpak install -y --noninteractive flathub com.bitwarden.desktop
     pacman -S bitwarden --noconfirm --needed
     ;;
   thunderbird)
@@ -96,9 +91,6 @@ for choice in ${choicesApplications}; do
     ;;
   jamesdsp)
     sudo -u ${username} paru -S jamesdsp --noconfirm --needed
-    ;;
-  gitg)
-    pacman -S gitg --noconfirm --needed
     ;;
   esac
 done

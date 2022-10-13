@@ -19,9 +19,15 @@ EOF
   mei_me)
     echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
     ;;
-  gnome-monitors)
-    curl --create-dirs --output /home/${username}/.config/monitors.xml https://raw.githubusercontent.com/richard96292/alis/master/configs/monitors.xml
-    sudo -u gdm curl --create-dirs --output /var/lib/gdm/.config/monitors.xml https://raw.githubusercontent.com/richard96292/alis/master/configs/monitors.xml
+  sddm-wayland)
+    cat <<EOF >/etc/sddm.conf.d/10-sddm-wayland.conf
+[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
+
+[Wayland]
+CompositorCommand=kwin_wayland --no-lockscreen --inputmethod maliit-keyboard
+EOF
     ;;
   tearfree-amd)
     cat <<EOF >/etc/X11/xorg.conf.d/20-amdgpu.conf

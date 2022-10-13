@@ -10,8 +10,6 @@ for choice in ${choicesGaming}; do
   mangohud)
     sudo -u ${username} paru -S mangohud mangoapp --noconfirm --needed
     sudo -u ${username} paru -S lib32-mangohud --noconfirm --needed
-    curl --create-dirs --output /home/${username}/.config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/alis/master/configs/MangoHud.conf
-    curl --create-dirs --output /home/${username}/.var/app/com.valvesoftware.Steam/config/MangoHud/MangoHud.conf https://raw.githubusercontent.com/richard96292/alis/master/configs/MangoHud.conf
     ;;
   gamemode)
     pacman -S gamemode lib32-gamemode --noconfirm --needed
@@ -37,9 +35,7 @@ for choice in ${choicesGaming}; do
     pacman -S lutris --noconfirm --needed
     ;;
   lutris-flatpak)
-    flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
-    flatpak install -y --noninteractive flathub-beta net.lutris.Lutris//beta
-    flatpak install -y --noninteractive flathub org.gnome.Platform.Compat.i386 org.freedesktop.Platform.GL32.default org.freedesktop.Platform.GL.default
+    flatpak install -y --noninteractive flathub net.lutris.Lutris
     ;;
   gamescope)
     pacman -S gamescope --noconfirm --needed
