@@ -1,9 +1,6 @@
 - Add an option to set cpu governor to performance
-- Divide gnome configuration
 - Split applications
-- Run postinstall before reboot
 - Split devel packages
 - Add more programming languages
 - Create a sway profile
-- do not curl every single script
 - work with mangohud and gamemode configs

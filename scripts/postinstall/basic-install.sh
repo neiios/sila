@@ -37,7 +37,27 @@ pacman -S htop bash-completion vim neovim \
   man-db man-pages texinfo \
   pacman-contrib reflector \
   libdecor \
-  sof-firmware --noconfirm --needed
+  sof-firmware \
+  flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
+
+flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
+
+# pipewire
+pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
+  pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire pipewire-x11-bell \
+  lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 \
+  qpwgraph --noconfirm --needed
+
+# i like muh codecs
+pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
+
+# zram
+pacman -S zram-generator --noconfirm --needed
+echo "[zram0]" >/etc/systemd/zram-generator.conf
+echo "zram-size = min(ram / 2, 4096)" >>/etc/systemd/zram-generator.conf
+systemctl daemon-reload
+systemctl start /dev/zram0
+zramctl
 
 systemctl enable avahi-daemon.service
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf

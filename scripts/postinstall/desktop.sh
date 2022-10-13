@@ -13,23 +13,9 @@ for choice in ${choicesGeneral}; do
       eslint prettier npm nodejs \
       docker docker-compose --noconfirm --needed
     ;;
-  pipewire)
-    pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
-      pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire pipewire-x11-bell \
-      lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 \
-      qpwgraph --noconfirm --needed
-    ;;
   bluetooth)
     pacman -S bluez bluez-utils --noconfirm --needed
     systemctl enable bluetooth.service
-    ;;
-  gstreamer)
-    # gstreamer (pulls all releveant codecs)
-    pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
-    ;;
-  flatpak)
-    pacman -S flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
-    flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
     ;;
   vm)
     yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
@@ -43,20 +29,6 @@ for choice in ${choicesGeneral}; do
       foomatic-db-nonfree foomatic-db-nonfree-ppds \
       gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
     systemctl enable cups.socket
-    ;;
-  zsh)
-    mkdir -pv /${username}/.cache/zsh/
-    pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting --noconfirm --needed
-    curl --output /home/${username}/.zshrc https://raw.githubusercontent.com/richard96292/alis/master/configs/.zshrc
-    chsh -s $(which zsh) ${username}
-    ;;
-  zram)
-    pacman -S zram-generator --noconfirm --needed
-    echo "[zram0]" >/etc/systemd/zram-generator.conf
-    echo "zram-size = min(ram / 2, 4096)" >>/etc/systemd/zram-generator.conf
-    systemctl daemon-reload
-    systemctl start /dev/zram0
-    zramctl
     ;;
   esac
 done

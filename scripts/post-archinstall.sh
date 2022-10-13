@@ -21,28 +21,21 @@ pacman -Syyu libnewt git curl archlinux-keyring --noconfirm --needed
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # all inputs
-curl --create-dirs --output /tmp/input.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/input.sh && source /tmp/input.sh
-
+bash /root/alis/scripts/postinstall/input.sh
 # basic packages
-curl --create-dirs --output /tmp/basic-install.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/basic-install.sh && source /tmp/basic-install.sh
-
+bash /root/alis/scripts/postinstall/basic-install.sh
 # drivers
-curl --create-dirs --output /tmp/drivers.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/drivers.sh && source /tmp/drivers.sh
-
+bash /root/alis/scripts/postinstall/drivers.sh
 # desktops/wms
-curl --create-dirs --output /tmp/desktop.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/desktop.sh && source /tmp/desktop.sh
-
+bash /root/alis/scripts/postinstall/desktop.sh
 # fonts
-curl --create-dirs --output /tmp/fonts.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/fonts.sh && source /tmp/fonts.sh
-
+bash /root/alis/scripts/postinstall/fonts.sh
 # software
-curl --create-dirs --output /tmp/software.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/software.sh && source /tmp/software.sh
-
+bash /root/alis/scripts/postinstall/software.sh
 # gaming
-curl --create-dirs --output /tmp/gaming.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/gaming.sh && source /tmp/gaming.sh
-
+bash /root/alis/scripts/postinstall/gaming.sh
 # fixes
-curl --create-dirs --output /tmp/fixes.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/fixes.sh && source /tmp/fixes.sh
+bash /root/alis/scripts/postinstall/fixes.sh
 
 # fix permissions
 chown -R ${username}:${username} /home/${username}
