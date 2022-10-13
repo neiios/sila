@@ -3,7 +3,7 @@
 cmdFixes=(whiptail --separate-output --checklist "Select some fixes/workarounds you want to apply:" 0 0 0)
 optionsFixes=(
   ax210-firmware "AX210 firmware fix" off
-  xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" on
+  xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
   mei_me "Blacklist mei_me kernel module" off
   gnome-monitors "Configure my desktop monitors on gnome" off
   tearfree-amd "Xorg TearFree AMD" off
