@@ -6,3 +6,10 @@
 - Add more programming languages
 - Create a sway profile
 - Give an option to create an unencrypted drive
+- postinstall user password box
+- notice about tab key (left right dont work in lists)
+- remove dotfiles from a script
+- remove gnome monitor configuration
+- clean up applications
+- do not curl every single script
+- work with mangohud and gamemode configs
