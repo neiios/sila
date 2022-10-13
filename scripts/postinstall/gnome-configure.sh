@@ -3,7 +3,7 @@
 # gsettings list-recursively > /tmp/gsettings.before
 # gsettings list-recursively > /tmp/gsettings.after
 # diff /tmp/gsettings.before /tmp/gsettings.after | sed 's/>/gsettings set/;tx;d;:x' > gnome-configure.sh
-set -xe
+set -e
 
 # /org/gnome/desktop/wm/keybindings/switch-applications
 #   @as []

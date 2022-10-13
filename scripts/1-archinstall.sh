@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xe
+set -e
 timedatectl set-ntp true
 
 # root of the github repository to download files from
@@ -24,13 +24,13 @@ curl --output /mnt/root/2-archinstall.sh "${gur}/scripts/2-archinstall.sh"
 chmod +x /mnt/root/2-archinstall.sh # TODO: do i even need to chmod it?
 
 # transfer variable to the second stage (really ugly)
-sed -i "/set -xe/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a password='${password}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a rootPartition='${rootPartition}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a mappedRoot='${mappedRoot}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a UEFIBIOS='${UEFIBIOS}'" /mnt/root/2-archinstall.sh
-sed -i "/set -xe/a passwordLuks='${passwordLuks}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a password='${password}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a rootPartition='${rootPartition}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a mappedRoot='${mappedRoot}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a UEFIBIOS='${UEFIBIOS}'" /mnt/root/2-archinstall.sh
+sed -i "/set -e/a passwordLuks='${passwordLuks}'" /mnt/root/2-archinstall.sh
 
 # chroot into the new install
 arch-chroot /mnt /root/2-archinstall.sh
