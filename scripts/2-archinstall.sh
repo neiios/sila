@@ -2,7 +2,7 @@
 set -e
 
 # dont run this script without setting needed env vars
-source /root/vars.sh
+source /root/alis/vars.sh
 
 echo "$hostname" >/etc/hostname
 cat <<EOF >/etc/hosts
@@ -70,3 +70,5 @@ else
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
+
+bash /root/alis/scripts/post-archinstall.sh
