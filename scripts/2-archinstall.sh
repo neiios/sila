@@ -3,7 +3,7 @@ set -xe
 
 # dont run this script without setting needed env vars
 
-echo ${hostname} >/etc/hostname
+echo "$hostname" >/etc/hostname
 cat <<EOF >/etc/hosts
 127.0.0.1 localhost
 ::1       localhost
@@ -42,33 +42,32 @@ LC_MONETARY="lt_LT.UTF-8"
 EOF
 
 # configure root password
-echo root:${password} | chpasswd
+echo "root:$password" | chpasswd
 
 # network
 pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
-# generate a key to not enter password twice
-# dd bs=512 count=2 if=/dev/urandom of=/crypto_keyfile.bin
-# echo "${passwordLuks}" | cryptsetup luksAddKey ${rootPartition} /crypto_keyfile.bin
-# chmod 000 /crypto_keyfile.bin
-
-# bootloader (GRUB)
-sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
-# sed -i "s|FILES=()|FILES=(/crypto_keyfile.bin)|" /etc/mkinitcpio.conf
-mkinitcpio -P
-
+# bootloader
 pacman -S grub os-prober grub-btrfs --noconfirm --needed
-sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
-# sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
+
+# change these only if the drive should be encrypted
+if [[ -n $passwordLuks ]]; then
+  sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
+  mkinitcpio -P
+  sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
+  echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
+fi
+
 sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
-if [ ${UEFIBIOS} == 1 ]; then
+
+# script can be used for both uefi and bios machines
+if [[ $UEFIBIOS -eq 1 ]]; then
     pacman -S efibootmgr --noconfirm --needed
-    grub-install --target=x86_64-efi ${diskname} --efi-directory=/boot --recheck
+    grub-install --target=x86_64-efi "$diskname" --efi-directory=/boot --recheck
 else
-    grub-install ${diskname}
+    grub-install "$diskname"
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
