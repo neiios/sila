@@ -1,6 +1,6 @@
 #!/bin/bash
 
-whiptail --title "Tutorial" --msgbox "Up/Down keys - navigate the list\n\nLeft/Right keys - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
+whiptail --title "Tutorial" --msgbox "Up/Down arrows - navigate the list\n\nLeft/Right arrows or Tab - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
 
 # select the drive
 parts=()
