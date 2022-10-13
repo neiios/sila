@@ -28,8 +28,9 @@ hostname="$(enterHostname)"
 
 function inputPass() {
     while true; do
-        t=$(whiptail --title "$1 password" --passwordbox "${invalidPasswordMessage}Enter the $1 password:" --nocancel 10 50 3>&1 1>&2 2>&3)
-        t2=$(whiptail --title "$1 password" --passwordbox "Retype the $1 password:" --nocancel 10 50 3>&1 1>&2 2>&3)
+        [[ "$1" == "Disk encryption" ]] && encryptExplanation="\nLeave the password blank if you dont want to encrypt the disk."
+        t=$(whiptail --title "$1 password" --passwordbox "${invalidPasswordMessage}Enter the $1 password:${encryptExplanation}" --nocancel 10 50 3>&1 1>&2 2>&3)
+        t2=$(whiptail --title "$1 password" --passwordbox "Retype the $1 password:${encryptExplanation}" --nocancel 10 50 3>&1 1>&2 2>&3)
         [[ "${t}" == "${t2}" ]] && [[ -n "${t}" ]] && [[ -n "${t2}" ]] && echo "${t}" && break
         # special case for disk encryption (it can be an empty string)
         [[ "${t}" == "${t2}" ]] && [[ "$1" == "Disk encryption" ]] && echo "${t}" && break
