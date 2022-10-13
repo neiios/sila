@@ -14,8 +14,17 @@ if [[ $diskname =~ nvme|mmcblk ]]; then
     literallyLetterP="p"
 fi
 
-# select the hostname
-hostname=$(whiptail --title "Hostname" --inputbox "Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
+whiptail --title "Here be dragons" --yes-button "Continue" --no-button "Cancel" --yesno "All data on the disk ${diskname} will be wiped.\nBe sure to double check the drive you have selected." 0 0 || exit 1
+
+function enterHostname() {
+  while true; do
+    h=$(whiptail --title "Hostname" --nocancel --inputbox "${invalidMessage}Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
+    [[ "${h}" =~ ^[a-zA-Z0-9]+(([a-zA-Z0-9-])*[a-zA-Z0-9]+)*$ ]] && echo "${h}" && break
+    invalidMessage="The hostname is invalid.\nA valid hostname contains only letters from a to Z, numbers, and the hyphen (-).\nA hostname may not start or end with a hyphen.\n"
+  done
+}
+
+hostname="$(enterHostname)"
 
 function inputPass() {
     while true; do

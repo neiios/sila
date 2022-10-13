@@ -1,6 +1,14 @@
 #!/bin/bash
 
-username=$(whiptail --title "Username" --inputbox "Enter the username:" 0 0 3>&1 1>&2 2>&3)
+function usernameInput() {
+    while true; do
+        u=$(whiptail --title "Username" --inputbox "${invalidMessage}Enter the username:" 0 0 3>&1 1>&2 2>&3)
+        [[ "${u}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]] && echo "${u}" && break
+        invalidMessage="The username is invalid.\nValid username should contain up to 32 lowercase letters, number, underscores and hyphens.\nThe username may end with a \$.\n"
+    done
+}
+
+username=$(usernameInput)
 
 function inputPass() {
     while true; do
