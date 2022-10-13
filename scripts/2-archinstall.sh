@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
 
 # dont run this script without setting needed env vars
+source /root/vars.sh
 
 echo "$hostname" >/etc/hostname
 cat <<EOF >/etc/hosts
@@ -20,10 +21,8 @@ sed -i "s/#es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#lt_LT.UTF-8 UTF-8/lt_LT.UTF-8 UTF-8/" /etc/locale.gen
-sed -i "s/#lv_LV.UTF-8 UTF-8/lv_LV.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/" /etc/locale.gen
-sed -i "s/#uk_UA.UTF-8 UTF-8/uk_UA.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
 
 # create locale.conf

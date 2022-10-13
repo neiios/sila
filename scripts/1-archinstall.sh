@@ -23,20 +23,22 @@ curl --output /mnt/root/post-archinstall.sh "${gur}/scripts/post-archinstall.sh"
 curl --output /mnt/root/2-archinstall.sh "${gur}/scripts/2-archinstall.sh"
 chmod +x /mnt/root/2-archinstall.sh # TODO: do i even need to chmod it?
 
-# transfer variable to the second stage (really ugly)
-sed -i "/set -e/a hostname='${hostname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a password='${password}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a diskname='${diskname}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a rootPartition='${rootPartition}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a mappedRoot='${mappedRoot}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a UEFIBIOS='${UEFIBIOS}'" /mnt/root/2-archinstall.sh
-sed -i "/set -e/a passwordLuks='${passwordLuks}'" /mnt/root/2-archinstall.sh
+# transfer variables to chroot
+cat <<EOF >/mnt/root/vars.sh
+hostname="$hostname"
+password="$password"
+diskname="$diskname"
+rootPartition="$rootPartition"
+mappedRoot="$mappedRoot"
+UEFIBIOS="$UEFIBIOS"
+passwordLuks="$passwordLuks"
+EOF
 
 # chroot into the new install
 arch-chroot /mnt /root/2-archinstall.sh
 
 # clean up
-rm /mnt/root/2-archinstall.sh
+shred -zu -n5 /mnt/root/vars.sh /mnt/root/2-archinstall.sh
 
 # final notice
 if (whiptail --title "Congratulations" --yesno "First part of the installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0); then
