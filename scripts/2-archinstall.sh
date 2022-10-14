@@ -14,6 +14,7 @@ EOF
 ln -sf /usr/share/zoneinfo/Europe/Vilnius /etc/localtime
 hwclock --systohc
 
+sed -i "s/#C.UTF-8 UTF-8/C.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#en_IE.UTF-8 UTF-8/en_IE.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/" /etc/locale.gen
