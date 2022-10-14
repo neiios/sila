@@ -47,8 +47,6 @@ sed -i "s/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 # one final update
 pacman -Syu --noconfirm
 
-rm -rf /root/post-archinstall.sh
-
 # the most important step
 pacman -S neofetch --noconfirm --needed
 clear

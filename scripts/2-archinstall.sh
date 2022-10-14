@@ -71,4 +71,4 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-bash /root/alis/scripts/post-archinstall.sh
+bash /root/alis/scripts/postinstall.sh

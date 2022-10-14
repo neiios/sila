@@ -23,7 +23,7 @@ curl -L alis.segf.lt | bash
 - **The script should be run as root.**
 
 ```bash
-bash post-archinstall.sh
+bash postinstall.sh
 ```
 
 ## Screenshots

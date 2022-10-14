@@ -2,9 +2,6 @@
 set -e
 timedatectl set-ntp true
 
-# root of the github repository to download files from
-gur="https://raw.githubusercontent.com/richard96292/alis/master"
-
 # get user input
 source /tmp/alis/scripts/1-archinstall/get-user-input.sh
 
