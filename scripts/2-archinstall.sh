@@ -39,6 +39,8 @@ LC_MEASUREMENT="lt_LT.UTF-8"
 LC_PAPER="lt_LT.UTF-8"
 # euro
 LC_MONETARY="lt_LT.UTF-8"
+# system message language
+LC_MESSAGES="en_US.UTF-8"
 EOF
 
 # configure root password
