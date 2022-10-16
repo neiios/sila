@@ -1,5 +1,32 @@
 #!/bin/bash
 
+# desktop input
+cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
+optionsGeneral=(
+    devel "A lot of development tools" on
+    pipewire "Audio/video server" on
+    bluetooth "Bluetooth" on
+    gstreamer "Install additional codecs" on
+    flatpak "Flatpak support (will break the script if deselected)" on
+    vm "VMs (Qemu+KVM)" on
+    cups "Printing support (CUPS)" on
+    zsh "Zsh" on
+    zram "ZRAM" on
+)
+choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
+
+cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:" 0 0 0)
+optionsDesktop=(
+    gnome "GNOME" on
+    gnome-additional-apps "Some additional apps (can be installed later)" off
+    adw-gtk3 "Install adw-gtk3 theme for gnome" off
+    kde "KDE Plasma" off
+    dotfiles "Copy my dotfiles" on
+    ppd "Power profiles daemon" on
+    tlp "TLP" off
+)
+
+choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
 for choice in ${choicesGeneral}; do
   case ${choice} in
   devel)
@@ -20,7 +47,7 @@ for choice in ${choicesGeneral}; do
   vm)
     yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
     systemctl enable libvirtd.service
-    usermod -aG libvirt ${username}
+    usermod -aG libvirt "${username}"
     ;;
   cups)
     pacman -S cups cups-pk-helper cups-filters cups-pdf \
@@ -106,19 +133,12 @@ EOF
     # other apps
     pacman -S baobab gnome-books gnome-characters gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather --noconfirm --needed
     ;;
-  adw-gtk3)
-    sudo -u ${username} paru -S adw-gtk3-git --noconfirm --needed
-    sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
-    ;;
-  dotfiles)
-    curl --output /home/${username}/.vimrc https://raw.githubusercontent.com/richard96292/alis/master/configs/.vimrc
-    ;;
   ppd)
     pacman -S power-profiles-daemon python-gobject --noconfirm --needed
     ;;
   tlp)
     pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
-    sudo -u ${username} paru -S tlpui --noconfirm --needed
+    sudo -u "${username}" paru -S tlpui --noconfirm --needed
     systemctl enable tlp.service
     systemctl enable NetworkManager-dispatcher.service
     systemctl mask systemd-rfkill.service

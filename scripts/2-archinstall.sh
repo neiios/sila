@@ -1,16 +1,31 @@
 #!/bin/bash
 set -e
 
-# dont run this script without setting needed env vars
-source /root/alis/vars.sh
+# functions
+function enterHostname() {
+  while true; do
+    h=$(whiptail --title "Hostname" --nocancel --inputbox "${invalidMessage}Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
+    [[ "${h}" =~ ^[a-zA-Z0-9]+(([a-zA-Z0-9-])*[a-zA-Z0-9]+)*$ ]] && echo "${h}" && break
+    invalidMessage="The hostname is invalid.\nA valid hostname contains only letters from a to Z, numbers, and the hyphen (-).\nA hostname may not start or end with a hyphen.\n"
+  done
+}
 
+# dont run this script without setting needed env vars
+# shellcheck source=/scripts/vars.sh
+source /root/alis/scripts/vars.sh
+
+# enter hostname
+hostname="$(enterHostname)"
+
+# set hostname
 echo "$hostname" >/etc/hostname
 cat <<EOF >/etc/hosts
 127.0.0.1 localhost
 ::1       localhost
-127.0.1.1 ${hostname}.localdomain ${hostname}
+127.0.1.1 ${hostname}
 EOF
 
+# set timezone
 ln -sf /usr/share/zoneinfo/Europe/Vilnius /etc/localtime
 hwclock --systohc
 
@@ -53,12 +68,13 @@ systemctl enable NetworkManager
 # bootloader
 pacman -S grub os-prober grub-btrfs --noconfirm --needed
 
-# change these only if the drive should be encrypted
+# change these options only if the drive should be encrypted
 if [[ -n $passwordLuks ]]; then
   sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
   mkinitcpio -P
   sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-  echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$(blkid --match-tag UUID -o value ${rootPartition}):luks root=/dev/mapper/luks rootflags=subvol=@" >>/etc/default/grub
+  grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value "$rootPartition"):luks root=/dev/mapper/luks rootflags=subvol=@"
+  echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
 fi
 
 sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub

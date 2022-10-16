@@ -1,6 +1,6 @@
-- Add an option to set cpu governor to performance
 - Split applications
 - Split devel packages
 - Add more programming languages
 - Create a sway profile
 - work with mangohud and gamemode configs
+- Update Readme

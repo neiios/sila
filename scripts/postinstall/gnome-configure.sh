@@ -6,32 +6,32 @@
 # diff /tmp/gsettings.before /tmp/gsettings.after | sed 's/>/gsettings set/;tx;d;:x' > gnome-configure.sh
 
 # cleaning
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-temp-files true
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-trash-files true
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-temp-files true
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-trash-files true
 # theme
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 # clock
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-seconds true
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-date false
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-seconds true
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface clock-show-date false
 # mouse
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 # layouts
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'ru')]"
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'ru')]"
 # disable fucking bell
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences audible-bell false
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences audible-bell false
 # and event sounds
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
 # set fonts
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 10'
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 10'
 # terminal always dark
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
 # dont notify
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.tweaks show-extensions-notice false
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.tweaks show-extensions-notice false
 # sys monitor
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.gnome-system-monitor show-dependencies true
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.gnome-system-monitor show-dependencies true
 # make timeout larger
-sudo -u ${username} dbus-launch --exit-with-session gsettings set org.gnome.mutter check-alive-timeout 60000
+sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.mutter check-alive-timeout 60000
 
 # https://bbs.archlinux.org/viewtopic.php?id=194902
 # disable mouse acceleration for GDM

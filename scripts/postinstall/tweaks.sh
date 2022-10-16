@@ -1,6 +1,20 @@
 #!/bin/bash
 
-for choice in ${choicesFixes}; do
+cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Select the tweaks you want to apply:" 0 0 0)
+optionsTweaks=(
+    ax210-firmware "AX210 firmware fix" off
+    xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
+    mei_me "Blacklist mei_me kernel module" off
+    gnome-monitors "Configure my desktop monitors on gnome" off
+    tearfree-amd "Xorg TearFree AMD" off
+    tearfree-intel "Xorg TearFree Intel" off
+    sddm-wayland "Run sddm on wayland" off
+    elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
+    ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
+)
+choicesTweaks=$("${cmdTweaks[@]}" "${optionsTweaks[@]}" 2>&1 >/dev/tty)
+
+for choice in ${choicesTweaks}; do
   case ${choice} in
   ax210-firmware)
     rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
@@ -54,7 +68,7 @@ EOF
     # https://gitlab.freedesktop.org/libinput/libinput/-/issues/694
     ;;
   ms-fonts)
-    sudo -u ${username} paru -S ttf-ms-fonts --noconfirm --needed
+    sudo -u "${username}" paru -S ttf-ms-fonts --noconfirm --needed
     ;;
   esac
 done
