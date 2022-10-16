@@ -112,7 +112,13 @@ passwordLuks="$passwordLuks"
 EOF
 
 # chroot into the new install
-arch-chroot /mnt /root/alis/scripts/2-archinstall.sh
+mount -t proc /proc /mnt/proc/
+mount -t sysfs /sys /mnt/sys/
+mount --rbind /dev /mnt/dev/
+mount --rbind /run /mnt/run/
+[[ $UEFIBIOS -eq 1 ]] && mount --rbind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
+cp /etc/resolv.conf /mnt/etc/resolv.conf
+chroot /mnt /root/alis/scripts/2-archinstall.sh
 
 # clean up
 rm -rf /mnt/root/alis
