@@ -128,8 +128,9 @@ EOF
     systemctl enable gdm
     # and some flatpaks
     flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
-    # set default settings
-    curl --create-dirs --output /tmp/gnome-configure.sh https://raw.githubusercontent.com/richard96292/alis/master/scripts/postinstall/gnome-configure.sh && source /tmp/gnome-configure.sh
+    # set default settings/root/alis/scripts/postinstall/desktop.sh
+    # shellcheck source=/scripts/postinstall/gnome-configure.sh
+    source /root/alis/scripts/postinstall/gnome-configure.sh
     ;;
   gnome-additional-apps)
     # other apps
