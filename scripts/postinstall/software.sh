@@ -103,7 +103,7 @@ for choice in ${choicesApplications}; do
     pacman -S discord --noconfirm --needed
     ;;
   discord-flatpak)
-    flatpak install -y --noninteractive flathub dcom.discordapp.Discord
+    flatpak install -y --noninteractive flathub com.discordapp.Discord
     ;;
   telegram)
     flatpak install -y --noninteractive flathub org.telegram.desktop

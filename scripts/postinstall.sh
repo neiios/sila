@@ -10,17 +10,23 @@ fi
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # basic packages
-bash /root/alis/scripts/postinstall/basic-install.sh
+# shellcheck source=/scripts/postinstall/basic-install.sh
+source /root/alis/scripts/postinstall/basic-install.sh
 # drivers
-bash /root/alis/scripts/postinstall/drivers.sh
+# shellcheck source=/scripts/postinstall/drivers.sh
+source /root/alis/scripts/postinstall/drivers.sh
 # desktops
-bash /root/alis/scripts/postinstall/desktop.sh
+# shellcheck source=/scripts/postinstall/desktop.sh
+source /root/alis/scripts/postinstall/desktop.sh
 # software
-bash /root/alis/scripts/postinstall/software.sh
+# shellcheck source=/scripts/postinstall/software.sh
+source /root/alis/scripts/postinstall/software.sh
 # gaming
-bash /root/alis/scripts/postinstall/gaming.sh
+# shellcheck source=/scripts/postinstall/gaming.sh
+source /root/alis/scripts/postinstall/gaming.sh
 # tweaks
-bash /root/alis/scripts/postinstall/tweaks.sh
+# shellcheck source=/scripts/postinstall/tweaks.sh
+source /root/alis/scripts/postinstall/tweaks.sh
 
 # fix permissions
 chown -R "${username}:${username}" "/home/${username}"
