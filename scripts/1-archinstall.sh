@@ -17,6 +17,7 @@ function inputPass() {
 
 # tutorial
 whiptail --title "Tutorial" --msgbox "Up/Down arrows - navigate the list\n\nLeft/Right arrows or Tab - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
+clear
 
 # both passwords (luks can be empty)
 password="$(inputPass "Root user")"
@@ -31,6 +32,7 @@ diskname="/dev/$(whiptail --title "WARNING: all data on the selected drive will 
 
 # point of no return
 whiptail --title "Here be dragons" --yes-button "Continue" --no-button "Cancel" --yesno "All data on the disk ${diskname} will be wiped.\nBe sure to double check the drive you have selected." 0 0 || exit 1
+clear
 
 # destroying the drive
 wipefs -af "${diskname}"

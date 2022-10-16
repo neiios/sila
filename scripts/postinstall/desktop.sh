@@ -27,6 +27,8 @@ optionsDesktop=(
 )
 
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
+clear
+
 for choice in ${choicesGeneral}; do
   case ${choice} in
   devel)

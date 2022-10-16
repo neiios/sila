@@ -13,6 +13,7 @@ optionsTweaks=(
     ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
 )
 choicesTweaks=$("${cmdTweaks[@]}" "${optionsTweaks[@]}" 2>&1 >/dev/tty)
+clear
 
 for choice in ${choicesTweaks}; do
   case ${choice} in

@@ -10,6 +10,8 @@ optionsDrivers=(
 )
 
 choicesDrivers=$("${cmdDrivers[@]}" "${optionsDrivers[@]}" 2>&1 >/dev/tty)
+clear
+
 for choice in ${choicesDrivers}; do
   case ${choice} in
   amd)

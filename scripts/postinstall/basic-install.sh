@@ -23,6 +23,7 @@ function inputPass() {
 # get username and password
 username=$(usernameInput)
 password="$(inputPass "Regular user")"
+clear
 
 # create a user
 useradd -m "${username}"

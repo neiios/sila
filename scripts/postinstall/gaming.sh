@@ -15,6 +15,7 @@ optionsGaming=(
     lutris-flatpak "Open Gaming Platform (Flatpak)" off
 )
 choicesGaming=$("${cmdGaming[@]}" "${optionsGaming[@]}" 2>&1 >/dev/tty)
+clear
 
 for choice in ${choicesGaming}; do
   case ${choice} in

@@ -35,6 +35,7 @@ optionsApplications=(
     jamesdsp "An audio effect processor, equalizer (AUR)" off
 )
 choicesApplications=$("${cmdApplications[@]}" "${optionsApplications[@]}" 2>&1 >/dev/tty)
+clear
 
 for choice in ${choicesApplications}; do
   case ${choice} in

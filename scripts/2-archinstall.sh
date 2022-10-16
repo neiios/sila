@@ -16,6 +16,7 @@ source /root/alis/scripts/vars.sh
 
 # enter hostname
 hostname="$(enterHostname)"
+clear
 
 # set hostname
 echo "$hostname" >/etc/hostname
