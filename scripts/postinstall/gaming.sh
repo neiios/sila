@@ -41,7 +41,8 @@ for choice in ${choicesGaming}; do
     sudo -u ${username} paru -S proton-ge-custom-bin --noconfirm --needed
     ;;
   steam-flatpak)
-    flatpak install -y --noninteractive flathub com.valvesoftware.Steam com.valvesoftware.Steam.CompatibilityTool.Proton-GE org.freedesktop.Platform.VulkanLayer.MangoHud com.valvesoftware.Steam.Utility.gamescope
+    # TODO: find a way to install the latest version of mangohud
+    flatpak install -y --noninteractive flathub com.valvesoftware.Steam com.valvesoftware.Steam.CompatibilityTool.Proton-GE org.freedesktop.Platform.VulkanLayer.MangoHud//22.08 com.valvesoftware.Steam.Utility.gamescope
     flatpak override --filesystem=xdg-config/MangoHud:ro com.valvesoftware.Steam
     flatpak override --env=MANGOHUD=1 com.valvesoftware.Steam
     ;;
