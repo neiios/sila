@@ -91,4 +91,4 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-bash /root/alis/scripts/postinstall.sh
+echo "bash /root/alis/scripts/postinstall.sh" >> ~/.bashrc

@@ -124,7 +124,9 @@ chroot /mnt /root/alis/scripts/2-archinstall.sh
 rm -rf /mnt/root/alis
 
 # final notice
-whiptail --title "Congratulations" --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0
-# unmount the drive before rebooting
-umount -R /mnt
-reboot
+if (whiptail --title "Congratulations" --yesno "The first part of the installation has finished succesfully.\n\nThe second part will start after reboot.\n\nDo you want to reboot your computer now?" 0 0); then
+  whiptail --title "Important!" --msgbox "You will have to log in as a root user after rebooting.\n\n" 0 0
+  # unmount the drive before rebooting
+  umount -R /mnt
+  reboot
+fi

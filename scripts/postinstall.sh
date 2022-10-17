@@ -78,3 +78,6 @@ pacman -S neofetch --noconfirm --needed
 clear
 neofetch
 sleep 5
+
+# remove script autostart
+sed -i '|^bash /root/alis|d' ~/.bashrc
