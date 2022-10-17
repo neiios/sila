@@ -4,14 +4,9 @@
 cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
 optionsGeneral=(
     devel "A lot of development tools" on
-    pipewire "Audio/video server" on
     bluetooth "Bluetooth" on
-    gstreamer "Install additional codecs" on
-    flatpak "Flatpak support (will break the script if deselected)" on
     vm "VMs (Qemu+KVM)" on
     cups "Printing support (CUPS)" on
-    zsh "Zsh" on
-    zram "ZRAM" on
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 
@@ -21,7 +16,6 @@ optionsDesktop=(
     gnome-additional-apps "Some additional apps (can be installed later)" off
     adw-gtk3 "Install adw-gtk3 theme for gnome" off
     kde "KDE Plasma" off
-    dotfiles "Copy my dotfiles" on
     ppd "Power profiles daemon" on
     tlp "TLP" off
 )
@@ -113,7 +107,7 @@ EOF
     # essential
     pacman -S gnome-shell mutter gdm xdg-desktop-portal-gnome gnome-keyring gnome-control-center gnome-session gnome-menus gnome-settings-daemon --noconfirm --needed
     # basics
-    pacman -S gnome-shell-extensions gnome-system-monitor gnome-terminal gnome-software gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
+    pacman -S gnome-shell-extensions gnome-system-monitor gnome-disk-utility gnome-terminal lollypop gnome-software gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
     # tray icons
     pacman -S gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
     # you do need this, right?
@@ -122,8 +116,8 @@ EOF
     pacman -S gnome-themes-extra gnome-backgrounds gnome-video-effects webp-pixbuf-loader python-nautilus --noconfirm --needed
     # gvfs and grilo
     pacman -S grilo-plugins gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb --noconfirm --needed
-    # install breeze theme and qt5ct to configure qt apps
-    pacman -S breeze qt5ct --noconfirm --needed
+    # install breeze theme (some kde apps look really bad without it and dont seem to require it as a dep)
+    pacman -S breeze --noconfirm --needed
     # enable gdm
     systemctl enable gdm
     # and some flatpaks
@@ -134,7 +128,7 @@ EOF
     ;;
   gnome-additional-apps)
     # other apps
-    pacman -S baobab gnome-books gnome-characters gnome-disk-utility gnome-font-viewer gnome-logs lollypop gnome-photos gnome-weather --noconfirm --needed
+    pacman -S baobab gnome-books gnome-characters gnome-font-viewer gnome-logs gnome-photos gnome-weather --noconfirm --needed
     ;;
   ppd)
     pacman -S power-profiles-daemon python-gobject --noconfirm --needed
