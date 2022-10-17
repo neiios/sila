@@ -14,7 +14,6 @@ cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environme
 optionsDesktop=(
     gnome "GNOME" on
     gnome-additional-apps "Some additional apps (can be installed later)" off
-    adw-gtk3 "Install adw-gtk3 theme for gnome" off
     kde "KDE Plasma" off
     ppd "Power profiles daemon" on
     tlp "TLP" off
