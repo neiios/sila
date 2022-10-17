@@ -1,7 +1,4 @@
-- Split applications
-- Split devel packages
-- Add more programming languages
-- Create a sway profile
 - work with mangohud and gamemode configs
 - rework paru install
-- Update Readme
+- update Readme
+- install applications from a csv file

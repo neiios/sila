@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # functions
 function usernameInput() {
     while true; do
@@ -40,17 +42,12 @@ pacman -Syy
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
 # install paru-bin
-git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
-cd "/home/${username}/paru-bin" || exit
-chown "${username}:${username}" "/home/${username}/paru-bin"
-sudo -u "${username}" makepkg -si --noconfirm --needed
-rm -rf "/home/${username}/paru-bin"
-# currently paru has a nasty bug
-# see: https://github.com/Morganamilo/paru/issues/631#issuecomment-998703406
-# paru needs to be called from a directory owned by the current user
-chown -R "${username}:${username}" "/home/${username}"
-cd "/home/${username}" || exit
+pacman -S asp bat --noconfirm --needed
+sudo -u "$username" git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
+cd "/home/${username}/paru-bin"
+sudo -u "$username" makepkg -si --noconfirm --needed
 
+# some basic things
 pacman -S htop bash-completion vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   ntfs-3g dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
