@@ -30,9 +30,9 @@ for choice in ${choicesGaming}; do
     ;;
   gamemode)
     pacman -S gamemode lib32-gamemode --noconfirm --needed
-    groupadd gamemode
+    groupadd -f gamemode
     usermod -a -G gamemode ${username}
-    curl --create-dirs --output /home/${username}/.config/gamemode.ini https://raw.githubusercontent.com/FeralInteractive/gamemode/master/example/gamemode.ini
+    sudo -u "$username" curl --create-dirs --output /home/${username}/.config/gamemode.ini https://raw.githubusercontent.com/FeralInteractive/gamemode/master/example/gamemode.ini
     ;;
   steam)
     pacman -S steam --noconfirm --needed
@@ -53,7 +53,7 @@ for choice in ${choicesGaming}; do
     pacman -S lutris --noconfirm --needed
     ;;
   lutris-flatpak)
-    flatpak install -y --noninteractive flathub net.lutris.Lutris
+    flatpak install -y --noninteractive flathub net.lutris.Lutrisorg.freedesktop.Platform.VulkanLayer.MangoHud//21.08 
     ;;
   gamescope)
     pacman -S gamescope --noconfirm --needed
