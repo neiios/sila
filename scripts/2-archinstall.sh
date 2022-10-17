@@ -91,4 +91,5 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "bash /root/alis/scripts/postinstall.sh" >> ~/.bashrc
+# run the script after reboot
+echo "source /root/alis/scripts/postinstall.sh" >> /root/.profile

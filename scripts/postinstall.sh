@@ -79,5 +79,12 @@ clear
 neofetch
 sleep 5
 
-# remove script autostart
-sed -i '|^bash /root/alis|d' ~/.bashrc
+# dont autostart
+rm /root/.profile
+
+# clean up
+rm -rf /mnt/root/alis
+
+# final notice
+whiptail --title "Congratulations" --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0 && reboot
+

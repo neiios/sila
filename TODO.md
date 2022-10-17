@@ -3,4 +3,5 @@
 - Add more programming languages
 - Create a sway profile
 - work with mangohud and gamemode configs
+- dont ask for confirmation if disk encryption password is empty
 - Update Readme
