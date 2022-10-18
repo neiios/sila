@@ -16,7 +16,6 @@ optionsDesktop=(
     gnome-additional-apps "Some additional apps (can be installed later)" off
     kde "KDE Plasma" off
     ppd "Power profiles daemon" on
-    tlp "TLP" off
 )
 
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
@@ -87,6 +86,8 @@ for choice in ${choicesDesktop}; do
     pacman -S cryfs encfs gocryptfs --noconfirm --needed
     # for plasma-workspace
     pacman -S appmenu-gtk-module gpsd --noconfirm --needed
+    # power profiles daemon
+    pacman -S power-profiles-daemon python-gobject --noconfirm --needed
     # for kde-gtk-config
     pacman -S gnome-themes-extra --noconfirm --needed
     # for gtk tray icons
@@ -119,6 +120,8 @@ EOF
     pacman -S grilo-plugins gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb --noconfirm --needed
     # install breeze theme (some kde apps look really bad without it and dont seem to require it as a dep)
     pacman -S breeze --noconfirm --needed
+    # power profiles daemon
+    pacman -S power-profiles-daemon python-gobject --noconfirm --needed
     # enable gdm
     systemctl enable gdm
     # and some flatpaks
@@ -130,17 +133,6 @@ EOF
   gnome-additional-apps)
     # other apps
     pacman -S baobab gnome-books gnome-characters gnome-font-viewer gnome-logs gnome-photos gnome-weather --noconfirm --needed
-    ;;
-  ppd)
-    pacman -S power-profiles-daemon python-gobject --noconfirm --needed
-    ;;
-  tlp)
-    pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
-    sudo -u "${username}" paru -S tlpui --noconfirm --needed
-    systemctl enable tlp.service
-    systemctl enable NetworkManager-dispatcher.service
-    systemctl mask systemd-rfkill.service
-    systemctl mask systemd-rfkill.socket
     ;;
   esac
 done

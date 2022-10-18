@@ -11,6 +11,7 @@ optionsTweaks=(
     sddm-wayland "Run sddm on wayland" off
     elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
     ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
+    tlp "TLP" off
 )
 choicesTweaks=$("${cmdTweaks[@]}" "${optionsTweaks[@]}" 2>&1 >/dev/tty)
 clear
@@ -70,6 +71,14 @@ EOF
     ;;
   ms-fonts)
     sudo -u "${username}" paru -S ttf-ms-fonts --noconfirm --needed
+    ;;
+  tlp)
+    pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
+    sudo -u "${username}" paru -S tlpui --noconfirm --needed
+    systemctl enable tlp.service
+    systemctl enable NetworkManager-dispatcher.service
+    systemctl mask systemd-rfkill.service
+    systemctl mask systemd-rfkill.socket
     ;;
   esac
 done
