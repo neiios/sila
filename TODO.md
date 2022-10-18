@@ -1,4 +1,3 @@
 - work with mangohud and gamemode configs
-- rework paru install
 - update Readme
 - install applications from a csv file

@@ -93,6 +93,8 @@ for choice in ${choicesDesktop}; do
     pacman -S libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
     # various nice-to-haves
     pacman -S kdialog --noconfirm --needed
+    # flatpak theme
+    flatpak install -y --noninteractive flathub org.gtk.Gtk3theme.Breeze
     # configure sddm
     mkdir -p /etc/sddm.conf.d/
     cat <<EOF >/etc/sddm.conf.d/kde_settings.conf
