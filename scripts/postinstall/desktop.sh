@@ -3,19 +3,20 @@
 # desktop input
 cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
 optionsGeneral=(
-    devel "A lot of development tools" on
-    bluetooth "Bluetooth" on
-    vm "VMs (Qemu+KVM)" on
+    bluetooth "Bluetooth support" on
     cups "Printing support (CUPS)" on
+    devel "A lot of development tools for various programming languages" on
+    vm "Virtual machines (Qemu+KVM)" on
+    podman "The better container engine (recommended)" on
+    docker "The OG container engine" off
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 
-cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:" 0 0 0)
+cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 0 0 0)
 optionsDesktop=(
-    gnome "GNOME" on
+    gnome "GNOME" off
     gnome-additional-apps "Some additional apps (can be installed later)" off
     kde "KDE Plasma" off
-    ppd "Power profiles daemon" on
 )
 
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
@@ -27,12 +28,24 @@ for choice in ${choicesGeneral}; do
     # TODO: https://wiki.archlinux.org/title/Java#Better_font_rendering
     pacman -S git \
       python \
-      gcc gdb clang llvm lldb openmp cmake ninja meson doxygen elfutils \
+      gcc gdb make pkgconf clang llvm lldb openmp cmake ninja meson doxygen elfutils \
       rust \
+      ruby ruby-docs \
       jre-openjdk jdk-openjdk openjdk-src java-openjfx java-openjfx-src \
       vala \
       eslint prettier npm nodejs \
       docker docker-compose --noconfirm --needed
+    ;;
+  docker)
+    pacman -S docker docker-compose python-docker --noconfirm --needed
+    systemctl enable docker
+    usermod -aG docker "$username"
+    ;;
+  podman)
+    pacman -S podman podman-compose buildah \
+      netavark cni-plugins \
+      qemu-user-static qemu-user-static-binfmt \
+      fuse-overlayfs slirp4netns --noconfirm --needed
     ;;
   bluetooth)
     pacman -S bluez bluez-utils --noconfirm --needed
@@ -44,7 +57,7 @@ for choice in ${choicesGeneral}; do
     usermod -aG libvirt "${username}"
     ;;
   cups)
-    pacman -S cups cups-pk-helper cups-filters cups-pdf \
+    pacman -S cups cups-pdf cups-pk-helper cups-filters \
       ghostscript gsfonts \
       foomatic-db-engine foomatic-db foomatic-db-ppds \
       foomatic-db-nonfree foomatic-db-nonfree-ppds \

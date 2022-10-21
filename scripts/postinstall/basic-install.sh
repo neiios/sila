@@ -50,8 +50,8 @@ sudo -u "$username" makepkg -si --noconfirm --needed
 # some basic things
 pacman -S htop bash-completion vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
-  ntfs-3g dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
-  openssh sshfs rsync nfs-utils avahi \
+  dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
+  openssh sshfs rsync nfs-utils avahi cifs-utils \
   cronie curl wget inetutils net-tools nss-mdns \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
@@ -63,24 +63,24 @@ pacman -S htop bash-completion vim neovim \
 flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
 
 # pipewire
-pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
-  pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire pipewire-x11-bell \
-  lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 \
-  qpwgraph --noconfirm --needed
+pacman -S pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse pipewire-jack pipewire-x11-bell wireplumber wireplumber-docs \
+  pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire \
+  rtkit realtime-privileges \
+  lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 --noconfirm --needed
 
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
 
 # fonts
 pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-croscore \
-  cantarell-fonts \
+  cantarell-fonts ttf-opensans \
   ttf-fira-code woff2-fira-code ttf-fira-mono otf-fira-mono ttf-fira-sans otf-fira-sans \
   ttf-cascadia-code woff2-cascadia-code otf-cascadia-code \
   ttf-jetbrains-mono \
   gentium-plus-font \
   gnu-free-fonts ttf-liberation inter-font \
   ttf-ibm-plex ttf-ubuntu-font-family \
-  ttf-caladea ttf-roboto ttf-roboto-mono ttf-anonymous-pro ttf-inconsolata ttf-opensans \
+  ttf-caladea ttf-roboto ttf-roboto-mono ttf-inconsolata \
   ttf-font-awesome otf-font-awesome \
   libertinus-font tex-gyre-fonts otf-latin-modern otf-latinmodern-math \
   adobe-source-code-pro-fonts adobe-source-serif-fonts adobe-source-sans-fonts \
@@ -94,10 +94,21 @@ systemctl daemon-reload
 systemctl start /dev/zram0
 zramctl
 
-systemctl enable avahi-daemon.service
+# avahi name resolution
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
-systemctl enable cronie.service
+systemctl enable avahi-daemon.service
+
+# TODO: find a way for user to specify a country
+cat <<EOF >/etc/xdg/reflector/reflector.conf
+--save /etc/pacman.d/mirrorlist
+--country Finland,Denmark,Germany,
+--protocol https
+--latest 5
+EOF
 systemctl enable reflector.timer
+
+# enable cron
+systemctl enable cronie.service
+
+# discard unused packages in cache
 systemctl enable paccache.timer
-# dont enable on an encrypted drive
-# systemctl enable fstrim.timer

@@ -9,26 +9,54 @@ fi
 # use sudo without password (should be reverted at the end of the script)
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
-# basic packages
-# shellcheck source=/scripts/postinstall/basic-install.sh
-source /root/alis/scripts/postinstall/basic-install.sh
-# drivers
-# shellcheck source=/scripts/postinstall/drivers.sh
-source /root/alis/scripts/postinstall/drivers.sh
-# desktops
-# shellcheck source=/scripts/postinstall/desktop.sh
-source /root/alis/scripts/postinstall/desktop.sh
-# software
-# shellcheck source=/scripts/postinstall/software.sh
-source /root/alis/scripts/postinstall/software.sh
-# gaming
-# shellcheck source=/scripts/postinstall/gaming.sh
-source /root/alis/scripts/postinstall/gaming.sh
-# tweaks
-# shellcheck source=/scripts/postinstall/tweaks.sh
-source /root/alis/scripts/postinstall/tweaks.sh
+function flatpakInstall() {
+  sudo -u "$username" flatpak install -y --noninteractive flathub "${@}"
+}
 
-# dotfiles
+function paruInstall() {
+  sudo -u "$username" paru -S "${@}" --noconfirm --needed
+}
+
+function pacmanInstall() {
+  pacman -S "${@}" --noconfirm --needed
+}
+
+# first argument filepath, second whiptail string
+function installFromList() {
+  # remove lines that start with #
+  sed '/^#/d' "$1" >/tmp/progs.csv
+
+  # create package array from whiptail
+  arr=()
+  while IFS=, read -r format name desc state packages custom; do
+    arr+=("$name")
+    arr+=("$desc")
+    arr+=("$state")
+  done </tmp/progs.csv
+
+  # run whiptail
+  cmd=(whiptail --nocancel --separate-output --checklist "$2" 0 0 0)
+  choices=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
+
+  # install loop
+  [[ -n $choices ]] && while read -r app; do
+    # get variables
+    format="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $1}')"
+    packages="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $5}')"
+    custom="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $6}')"
+
+    # install
+    case "$format" in
+      f) flatpakInstall ${packages} ;;
+      a) paruInstall ${packages} ;;
+      p) pacmanInstall ${packages} ;;
+    esac
+
+    # run optional custom postinstall command
+    eval "$custom"
+  done <<< "$choices"
+}
+
 function cloneRepo() {
     # clone the repository
     while true; do
@@ -59,6 +87,24 @@ function installDotfiles() {
   done
 }
 
+# basic packages
+# shellcheck source=/scripts/postinstall/basic-install.sh
+source /root/alis/scripts/postinstall/basic-install.sh
+# drivers
+# shellcheck source=/scripts/postinstall/drivers.sh
+source /root/alis/scripts/postinstall/drivers.sh
+# desktops
+# shellcheck source=/scripts/postinstall/desktop.sh
+source /root/alis/scripts/postinstall/desktop.sh
+# apps
+installFromList "csv/software.csv" "Select the applications you want to install:"
+# gaming
+installFromList "csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."
+# tweaks
+# shellcheck source=/scripts/postinstall/tweaks.sh
+source /root/alis/scripts/postinstall/tweaks.sh
+
+# dotfiles
 if (whiptail --title "Dotfiles" --yesno "You can optionally install your dotfiles from a git repository.\n\nYou will need to enter the dotfile repository link.\n\nIt will search for arch-install-dotfiles.sh script in the root folder of the repository.\n\nDo you want to install the dotfiles?" 0 0); then
   installDotfiles
 fi
