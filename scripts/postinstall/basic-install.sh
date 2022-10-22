@@ -68,6 +68,9 @@ pacman -S pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse pip
   rtkit realtime-privileges \
   lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 --noconfirm --needed
 
+# add user to realtime group (required by realtime-privileges)
+usermod -aG realtime "$username"
+
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
 
