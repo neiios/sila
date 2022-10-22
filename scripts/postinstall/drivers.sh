@@ -18,7 +18,7 @@ for choice in ${choicesDrivers}; do
     # amd drivers
     pacman -S mesa mesa-utils vulkan-radeon vulkan-mesa-layers libva-mesa-driver mesa-vdpau vulkan-icd-loader --noconfirm --needed
     # opencl
-    pacman -S opencl-mesa ocl-icd
+    pacman -S opencl-mesa ocl-icd --noconfirm --needed
     # multilib
     pacman -S lib32-mesa lib32-mesa-utils lib32-vulkan-radeon lib32-vulkan-mesa-layers lib32-libva-mesa-driver lib32-mesa-vdpau lib32-vulkan-icd-loader --noconfirm --needed
     # xorg amd driver
@@ -40,7 +40,7 @@ for choice in ${choicesDrivers}; do
     # intel drivers
     pacman -S mesa mesa-utils vulkan-intel vulkan-icd-loader vulkan-mesa-layers intel-media-driver --noconfirm --needed
     # opencl
-    pacman -S intel-compute-runtime libdrm libva
+    pacman -S intel-compute-runtime libdrm libva --noconfirm --needed
     # xorg driver
     pacman -S xf86-video-intel --noconfirm --needed
     # multilib

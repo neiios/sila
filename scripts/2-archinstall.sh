@@ -92,4 +92,4 @@ fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # run the script after reboot
-echo "source /root/alis/scripts/postinstall.sh" >> /root/.profile
+echo "bash /root/alis/scripts/postinstall.sh" >> /root/.profile

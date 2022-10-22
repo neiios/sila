@@ -5,10 +5,9 @@ optionsTweaks=(
     ax210-firmware "AX210 firmware fix" off
     xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
     mei_me "Blacklist mei_me kernel module" off
-    gnome-monitors "Configure my desktop monitors on gnome" off
+    sddm-wayland "Run sddm on wayland" off
     tearfree-amd "Xorg TearFree AMD" off
     tearfree-intel "Xorg TearFree Intel" off
-    sddm-wayland "Run sddm on wayland" off
     elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
     ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
     tlp "TLP" off
@@ -73,6 +72,7 @@ EOF
     sudo -u "${username}" paru -S ttf-ms-fonts --noconfirm --needed
     ;;
   tlp)
+    pacman -Rns power-profiles-daemon
     pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
     sudo -u "${username}" paru -S tlpui --noconfirm --needed
     systemctl enable tlp.service

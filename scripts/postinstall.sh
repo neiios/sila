@@ -79,10 +79,10 @@ function installDotfiles() {
     # cd to it
     cd "/home/${username}/.dotfiles" || exit
 
-    if [[ -e arch-install-dotfiles.sh ]]; then
-      sudo -u "${username}" bash arch-install-dotfiles.sh && return
+    if [[ -e alis-install-dotfiles.sh ]]; then
+      sudo -u "${username}" bash alis-install-dotfiles.sh && return
     else
-      whiptail --title "Error" --yesno "The arch-install-dotfiles.sh script can't be found.\n\nCancel the dotfiles installation?" 0 0 && return
+      whiptail --title "Error" --yesno "The alis-install-dotfiles.sh script can't be found.\n\nCancel the dotfiles installation?" 0 0 && return
     fi
   done
 }
@@ -97,9 +97,9 @@ source /root/alis/scripts/postinstall/drivers.sh
 # shellcheck source=/scripts/postinstall/desktop.sh
 source /root/alis/scripts/postinstall/desktop.sh
 # apps
-installFromList "csv/software.csv" "Select the applications you want to install:"
+installFromList "/root/alis/scripts/postinstall/csv/software.csv" "Select the applications you want to install:"
 # gaming
-installFromList "csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."
+installFromList "/root/alis/scripts/postinstall/csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."
 # tweaks
 # shellcheck source=/scripts/postinstall/tweaks.sh
 source /root/alis/scripts/postinstall/tweaks.sh

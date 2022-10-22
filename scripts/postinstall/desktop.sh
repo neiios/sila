@@ -85,6 +85,10 @@ for choice in ${choicesDesktop}; do
     pacman -S ffmpegthumbs kdegraphics-thumbnailers kdenetwork-filesharing audiocd-kio kio-zeroconf --noconfirm --needed
     # for discover
     pacman -S fwupd --noconfirm --needed
+    # color power
+    pacman -S colord-kde --noconfirm --needed
+    # kcms
+    pacman -S sddm-kcm kde-gtk-config --noconfirm --needed
     # for ark
     pacman -S lrzip lzop p7zip unarchiver svgpart --noconfirm --needed
     # for okular
