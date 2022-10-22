@@ -1,32 +1,35 @@
-# Arch Linux Install Script
+<h1 align="center">ALIS - SILA</h1>
 
-## What is Arch Linux Install Script?
+## What is ALIS?
 
-ALIS is a script that configures and installs a fully-featured Arch Linux system.
+Arch Linux Install Script (ALIS) is a script that configures and installs a fully-featured Arch Linux system.
 
-The ALIS consists of two stages:
-
-- Stage 1 installs a minimal Arch Linux system.
-- Stage 2 configures the user, installs various DEs and user applications.
-
-## Stage 1
-
-- **Stage 1 DOES NOT create any additional users (only the root user will be available after reboot).**
-- **To log in after reboot use "root" as the username and the password you set.**
+## How to run the script?
 
 ```bash
+# with a helper script:
+# it is strongly advised to check the source code of the script before running it
 curl -L alis.segf.lt | bash
+
+# or manually:
+pacman -Sy git
+git clone https://github.com/richard96292/alis /tmp/alis
+bash /tmp/alis/scripts/1-archinstall.sh
 ```
 
-## Stage 2
+### Step-by-step instructions:
 
-- **The script should be run as root.**
-
-```bash
-bash postinstall.sh
-```
+1. Boot the Arch Linux iso. You can use [Ventoy](https://www.ventoy.net/en/index.html) for that.
+1. Run the script using the command above.
+1. Follow the instructions given by the installer.
+1. Reboot your computer.
+   - **You will have to log in as root after the reboot.**
+1. Follow the installer instructions. Read each page carefully and select what you want to install.
+1. Reboot your computer again.
+1. ?
+1. Profit
 
 ## Screenshots
 
-![Disk selection](https://github.com/richard96292/alis/blob/master/screenshots/disk.png)
-![Hostname selection](https://github.com/richard96292/alis/blob/master/screenshots/hostname.png)
+![Tutorial](https://github.com/richard96292/alis/blob/master/screenshots/tutorial.png)
+![Disk encryption](https://github.com/richard96292/alis/blob/master/screenshots/encryption.png)
