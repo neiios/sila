@@ -1,3 +1,0 @@
-- work with mangohud and gamemode configs
-- update Readme
-- install applications from a csv file
