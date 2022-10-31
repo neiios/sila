@@ -1,6 +1,7 @@
 # format,name,description,state,packages,custom
 p,firefox,Standalone web browser from Mozilla,on,firefox firefox-ublock-origin,
 p,thunderbird,Standalone mail and news reader from Mozilla,on,thunderbird,
+p,neomutt,Command line mail reader,off,neomutt,
 p,mpv,A minimalistic media player,off,mpv,
 p,yt-dlp,A really powerful video downloader,on,yt-dlp aria2 atomicparsley ffmpeg python-mutagen python-pycryptodomex python-websockets rtmpdump,
 f,tauon,Tauon music player (Flatpak),off,com.github.taiko2k.tauonmb,
@@ -32,3 +33,4 @@ p,easyeffects,A great equalizer and many more things (trust me you need it!),on,
 a,jamesdsp,A good easyeffects alternative (AUR),off,jamesdsp,
 p,latex,TeXLive-most and a lot of dependencies,on,texlive-most texlive-lang texlive-langextra biber ghostscript python perl ruby dialog python-pygments,sudo -u $username paru -S texlive-latexindent-meta --noconfirm --needed
 p,ansible,IT automation platform,on,ansible ansible-lint python-pywinrm sshpass python-argcomplete python-boto3,
+p,calibre,Ebook management application,off,calibre,
