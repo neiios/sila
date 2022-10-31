@@ -57,6 +57,7 @@ pacman -S htop bash-completion vim neovim \
   man-db man-pages texinfo \
   pacman-contrib reflector \
   libdecor \
+  wireguard-tools \
   sof-firmware \
   flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
 
