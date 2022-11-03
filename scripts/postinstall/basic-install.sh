@@ -50,7 +50,7 @@ sudo -u "$username" makepkg -si --noconfirm --needed
 # some basic things
 pacman -S htop bash-completion vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
-  dosfstools btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
+  dosfstools ntfs-3g btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh sshfs rsync nfs-utils avahi cifs-utils \
   cronie curl wget inetutils net-tools nss-mdns \
   xdg-utils xdg-user-dirs trash-cli \

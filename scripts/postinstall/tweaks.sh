@@ -5,6 +5,7 @@ optionsTweaks=(
     ax210-firmware "AX210 firmware fix" off
     xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
     mei_me "Blacklist mei_me kernel module" off
+    ntfs "Use ntfs kernel kernel module by default" off
     sddm-wayland "Run sddm on wayland" off
     tearfree-amd "Xorg TearFree AMD" off
     tearfree-intel "Xorg TearFree Intel" off
@@ -33,6 +34,9 @@ EOF
     ;;
   mei_me)
     echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
+    ;;
+  ntfs)
+    echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' > /etc/udev/rules.d/ntfs3_by_default.rules
     ;;
   sddm-wayland)
     cat <<EOF >/etc/sddm.conf.d/10-sddm-wayland.conf
