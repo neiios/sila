@@ -53,6 +53,7 @@ pacman -S htop bash-completion vim neovim \
   dosfstools ntfs-3g btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh sshfs rsync nfs-utils avahi cifs-utils \
   cronie curl wget inetutils net-tools nss-mdns \
+  wl-clipboard xclip \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
   pacman-contrib reflector \
@@ -74,6 +75,10 @@ usermod -aG realtime "$username"
 
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
+# i really like muh codecs
+pacman -S jasper libpng libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader --noconfirm --needed
+pacman -S ffmpeg av1an svt-av1 aom dav1d rav1e x265 libde265 x264 xvidcore libvpx rav1e libmatroska mkvtoolnix-cli --noconfirm --needed
+pacman -S lame libmad opus libvorbis speex faac faad2 --noconfirm --needed
 
 # fonts
 pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-croscore \
