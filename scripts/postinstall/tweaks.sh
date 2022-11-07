@@ -2,6 +2,7 @@
 
 cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Select the tweaks you want to apply:" 0 0 0)
 optionsTweaks=(
+    nm-wait-online "Makes boot time faster but not waiting for network connection" off
     ax210-firmware "AX210 firmware fix" off
     xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
     mei_me "Blacklist mei_me kernel module" off
@@ -18,6 +19,9 @@ clear
 
 for choice in ${choicesTweaks}; do
   case ${choice} in
+  nm-wait-online)
+    systemctl disable NetworkManager-wait-online.service
+    ;;
   ax210-firmware)
     rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
     ;;
