@@ -1,18 +1,18 @@
 #!/bin/bash
 
-cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Select the tweaks you want to apply:" 0 0 0)
+cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Select the tweaks you want to apply:" 32 96 24)
 optionsTweaks=(
-    nm-wait-online "Makes boot time faster but not waiting for network connection" off
-    ax210-firmware "AX210 firmware fix" off
-    xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
-    mei_me "Blacklist mei_me kernel module" off
-    ntfs "Use ntfs kernel kernel module by default" off
-    sddm-wayland "Run sddm on wayland" off
-    tearfree-amd "Xorg TearFree AMD" off
-    tearfree-intel "Xorg TearFree Intel" off
-    elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
-    ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
-    tlp "TLP" off
+  nm-wait-online "Makes boot time faster but not waiting for network connection" off
+  ax210-firmware "AX210 firmware fix" off
+  xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
+  mei_me "Blacklist mei_me kernel module" off
+  ntfs "Use ntfs kernel kernel module by default" off
+  sddm-wayland "Run sddm on wayland" off
+  tearfree-amd "Xorg TearFree AMD" off
+  tearfree-intel "Xorg TearFree Intel" off
+  elan-trackpad "Fixes broken Elan trackpad on Lenovo Yoga Slim 7" off
+  ms-fonts "Some microsoft fonts (the least broken package) (AUR)" off
+  tlp "TLP" off
 )
 choicesTweaks=$("${cmdTweaks[@]}" "${optionsTweaks[@]}" 2>&1 >/dev/tty)
 clear
@@ -40,7 +40,7 @@ EOF
     echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
     ;;
   ntfs)
-    echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' > /etc/udev/rules.d/ntfs3_by_default.rules
+    echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' >/etc/udev/rules.d/ntfs3_by_default.rules
     ;;
   sddm-wayland)
     cat <<EOF >/etc/sddm.conf.d/10-sddm-wayland.conf

@@ -1,22 +1,22 @@
 #!/bin/bash
 
 # desktop input
-cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 0 0 0)
+cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 32 96 24)
 optionsGeneral=(
-    bluetooth "Bluetooth support" on
-    cups "Printing support (CUPS)" on
-    devel "A lot of development tools for various programming languages" on
-    vm "Virtual machines (Qemu+KVM)" on
-    podman "The better container engine (recommended)" on
-    docker "The OG container engine" off
+  bluetooth "Bluetooth support" on
+  cups "Printing support (CUPS)" on
+  devel "A lot of development tools for various programming languages" on
+  vm "Virtual machines (Qemu+KVM)" on
+  podman "The better container engine (recommended)" on
+  docker "The OG container engine" off
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 
-cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 0 0 0)
+cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 32 96 24)
 optionsDesktop=(
-    gnome "GNOME" off
-    gnome-additional-apps "Some additional apps (can be installed later)" off
-    kde "KDE Plasma" off
+  gnome "GNOME" off
+  gnome-additional-apps "Some additional apps (can be installed later)" off
+  kde "KDE Plasma" off
 )
 
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)

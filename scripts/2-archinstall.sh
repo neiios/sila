@@ -83,13 +83,13 @@ sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 
 # script can be used for both uefi and bios machines
 if [[ $UEFIBIOS -eq 1 ]]; then
-    pacman -S efibootmgr --noconfirm --needed
-    grub-install --target=x86_64-efi "$diskname" --efi-directory=/boot --recheck
+  pacman -S efibootmgr --noconfirm --needed
+  grub-install --target=x86_64-efi "$diskname" --efi-directory=/boot --recheck
 else
-    grub-install "$diskname"
+  grub-install "$diskname"
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # run the script after reboot
-echo "bash /root/alis/scripts/postinstall.sh" >> /root/.profile
+echo "bash /root/alis/scripts/postinstall.sh" >>/root/.profile

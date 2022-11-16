@@ -2,8 +2,8 @@
 set -e
 
 if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root"
-    exit 1
+  echo "This script must be run as root"
+  exit 1
 fi
 
 # use sudo without password (should be reverted at the end of the script)
@@ -35,7 +35,7 @@ function installFromList() {
   done </tmp/progs.csv
 
   # run whiptail
-  cmd=(whiptail --nocancel --separate-output --checklist "$2" 0 0 0)
+  cmd=(whiptail --nocancel --separate-output --checklist "$2" 32 96 24)
   choices=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
 
   # install loop
@@ -47,28 +47,28 @@ function installFromList() {
 
     # install
     case "$format" in
-      f) flatpakInstall ${packages} ;;
-      a) paruInstall ${packages} ;;
-      p) pacmanInstall ${packages} ;;
+    f) flatpakInstall ${packages} ;;
+    a) paruInstall ${packages} ;;
+    p) pacmanInstall ${packages} ;;
     esac
 
     # run optional custom postinstall command
     eval "$custom"
-  done <<< "$choices"
+  done <<<"$choices"
 }
 
 function cloneRepo() {
-    # clone the repository
-    while true; do
-        # get the repository url ("" is important)
-        l=""$(whiptail --title "Git repo link" --nocancel --inputbox "Enter the repository url without the https:// part:\n\nThe default value is github.com/richard96292/dotfiles.\nLeave the input empty to clone the default repository." 0 0 3>&1 1>&2 2>&3)
-        # if the input is empty use the default value
-        [[ -z "$l" ]] && git clone https://github.com/richard96292/dotfiles "/home/${username}/.dotfiles" && break
-        # else clone the repo
-        git clone "https://${l}" "/home/${username}/.dotfiles" && break
-        # if we got to here the link is invalid
-        whiptail --title "Error" --msgbox "The git repository doesn't exist. Verify the link and enter it again.\n\n" 0 0 || break
-    done
+  # clone the repository
+  while true; do
+    # get the repository url ("" is important)
+    l=""$(whiptail --title "Git repo link" --nocancel --inputbox "Enter the repository url without the https:// part:\n\nThe default value is github.com/richard96292/dotfiles.\nLeave the input empty to clone the default repository." 0 0 3>&1 1>&2 2>&3)
+    # if the input is empty use the default value
+    [[ -z "$l" ]] && git clone https://github.com/richard96292/dotfiles "/home/${username}/.dotfiles" && break
+    # else clone the repo
+    git clone "https://${l}" "/home/${username}/.dotfiles" && break
+    # if we got to here the link is invalid
+    whiptail --title "Error" --msgbox "The git repository doesn't exist. Verify the link and enter it again.\n\n" 0 0 || break
+  done
 }
 
 function installDotfiles() {
@@ -133,4 +133,3 @@ rm -rf /mnt/root/alis
 
 # final notice
 whiptail --title "Congratulations" --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0 && reboot
-
