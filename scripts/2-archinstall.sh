@@ -67,7 +67,7 @@ pacman -S networkmanager --noconfirm --needed
 systemctl enable NetworkManager
 
 # bootloader
-pacman -S grub os-prober grub-btrfs --noconfirm --needed
+pacman -S grub os-prober --noconfirm --needed
 
 # change these options only if the drive should be encrypted
 if [[ -n $passwordLuks ]]; then
