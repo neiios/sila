@@ -33,8 +33,7 @@ for choice in ${choicesGeneral}; do
       ruby ruby-docs \
       jre-openjdk jdk-openjdk openjdk-src java-openjfx java-openjfx-src \
       vala \
-      eslint prettier npm nodejs \
-      docker docker-compose --noconfirm --needed
+      eslint prettier npm nodejs --noconfirm --needed
     ;;
   docker)
     pacman -S docker docker-compose python-docker --noconfirm --needed
