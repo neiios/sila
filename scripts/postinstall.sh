@@ -35,7 +35,8 @@ function installFromList() {
   done </tmp/progs.csv
 
   # run whiptail
-  cmd=(whiptail --nocancel --separate-output --checklist "$2" 32 96 24)
+  # TODO: check if selection is empty here
+  cmd=(whiptail --nocancel --separate-output --checklist "$2" 32 156 24)
   choices=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
 
   # install loop

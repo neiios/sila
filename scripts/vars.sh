@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # file is generated at runtime
-# here is just an example
-export password=
+# here is just an example and to calm down shellcheck
 export selectedDisk=
 export rootPartition=
 export mappedRoot=
-export UEFIBIOS=
-export passwordLuks=
+export UEFI=
+export ENCRYPTION=

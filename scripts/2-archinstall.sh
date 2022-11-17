@@ -87,7 +87,7 @@ function installGrub() {
     sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
     mkinitcpio -P
     sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-    grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value $rootPartition):luks root=/dev/mapper/luks rootflags=subvol=@"
+    grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value $rootPartition):luks root=$mappedRoot rootflags=subvol=@"
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
   fi
 
@@ -96,7 +96,7 @@ function installGrub() {
   sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 
   # script can be used for both uefi and bios machines
-  if [[ $UEFIBIOS -eq 1 ]]; then
+  if [[ $UEFI -eq 1 ]]; then
     grub-install --target=x86_64-efi --bootloader-id=ARCH --efi-directory=/efi --recheck
   else
     grub-install --target=i386-pc "$selectedDisk"
@@ -122,5 +122,5 @@ configureNetwork || error "Failed to configure a network."
 
 installGrub || error "Failed to install grub bootloader."
 
-# run the script after reboot
+# run postinstall script after reboot
 echo "bash /root/alis/scripts/postinstall.sh" >>/root/.profile

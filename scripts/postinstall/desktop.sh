@@ -53,6 +53,7 @@ for choice in ${choicesGeneral}; do
   vm)
     yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
     systemctl enable libvirtd.service
+    # TODO: create a default network and start it. Create a default storage pool.
     usermod -aG libvirt "${username}"
     ;;
   cups)
