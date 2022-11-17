@@ -10,15 +10,15 @@ fi
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 function flatpakInstall() {
-  sudo -u "$username" flatpak install -y --noninteractive flathub "${@}"
+  sudo -u "$username" flatpak install -y --noninteractive flathub "$@"
 }
 
 function paruInstall() {
-  sudo -u "$username" paru -S "${@}" --noconfirm --needed
+  sudo -u "$username" paru -S "$@" --noconfirm --needed
 }
 
 function pacmanInstall() {
-  pacman -S "${@}" --noconfirm --needed
+  pacman -S "$@" --noconfirm --needed
 }
 
 # first argument filepath, second whiptail string
@@ -43,14 +43,14 @@ function installFromList() {
   [[ -n $choices ]] && while read -r app; do
     # get variables
     format="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $1}')"
-    packages="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $5}')"
+    IFS=" " read -r -a packages <<<"$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $5}')"
     custom="$(grep "${app}" /tmp/progs.csv | awk -F',' '{print $6}')"
 
     # install
     case "$format" in
-    f) flatpakInstall ${packages} ;;
-    a) paruInstall ${packages} ;;
-    p) pacmanInstall ${packages} ;;
+      f) flatpakInstall "${packages[@]}" ;;
+      a) paruInstall "${packages[@]}" ;;
+      p) pacmanInstall "${packages[@]}" ;;
     esac
 
     # run optional custom postinstall command

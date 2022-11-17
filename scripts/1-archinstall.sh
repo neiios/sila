@@ -14,7 +14,7 @@ function tutorial() {
 function getEncryptionPass() {
   while true; do
     encryptionPass=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "${invalidPasswordMessage}Enter the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
-    [[ -n "$encryptionPass" ]] && encryptionPass2=$(whiptail --nocancel --passwordbox --title --title "Disk encryption password" "Retype the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
+    [[ -n "$encryptionPass" ]] && encryptionPass2=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "Retype the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
     # can be empty
     [[ "$encryptionPass" == "$encryptionPass2" ]] && break
     invalidPasswordMessage="The passwords did not match or you have entered an empty string.\n\n"
@@ -47,6 +47,7 @@ function partitionDisk() {
     clear
     error "User exited."
   }
+  clear
 
   # point of no return
   # destroying the disk
@@ -66,8 +67,8 @@ function encryptDisk() {
   # encrypt root volume only if the password is given
   mappedRoot="$rootPartition"
   if [[ $ENCRYPTION -eq 1 ]]; then
-    echo "$passwordLuks" | cryptsetup -q luksFormat "$rootPartition"
-    echo "$passwordLuks" | cryptsetup open "$rootPartition" luks
+    echo "$encryptionPass" | cryptsetup -q luksFormat "$rootPartition"
+    echo "$encryptionPass" | cryptsetup open "$rootPartition" luks
     mappedRoot=/dev/mapper/luks
   fi
 }
@@ -100,13 +101,8 @@ function mountSubvolumes() {
   mount -o noatime,compress-force=zstd,subvol=@snapshots "$mappedRoot" /mnt/.snapshots
 
   # boot/efi partition
-  if [[ $UEFI -eq 1 ]]; then
-    mkdir -pv /mnt/efi
-    mount "$bootPartition" /mnt/efi
-  else
-    mkdir -pv /mnt/boot
-    mount "$bootPartition" /mnt/boot
-  fi
+  mkdir -pv /mnt/boot
+  mount "$bootPartition" /mnt/boot
 }
 
 function pacstrapSystem() {

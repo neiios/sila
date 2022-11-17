@@ -87,7 +87,7 @@ function installGrub() {
     sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
     mkinitcpio -P
     sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-    grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value $rootPartition):luks root=$mappedRoot rootflags=subvol=@"
+    grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value "$rootPartition"):luks root=$mappedRoot rootflags=subvol=@"
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
   fi
 
@@ -97,7 +97,7 @@ function installGrub() {
 
   # script can be used for both uefi and bios machines
   if [[ $UEFI -eq 1 ]]; then
-    grub-install --target=x86_64-efi --bootloader-id=ARCH --efi-directory=/efi --recheck
+    grub-install --target=x86_64-efi --bootloader-id=ARCH --efi-directory=/boot --recheck
   else
     grub-install --target=i386-pc "$selectedDisk"
   fi
@@ -106,7 +106,8 @@ function installGrub() {
   grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-# dont run this script without setting needed env vars
+# main
+# dont run this script by itself without setting needed env vars
 # shellcheck source=/scripts/vars.sh
 source /root/alis/scripts/vars.sh
 
