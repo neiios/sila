@@ -112,12 +112,7 @@ passwordLuks="$passwordLuks"
 EOF
 
 # chroot into the new install
-mount -t proc /proc /mnt/proc/
-mount -t sysfs /sys /mnt/sys/
-mount --rbind /dev /mnt/dev/
-[[ $UEFIBIOS -eq 1 ]] && mount --rbind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
-cp /etc/resolv.conf /mnt/etc/resolv.conf
-chroot /mnt /root/alis/scripts/2-archinstall.sh
+arch-chroot /mnt /root/alis/scripts/2-archinstall.sh
 
 # final notice
 if (whiptail --title "Congratulations" --yesno "The first part of the installation has finished succesfully.\n\nThe second part will start after reboot.\n\nDo you want to reboot your computer now?" 0 0); then
