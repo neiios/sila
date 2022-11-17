@@ -3,7 +3,7 @@
 # file is generated at runtime
 # here is just an example
 export password=
-export diskname=
+export selectedDisk=
 export rootPartition=
 export mappedRoot=
 export UEFIBIOS=

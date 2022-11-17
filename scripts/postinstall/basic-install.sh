@@ -46,6 +46,7 @@ pacman -S asp bat --noconfirm --needed
 sudo -u "$username" git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
 cd "/home/${username}/paru-bin"
 sudo -u "$username" makepkg -si --noconfirm --needed
+rm -rf "/home/${username}/paru-bin"
 sed -i "s/#BottomUp/BottomUp/" /etc/paru.conf
 
 # some basic things
