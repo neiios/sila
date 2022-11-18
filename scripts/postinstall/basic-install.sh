@@ -42,7 +42,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 # configure make
-sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
+sed -i "s/-j2/-j$(($(nproc) - 1))/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
 # install paru-bin
 pacman -S asp bat --noconfirm --needed
