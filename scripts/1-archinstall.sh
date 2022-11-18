@@ -107,7 +107,7 @@ function mountSubvolumes() {
 
 function pacstrapSystem() {
   # install basic packages
-  pacstrap /mnt base base-devel linux linux-headers linux-firmware git vim libnewt btrfs-progs
+  pacstrap /mnt base base-devel linux linux-headers linux-firmware libnewt
   # generate fstab
   genfstab -U /mnt >>/mnt/etc/fstab
   # transfer files

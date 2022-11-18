@@ -6,7 +6,7 @@
 # diff /tmp/gsettings.before /tmp/gsettings.after | sed 's/>/gsettings set/;tx;d;:x' > gnome-configure.sh
 
 # cleaning
-sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
+sudo -u "${username:?Username not set.}" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy recent-files-max-age 30
 sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-temp-files true
 sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.privacy remove-old-trash-files true
 # theme
@@ -18,8 +18,6 @@ sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desk
 sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 # layouts
 sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'ru')]"
-# disable fucking bell
-sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.wm.preferences audible-bell false
 # and event sounds
 sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.desktop.sound event-sounds false
 # set fonts

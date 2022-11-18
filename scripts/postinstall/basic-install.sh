@@ -1,10 +1,5 @@
 #!/bin/bash
 
-function error() {
-  echo "${1:-"Unknown Error"}" 1>&2
-  exit 1
-}
-
 function createUser() {
   # get username
   while true; do
@@ -58,7 +53,7 @@ rm -rf "/home/${username}/paru-bin"
 sed -i "s/#BottomUp/BottomUp/" /etc/paru.conf
 
 # some basic things
-pacman -S htop bash-completion vim neovim \
+pacman -S git htop bash-completion vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   dosfstools ntfs-3g btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh sshfs rsync nfs-utils avahi cifs-utils \
@@ -67,7 +62,7 @@ pacman -S htop bash-completion vim neovim \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
   pacman-contrib reflector \
-  libdecor \
+  libdecor lsb-release \
   wireguard-tools \
   sof-firmware \
   flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
