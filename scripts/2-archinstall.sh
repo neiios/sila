@@ -60,7 +60,7 @@ LC_MESSAGES="en_US.UTF-8"
 EOF
 
   # set keymap
-  localectl set-keymap --no-convert us
+  echo "KEYMAP=us" >>/etc/vconsole.conf
 }
 
 function configureRootUser() {
@@ -76,6 +76,7 @@ function configureRootUser() {
   # configure root password
   echo "root:$rootPassword" | chpasswd
   echo 'alias vim=nvim' >>/etc/bashrc
+  unset rootPassword rootPassword2
 }
 
 function configureNetwork() {
@@ -108,7 +109,7 @@ function installGrub() {
 
   # edit config
   sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
-  sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
+  sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/" /etc/default/grub
 
   # script can be used for both uefi and bios machines
   if [[ $UEFI -eq 1 ]]; then

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: test with set -eu
+
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root"
   exit 1
@@ -13,7 +15,7 @@ function error() {
 # ask user for confirmation
 whiptail --title "ALIS part 2" --yes-button "Continue" \
   --no-button "Cancel" \
-  --yesno "Press \`Continue\` to run the postinstall script." 14 70 || {
+  --yesno "Press \`Continue\` to run the postinstall script." 8 40 || {
   rm /root/.profile
   error "User exited."
 }
@@ -48,7 +50,8 @@ neofetch
 sleep 5
 
 # clean up
-rm -rf /root/.profile /root/alis
+rm -rf "/root/.profile" "/root/alis" "/home/${username}/.npm"
 
 # final notice
 whiptail --title "Congratulations" --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0 && reboot
+clear

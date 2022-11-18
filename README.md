@@ -35,6 +35,8 @@ bash /tmp/alis/scripts/1-archinstall.sh
 1. Follow the instructions given by the installer.
 1. Reboot your computer.
    - **You will have to log in as root after the reboot.**
+1. The script will launch automatically.
+   - You can always launch it manually with `bash /root/alis/scripts/postinstall.sh`.
 1. Follow the installer instructions. Read each page carefully and select what you want to install.
 1. Reboot your computer again.
 1. ?
@@ -48,8 +50,7 @@ ALIS optionally supports running the dotfile installation script given by the us
 As the last step in the installation process, the user can install the dotfiles from a personal git repository.
 You will need to enter your dotfile repo URL link.
 The git repository has to be public for the script to access it.
-The default value is `github.com/richard96292/dotfiles`.
-Keep in mind that the `https://` part is not needed. The script adds it automatically.
+The default value is `https://github.com/richard96292/dotfiles`.
 The script will search for an alis-install-script.sh in the root directory of the cloned repo and execute it.
 You can find an example of such a script in [my dotfiles repo](https://github.com/richard96292/dotfiles).
 

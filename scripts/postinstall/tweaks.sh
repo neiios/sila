@@ -1,12 +1,13 @@
 #!/bin/bash
 
-cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Advanced menu. Do not select anything if you don't know what you are doing." 32 96 24)
+cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Advanced menu. Do not change anything if you don't know what you are doing." 32 96 24)
 optionsTweaks=(
-  nm-wait-online "Makes boot time faster but not waiting for network connection" off
+  nm-wait-online "Makes boot time faster by not waiting for network manager to start" off
   ax210-firmware "AX210 firmware fix" off
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
   mei_me "Blacklist mei_me kernel module" off
   ntfs "Use ntfs kernel kernel module by default" off
+  desktop-cleanup "Cast a magic incantation to remove trash .desktop files" on
   sddm-wayland "Run sddm on wayland" off
   tearfree-amd "Xorg TearFree AMD" off
   tearfree-intel "Xorg TearFree Intel" off
@@ -41,6 +42,13 @@ EOF
       ;;
     ntfs)
       echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' >/etc/udev/rules.d/ntfs3_by_default.rules
+      ;;
+    desktop-cleanup)
+      sudo -u "${username:?Username not set}" mkdir -pv "/tmp/desktop" \
+        && sudo -u "${username}" cp /usr/share/applications/{electron*.desktop,sxiv.desktop,lstopo.desktop,*openjdk*.desktop,*zathura*.desktop,calf.desktop,cppcheck*.desktop,ranger.desktop,qv4l2.desktop,qdbusviewer.desktop,qvidcap.desktop,linguist.desktop,designer.desktop,assistant.desktop,htop.desktop,avahi-*.desktop,bssh.desktop,bvnc.desktop,xdvi.desktop,winetricks.desktop,vim.desktop,nvim.desktop,*fontforge*.desktop} "/tmp/desktop/" \
+        && sudo -u "${username}" echo 'Hidden=true' | sudo -u "${username}" tee -a "/tmp/desktop/*" \
+        && sudo -u "${username}" mkdir -pv "/home/${username}/.local/share/applications" \
+        && sudo -u "${username}" mv "/tmp/desktop/*" "/home/${username:?Username not set.}/.local/share/applications/"
       ;;
     sddm-wayland)
       cat <<EOF >/etc/sddm.conf.d/10-sddm-wayland.conf

@@ -10,23 +10,16 @@ function createUser() {
 
   # get password
   while true; do
-    userPassword=$(whiptail --nocancel --passwordbox --title "Root password" "${invalidPasswordMessage}Enter the root password:" 10 50 3>&1 1>&2 2>&3)
-    userPassword2=$(whiptail --nocancel --passwordbox --title "Confirm root password" "Retype the root password:" 10 50 3>&1 1>&2 2>&3)
+    userPassword=$(whiptail --nocancel --passwordbox --title "User password" "${invalidPasswordMessage}Enter the user password:" 10 50 3>&1 1>&2 2>&3)
+    userPassword2=$(whiptail --nocancel --passwordbox --title "Confirm user password" "Retype the user password:" 10 50 3>&1 1>&2 2>&3)
     [[ "${userPassword}" == "${userPassword2}" && -n "${userPassword}" && -n "${userPassword2}" ]] && break
     invalidPasswordMessage="The passwords did not match or you have entered an empty password.\n\n"
   done
   clear
 
   # create a user
-  # handle the case when user exists
-  ! { id -u "${username}" >/dev/null 2>&1; } \
-    || {
-      whiptail --title "WARNING" --yes-button "Continue" \
-        --no-button "Cancel" \
-        --yesno "The user \`${username}\` already exists on this system." 14 70 || error "User exited."
-    }
-  useradd -m -g wheel "${username}" \
-    || usermod -aG wheel "${username}" && mkdir -pv "/home/${username}" && chown "${username}:${username}"
+  useradd -m "${username}"
+  usermod -aG wheel "${username}"
   echo "${username}:${userPassword}" | chpasswd
   unset userPassword userPassword2
 }
@@ -81,7 +74,7 @@ usermod -aG realtime "$username"
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
 # i really like muh codecs
-pacman -S jasper libpng libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader --noconfirm --needed
+pacman -S jasper libpng libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader kimageformats karchive qt5-imageformats --noconfirm --needed
 pacman -S ffmpeg av1an svt-av1 aom dav1d rav1e x265 libde265 x264 xvidcore libvpx rav1e libmatroska mkvtoolnix-cli --noconfirm --needed
 pacman -S lame libmad opus libvorbis speex faac faad2 --noconfirm --needed
 

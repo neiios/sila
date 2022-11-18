@@ -14,13 +14,16 @@ function tutorial() {
 function getEncryptionPass() {
   while true; do
     encryptionPass=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "${invalidPasswordMessage}Enter the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
-    [[ -n "$encryptionPass" ]] && encryptionPass2=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "Retype the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
-    # can be empty
-    [[ "$encryptionPass" == "$encryptionPass2" ]] && break
-    invalidPasswordMessage="The passwords did not match or you have entered an empty string.\n\n"
+    [[ -n "$encryptionPass" ]] && encryptionPass2=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "Retype the disk encryption password:" 10 50 3>&1 1>&2 2>&3)
+    # passwords match and are not empty
+    [[ "${encryptionPass}" == "${encryptionPass2}" && -n "${encryptionPass2}" ]] && {
+      ENCRYPTION=1
+      break
+    }
+    # password is empty
+    [[ -z "$encryptionPass" ]] && break
+    invalidPasswordMessage="The passwords did not match.\n\n"
   done
-  # set flag to true
-  ENCRYPTION=1
   clear
 }
 
@@ -29,7 +32,7 @@ function selectDisk() {
   while read -r disk data; do
     parts+=("$disk" "$data")
   done < <(lsblk --nodeps -lno name,model,type,size | grep -v -e loop -e sr)
-  selectedDisk="/dev/$(whiptail --title "WARNING: all data on the selected drive will be wiped" --menu "Choose the drive for the installation:" 0 0 0 "${parts[@]}" 3>&1 1>&2 2>&3)"
+  selectedDisk="/dev/$(whiptail --nocancel --title "WARNING: all data on the selected drive will be wiped" --menu "Choose the drive for the installation:" 0 0 0 "${parts[@]}" 3>&1 1>&2 2>&3)"
 
   # detect partition name template
   # not sure if mmcblk is needed (have no way to test it)
@@ -43,7 +46,7 @@ function selectDisk() {
 
 function partitionDisk() {
   # one last confirmation
-  whiptail --title "Here be dragons" --yes-button "Continue" --no-button "Cancel" --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 || {
+  whiptail --title "Here be dragons" --defaultno --yes-button "Continue" --no-button "Cancel" --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 || {
     clear
     error "User exited."
   }

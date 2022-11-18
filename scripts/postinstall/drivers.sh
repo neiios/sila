@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # drivers input
-cmdDrivers=(whiptail --separate-output --checklist "Select the drivers you want to use:" 32 96 24)
+cmdDrivers=(whiptail --separate-output --checklist "Select the drivers you want to use:" 24 64 14)
 optionsDrivers=(
   amd "AMD" on
   nvidia-proprietary "Nvidia (proprietary)" off
