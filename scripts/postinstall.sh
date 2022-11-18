@@ -6,19 +6,9 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-# use sudo without password (should be reverted at the end of the script)
-sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
-
-function flatpakInstall() {
-  sudo -u "$username" flatpak install -y --noninteractive flathub "$@"
-}
-
-function paruInstall() {
-  sudo -u "$username" paru -S "$@" --noconfirm --needed
-}
-
-function pacmanInstall() {
-  pacman -S "$@" --noconfirm --needed
+function error() {
+  echo "${1:-"Unknown Error"}" 1>&2
+  exit 1
 }
 
 # first argument filepath, second whiptail string
@@ -48,15 +38,26 @@ function installFromList() {
 
     # install
     case "$format" in
-      f) flatpakInstall "${packages[@]}" ;;
-      a) paruInstall "${packages[@]}" ;;
-      p) pacmanInstall "${packages[@]}" ;;
+      f) sudo -u "$username" flatpak install -y --noninteractive flathub "${packages[@]}" ;;
+      a) sudo -u "$username" paru -S "${packages[@]}" --noconfrm --needed ;;
+      p) pacman -S "${packages[@]}" --noconfirm --needed ;;
     esac
 
     # run optional custom postinstall command
     eval "$custom"
   done <<<"$choices"
 }
+
+# ask user for confirmation
+whiptail --title "ALIS part 2" --yes-button "Continue" \
+  --no-button "Cancel" \
+  --yesno "Press \`Continue\` to run the postinstall script." 14 70 || {
+  rm /root/.profile
+  error "User exited."
+}
+
+# use sudo without password (should be reverted at the end of the script)
+sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # basic packages
 # shellcheck source=/scripts/postinstall/basic-install.sh

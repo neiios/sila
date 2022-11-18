@@ -1,34 +1,42 @@
 #!/bin/bash
 
-set -e
-
-# functions
-function usernameInput() {
-  while true; do
-    u=$(whiptail --title "Username" --nocancel --inputbox "${invalidMessage}Enter the username:" 0 0 3>&1 1>&2 2>&3)
-    [[ "${u}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]] && echo "${u}" && break
-    invalidMessage="The username is invalid.\nValid username should contain up to 32 lowercase letters, number, underscores and hyphens.\nThe username may end with a \$.\n"
-  done
+function error() {
+  echo "${1:-"Unknown Error"}" 1>&2
+  exit 1
 }
 
-function inputPass() {
+function createUser() {
+  # get username
   while true; do
-    t=$(whiptail --title "$1 password" --nocancel --passwordbox "${invalidPasswordMessage}Enter the $1 password:" --nocancel 10 50 3>&1 1>&2 2>&3)
-    [[ -n "${t}" ]] && t2=$(whiptail --title "$1 password" --nocancel --passwordbox "Retype the $1 password:" --nocancel 10 50 3>&1 1>&2 2>&3)
-    [[ "${t}" == "${t2}" && -n "${t}" && -n "${t2}" ]] && echo "${t}" && break
-    invalidPasswordMessage="The passwords did not match or you have entered an empty string.\n\n"
+    username=$(whiptail --title "Username" --nocancel --inputbox "${invalidMessage}Enter the username:" 0 0 3>&1 1>&2 2>&3)
+    [[ "${username}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]] && break
+    invalidMessage="The username is invalid.\nValid username should contain up to 32 lowercase letters, number, underscores and hyphens.\n"
   done
+
+  # get password
+  while true; do
+    userPassword=$(whiptail --nocancel --passwordbox --title "Root password" "${invalidPasswordMessage}Enter the root password:" 10 50 3>&1 1>&2 2>&3)
+    userPassword2=$(whiptail --nocancel --passwordbox --title "Confirm root password" "Retype the root password:" 10 50 3>&1 1>&2 2>&3)
+    [[ "${userPassword}" == "${userPassword2}" && -n "${userPassword}" && -n "${userPassword2}" ]] && break
+    invalidPasswordMessage="The passwords did not match or you have entered an empty password.\n\n"
+  done
+  clear
+
+  # create a user
+  # handle the case when user exists
+  ! { id -u "${username}" >/dev/null 2>&1; } \
+    || {
+      whiptail --title "WARNING" --yes-button "Continue" \
+        --no-button "Cancel" \
+        --yesno "The user \`${username}\` already exists on this system." 14 70 || error "User exited."
+    }
+  useradd -m -g wheel "${username}" \
+    || usermod -aG wheel "${username}" && mkdir -pv "/home/${username}" && chown "${username}:${username}"
+  echo "${username}:${userPassword}" | chpasswd
+  unset userPassword userPassword2
 }
 
-# get username and password
-username=$(usernameInput)
-password="$(inputPass "Regular user")"
-clear
-
-# create a user
-useradd -m "${username}"
-usermod -aG wheel "${username}"
-echo "${username}:${password}" | chpasswd
+createUser
 
 # configure pacman
 sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
@@ -44,7 +52,7 @@ sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 # install paru-bin
 pacman -S asp bat --noconfirm --needed
 sudo -u "$username" git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
-cd "/home/${username}/paru-bin"
+cd "/home/${username}/paru-bin" || error "Paru directory does not exist."
 sudo -u "$username" makepkg -si --noconfirm --needed
 rm -rf "/home/${username}/paru-bin"
 sed -i "s/#BottomUp/BottomUp/" /etc/paru.conf
