@@ -93,16 +93,12 @@ function createSubvolumes() {
 function mountSubvolumes() {
   mount -o noatime,compress-force=zstd,subvol=@ "$mappedRoot" /mnt
   # create mountpoints
-  mkdir -pv /mnt/{home,var/log,var/cache/pacman/pkg,.snapshots}
-
-  mount -o noatime,compress-force=zstd,subvol=@home "$mappedRoot" /mnt/home
-  mount -o noatime,compress-force=zstd,subvol=@log "$mappedRoot" /mnt/var/log
-  mount -o noatime,compress-force=zstd,subvol=@pkg "$mappedRoot" /mnt/var/cache/pacman/pkg
-  mount -o noatime,compress-force=zstd,subvol=@snapshots "$mappedRoot" /mnt/.snapshots
-
+  mount --mkdir -o noatime,compress-force=zstd,subvol=@home "$mappedRoot" /mnt/home
+  mount --mkdir -o noatime,compress-force=zstd,subvol=@log "$mappedRoot" /mnt/var/log
+  mount --mkdir -o noatime,compress-force=zstd,subvol=@pkg "$mappedRoot" /mnt/var/cache/pacman/pkg
+  mount --mkdir -o noatime,compress-force=zstd,subvol=@snapshots "$mappedRoot" /mnt/.snapshots
   # boot/efi partition
-  mkdir -pv /mnt/boot
-  mount "$bootPartition" /mnt/boot
+  mount --mkdir "$bootPartition" /mnt/boot
 }
 
 function pacstrapSystem() {
