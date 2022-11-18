@@ -58,6 +58,9 @@ LC_MONETARY="lt_LT.UTF-8"
 # system message language
 LC_MESSAGES="en_US.UTF-8"
 EOF
+
+  # set keymap
+  localectl set-keymap --no-convert us
 }
 
 function configureRootUser() {
@@ -72,6 +75,7 @@ function configureRootUser() {
 
   # configure root password
   echo "root:$rootPassword" | chpasswd
+  echo 'alias vim=nvim' >>/etc/bashrc
 }
 
 function configureNetwork() {
@@ -82,14 +86,25 @@ function configureNetwork() {
 function installGrub() {
   pacman -S grub efibootmgr os-prober --noconfirm --needed
 
+  # change udev to systemd
+  sed -i "/^HOOKS/ s/udev/systemd/" /etc/mkinitcpio.conf
+  # remove keyboard
+  sed -i "/^HOOKS/ s/keyboard //" /etc/mkinitcpio.conf
+  # add keyboard after autodetect
+  sed -i "/^HOOKS/ s/autodetect/& keyboard/" /etc/mkinitcpio.conf
+  # add sd-vconsole after keyboard
+  sed -i "/^HOOKS/ s/keyboard/& sd-vconsole/" /etc/mkinitcpio.conf
+
   # change these options only if the drive should be encrypted
   if [[ $ENCRYPTION -eq 1 ]]; then
-    sed -i "s/block/& encrypt/" /etc/mkinitcpio.conf
-    mkinitcpio -P
+    # add sd-encrypt after block
+    sed -i "/^HOOKS/ s/block/& sd-encrypt/" /etc/mkinitcpio.conf
     sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-    grubCmdline="cryptdevice=UUID=$(blkid --match-tag UUID -o value "$rootPartition"):luks root=$mappedRoot rootflags=subvol=@"
+    grubCmdline="rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@"
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
   fi
+
+  mkinitcpio -P
 
   # edit config
   sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
