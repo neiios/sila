@@ -123,5 +123,9 @@ configureNetwork || error "Failed to configure a network."
 
 installGrub || error "Failed to install grub bootloader."
 
+# fuck the beeper
+rmmod pcspkr
+echo "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
+
 # run postinstall script after reboot
 echo "bash /root/alis/scripts/postinstall.sh" >>/root/.profile
