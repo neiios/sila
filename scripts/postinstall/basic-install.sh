@@ -37,7 +37,7 @@ pacman -Syy
 # configure make
 sed -i "s/-j2/-j$(($(nproc) - 1))/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-# install paru-bin
+# install paru
 pacman -S asp bat --noconfirm --needed
 sudo -u "$username" git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
 cd "/home/${username}/paru-bin" || error "Paru directory does not exist."
@@ -54,7 +54,7 @@ pacman -S git htop bash-completion vim neovim \
   wl-clipboard xclip \
   xdg-utils xdg-user-dirs trash-cli \
   man-db man-pages texinfo \
-  pacman-contrib reflector \
+  pacman-contrib \
   libdecor lsb-release \
   wireguard-tools \
   sof-firmware \
@@ -105,14 +105,18 @@ zramctl
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
 
-# TODO: find a way for user to specify a country
-cat <<EOF >/etc/xdg/reflector/reflector.conf
---save /etc/pacman.d/mirrorlist
---country Finland,Denmark,Germany,
---protocol https
---latest 5
+# mirrorlist
+sudo -u "${username}" paru -S rate-mirrors-bin
+sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch --max-delay=21600
+mv /etc/pacman.d/mirrorlist{,.backup}
+mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
+# add alias
+cat <<'EOF' >/etc/bashrc
+alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
+  rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
+    && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \
+    && sudo mv $TMPFILE /etc/pacman.d/mirrorlist'
 EOF
-systemctl enable reflector.timer
 
 # enable cron
 systemctl enable cronie.service
