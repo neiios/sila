@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmdTweaks=(whiptail --title "Tweaks" --separate-output --checklist "Advanced menu. Do not change anything if you don't know what you are doing." 32 96 24)
+cmdTweaks=(dialog --erase-on-exit --title "Tweaks" --checklist "Advanced menu. Do not change anything if you don't know what you are doing." 32 96 24)
 optionsTweaks=(
   nm-wait-online "Makes boot time faster by not waiting for network manager to start" off
   ax210-firmware "AX210 firmware fix" off
@@ -16,7 +16,6 @@ optionsTweaks=(
   tlp "TLP" off
 )
 choicesTweaks=$("${cmdTweaks[@]}" "${optionsTweaks[@]}" 2>&1 >/dev/tty)
-clear
 
 for choice in ${choicesTweaks}; do
   case ${choice} in

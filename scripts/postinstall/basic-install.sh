@@ -3,19 +3,19 @@
 function createUser() {
   # get username
   while true; do
-    username=$(whiptail --title "Username" --nocancel --inputbox "${invalidMessage}Enter the username:" 0 0 3>&1 1>&2 2>&3)
+    username=$(dialog --erase-on-exit --title "Username" --nocancel --inputbox "${invalidMessage}Enter the username:" 0 0 3>&1 1>&2 2>&3)
+    export username
     [[ "${username}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]] && break
     invalidMessage="The username is invalid.\nValid username should contain up to 32 lowercase letters, number, underscores and hyphens.\n"
   done
 
   # get password
   while true; do
-    userPassword=$(whiptail --nocancel --passwordbox --title "User password" "${invalidPasswordMessage}Enter the user password:" 10 50 3>&1 1>&2 2>&3)
-    userPassword2=$(whiptail --nocancel --passwordbox --title "Confirm user password" "Retype the user password:" 10 50 3>&1 1>&2 2>&3)
+    userPassword=$(dialog --erase-on-exit --nocancel --title "User password" --insecure --passwordbox "${invalidPasswordMessage}Enter the user password:" 0 0 3>&1 1>&2 2>&3)
+    userPassword2=$(dialog --erase-on-exit --nocancel --title "Confirm user password" --insecure --passwordbox "Retype the user password:" 0 0 3>&1 1>&2 2>&3)
     [[ "${userPassword}" == "${userPassword2}" && -n "${userPassword}" && -n "${userPassword2}" ]] && break
     invalidPasswordMessage="The passwords did not match or you have entered an empty password.\n\n"
   done
-  clear
 
   # create a user
   useradd -m "${username}"
@@ -30,9 +30,10 @@ function setTimezone() {
   while read -r timezone; do
     arr+=("${timezone}" "Timezone")
   done <<<"$(timedatectl list-timezones)"
-  cmd=(whiptail --nocancel --title "Timezone" --menu "Select a timezone from the list:" 32 50 24)
+  cmd=(dialog --erase-on-exit --nocancel --title "Timezone" --menu "Select a timezone from the list:" 0 0 0)
   chosenTimezone=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
   timedatectl set-timezone "${chosenTimezone}"
+  echo "Timezone set to ${chosenTimezone}"
 }
 
 createUser || errror "Failed to create a user."
@@ -124,7 +125,7 @@ sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch 
 mv /etc/pacman.d/mirrorlist{,.backup}
 mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 # add alias
-cat <<'EOF' >>/etc/bashrc
+cat <<'EOF' >>/etc/bash.bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \

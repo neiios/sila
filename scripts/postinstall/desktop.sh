@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd=(whiptail --separate-output --checklist "Select packages to install:" 32 96 24)
+cmd=(dialog --erase-on-exit --title "Packages" --checklist "Select packages to install (defaults are fine in most cases):" 0 0 0)
 optionsGeneral=(
   bluetooth "Bluetooth support" on
   cups "Printing support (CUPS)" on
@@ -19,14 +19,12 @@ optionsGeneral=(
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 
-cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 18 36 8)
+cmdDesktop=(dialog --erase-on-exit --title "Desktop environment" --menu "Select the DE you want to install:\nNothing is an option as well.\nYou can always install a DE or a WM from your dotfiles later." 0 0 0)
 optionsDesktop=(
-  gnome "GNOME" off
-  kde "KDE Plasma" off
+  gnome "GNOME"
+  kde "KDE Plasma"
 )
-
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
-clear
 
 for choice in ${choicesGeneral}; do
   case ${choice} in
@@ -43,14 +41,16 @@ for choice in ${choicesGeneral}; do
       systemctl enable cups.socket
       ;;
     vm)
-      yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
+      yes y | pacman -S iptables-nft
+      pacman -S virt-manager qemu-full libvirt dnsmasq dmidecode bridge-utils openbsd-netcat --noconfirm --needed
       systemctl enable --now libvirtd.service
       virsh net-autostart default
       usermod -aG libvirt "${username:?Username not set.}"
       ;;
     c)
       pacman -S gcc gdb make pkgconf clang llvm lldb \
-        openmp openmpi cmake ninja meson doxygen elfutils --noconfirm --needed
+        openmp openmpi cmake ninja meson doxygen elfutils \
+        qt5 qt6 --noconfirm --needed
       ;;
     rust)
       pacman -S rust --noconfirm --needed
@@ -152,16 +152,14 @@ EOF
       systemctl enable sddm
       ;;
     gnome)
-      pacman -S gnome xdg-desktop-portal-gnome \
+      pacman -S gnome xdg-desktop-portal-gnome gnome-tweaks \
         gnome-themes-extra python-nautilus \
         libappindicator-gtk2 libappindicator-gtk3 \
         breeze \
         power-profiles-daemon --noconfirm --needed
       systemctl enable gdm
       flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
-      # set default settings/root/alis/scripts/postinstall/desktop.sh
-      # shellcheck source=/scripts/postinstall/gnome-configure.sh
-      source /root/alis/scripts/postinstall/gnome-configure.sh
+      bash /root/alis/scripts/postinstall/gnome-configure.sh
       ;;
   esac
 done

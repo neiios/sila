@@ -13,13 +13,20 @@ Arch Linux Install Script (ALIS) is a script that configures and installs a full
 - GNOME or KDE desktops (nothing is an option as well).
 - Optional: User configuration installation. See the section [below](#user-configuration-installation).
 - Many different applications to choose from, both generic and gaming related.
+- Virtualization with QEMU/KVM.
 - Podman or Docker.
+
+## Limitations
+
+- Dual boot on the same drive is not supported.
+- No secure boot.
+- Only a limited number of locales is generated at install time.
 
 ## How to run the script?
 
 ```bash
 # with a helper script:
-# it is strongly advised to check the source code of the script before running it
+# IMPORTANT: it is strongly advised to check the source code of the script before running it blindly
 curl -L alis.segf.lt | bash
 
 # or manually:

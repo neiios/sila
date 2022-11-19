@@ -10,11 +10,11 @@ function error() {
 function setHostname() {
   # get hostname from the user
   while true; do
-    hostname=$(whiptail --nocancel --inputbox --title "Hostname" "${invalidMessage}Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
+    hostname=$(dialog --erase-on-exit --nocancel --title "Hostname" \
+      --inputbox "${invalidMessage}Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
     [[ "${hostname}" =~ ^[a-zA-Z0-9]+(([a-zA-Z0-9-])*[a-zA-Z0-9]+)*$ ]] && break
     invalidMessage="The hostname is invalid.\nA valid hostname contains only letters from a to Z, numbers, and the hyphen (-).\nA hostname may not start or end with a hyphen.\n"
   done
-  clear
 
   # set hostname
   echo "$hostname" >/etc/hostname
@@ -62,16 +62,17 @@ EOF
 function configureRootUser() {
   # get root password
   while true; do
-    rootPassword=$(whiptail --nocancel --passwordbox --title "Root password" "${invalidPasswordMessage}Enter the root password:" 10 50 3>&1 1>&2 2>&3)
-    rootPassword2=$(whiptail --nocancel --passwordbox --title "Confirm root password" "Retype the root password:" 10 50 3>&1 1>&2 2>&3)
-    [[ "${rootPassword}" == "${rootPassword2}" && -n "${rootPassword}" && -n "${rootPassword2}" ]] && break
+    rootPassword=$(dialog --erase-on-exit --nocancel --title "Root password" \
+      --insecure --passwordbox "${invalidPasswordMessage}Enter the root password:" 0 0 3>&1 1>&2 2>&3)
+    rootPassword2=$(dialog --erase-on-exit --nocancel --title "Confirm root password" \
+      --insecure --passwordbox "Retype the root password:" 0 0 3>&1 1>&2 2>&3)
+    [[ "${rootPassword}" == "${rootPassword2}" && -n "${rootPassword}" ]] && break
     invalidPasswordMessage="The passwords did not match or you have entered an empty password.\n\n"
   done
-  clear
 
   # configure root password
   echo "root:$rootPassword" | chpasswd
-  echo 'alias vim=nvim' >>/etc/bashrc
+  echo 'alias vim=nvim' >>/etc/bash.bashrc
   unset rootPassword rootPassword2
 }
 

@@ -9,14 +9,21 @@ function error() {
 
 function tutorial() {
   # tutorial
-  whiptail --title "Tutorial" --msgbox "Up/Down arrows - navigate the list\n\nLeft/Right arrows or Tab - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
-  clear
+  dialog --erase-on-exit \
+    --title "Tutorial" \
+    --msgbox "Up/Down arrows - navigate the list\n\nLeft/Right arrows or Tab - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
 }
 
 function getEncryptionPass() {
   while true; do
-    encryptionPass=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "${invalidPasswordMessage}Enter the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 10 50 3>&1 1>&2 2>&3)
-    [[ -n "$encryptionPass" ]] && encryptionPass2=$(whiptail --nocancel --passwordbox --title "Disk encryption password" "Retype the disk encryption password:" 10 50 3>&1 1>&2 2>&3)
+    encryptionPass=$(dialog --erase-on-exit \
+      --nocancel \
+      --title "Disk encryption password" \
+      --insecure --passwordbox "${invalidPasswordMessage}Enter the disk encryption password:\nLeave the password blank if you dont want to encrypt the disk." 0 0 3>&1 1>&2 2>&3)
+    [[ -n "$encryptionPass" ]] && encryptionPass2=$(dialog --erase-on-exit \
+      --nocancel \
+      --title "Disk encryption password" \
+      --insecure --passwordbox "Retype the disk encryption password:" 0 0 3>&1 1>&2 2>&3)
     # passwords match and are not empty
     [[ "${encryptionPass}" == "${encryptionPass2}" && -n "${encryptionPass2}" ]] && {
       ENCRYPTION=1
@@ -26,15 +33,14 @@ function getEncryptionPass() {
     [[ -z "$encryptionPass" ]] && break
     invalidPasswordMessage="The passwords did not match.\n\n"
   done
-  clear
 }
 
 function selectDisk() {
   parts=()
   while read -r disk data; do
     parts+=("$disk" "$data")
-  done < <(lsblk --nodeps -lno name,model,type,size | grep -v -e loop -e sr)
-  selectedDisk="/dev/$(whiptail --nocancel --title "WARNING: all data on the selected drive will be wiped" --menu "Choose the drive for the installation:" 0 0 0 "${parts[@]}" 3>&1 1>&2 2>&3)"
+  done < <(lsblk --nodeps -lno name,model,type,size | grep -v -e loop -e sr -e zram)
+  selectedDisk="/dev/$(dialog --erase-on-exit --nocancel --title "WARNING: all data on the selected drive will be wiped" --menu "Choose the drive for the installation:" 0 0 0 "${parts[@]}" 3>&1 1>&2 2>&3)"
 
   # detect partition name template
   # not sure if mmcblk is needed (have no way to test it)
@@ -48,11 +54,10 @@ function selectDisk() {
 
 function partitionDisk() {
   # one last confirmation
-  whiptail --title "Here be dragons" --defaultno --yes-button "Continue" --no-button "Cancel" --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 || {
-    clear
-    error "User exited."
-  }
-  clear
+  dialog --erase-on-exit --title "Here be dragons" \
+    --defaultno --yes-button "Continue" --no-button "Cancel" \
+    --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 \
+    || error "User exited."
 
   # point of no return
   # destroying the disk
@@ -108,7 +113,7 @@ function mountSubvolumes() {
 
 function pacstrapSystem() {
   # install basic packages
-  pacstrap /mnt base base-devel linux linux-headers linux-firmware libnewt btrfs-progs
+  pacstrap /mnt base base-devel linux linux-headers linux-firmware dialog btrfs-progs
   # generate fstab
   genfstab -U /mnt >>/mnt/etc/fstab
   # transfer files
@@ -125,15 +130,17 @@ EOF
 }
 
 function finalNotice() {
-  if (whiptail --title "Congratulations" --yesno "The first part of the installation has finished succesfully.\n\nThe second part will start after reboot.\n\nDo you want to reboot your computer now?" 0 0); then
-    whiptail --title "Important!" --msgbox "You will have to log in as a root user after rebooting.\n\n" 0 0
+  if (dialog --erase-on-exit --title "Congratulations" \
+    --yesno "The first part of the installation has finished succesfully.\n\nThe second part will start after reboot.\n\nDo you want to reboot your computer now?" 0 0); then
+    dialog --erase-on-exit --title "Important" \
+      --msgbox "You will have to log in as a root user after rebooting.\n\n" 0 0
     umount -R /mnt
     reboot
   fi
-  clear
 }
 
 # misc
+pacman -Sy dialog --noconfirm --needed
 timedatectl set-ntp true
 ls /sys/firmware/efi &>/dev/null && UEFI=1 || UEFI=0
 

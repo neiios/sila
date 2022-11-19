@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# first argument filepath, second whiptail string
+# first argument filepath, second dialog string
 function installFromList() {
   # remove lines that start with #
   sed '/^#/d' "$1" >/tmp/progs.csv
 
-  # create package array from whiptail
+  # create package array from dialog
   arr=()
   while IFS=, read -r format name desc state packages custom; do
     arr+=("$name")
@@ -13,10 +13,9 @@ function installFromList() {
     arr+=("$state")
   done </tmp/progs.csv
 
-  # run whiptail
-  cmd=(whiptail --nocancel --separate-output --checklist "$2" 40 100 30)
+  # run dialog
+  cmd=(dialog --erase-on-exit --nocancel --checklist "$2" 0 0 0)
   choices=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
-  clear
 
   [[ -z "${choices}" ]] && return
 

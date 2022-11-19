@@ -12,10 +12,13 @@ function error() {
   exit 1
 }
 
+# misc
+pacman -S dialog --noconfirm --needed >/dev/null 2>&1
+
 # ask user for confirmation
-whiptail --title "ALIS part 2" --yes-button "Continue" \
+dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
   --no-button "Cancel" \
-  --yesno "Press \`Continue\` to run the postinstall script." 8 40 || {
+  --yesno "Press 'Continue' to run the postinstall script." 0 0 || {
   rm /root/.profile
   error "User exited."
 }
@@ -54,5 +57,8 @@ sleep 5
 rm -rf "/root/.profile" "/root/alis" "/home/${username}/.npm"
 
 # final notice
-whiptail --title "Congratulations" --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0 && reboot
-clear
+dialog --erase-on-exit \
+  --title "Congratulations" \
+  --yesno "The installation has finished succesfully.\n\nDo you want to reboot your computer now?" 0 0 \
+  || error "User exited."
+reboot
