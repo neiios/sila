@@ -5,9 +5,9 @@ function cloneRepo() {
     link=$(whiptail --title "Git repo link" --nocancel --inputbox "Enter the repository url:\nYou probably want to change the default url." 0 0 "https://github.com/richard96292/dotfiles" 3>&1 1>&2 2>&3)
 
     [[ -d "/tmp/dotfiles" ]] && rm -rf "/tmp/dotfiles"
-    sudo -u "${username:?Username not set.}" mkdir -pv "/tmp/dotfiles"
+    cd /tmp || error "Tmp dir does not exist."
     if git clone "${link}" "/tmp/dotfiles"; then
-      [[ -d "/home/${username}/.dotfiles" ]] && rm -rf "/home/${username}/.dotfiles"
+      [[ -d "/home/${username:?Username not set.}/.dotfiles" ]] && rm -rf "/home/${username}/.dotfiles"
       mv "/tmp/dotfiles" "/home/${username}/.dotfiles"
       chown -R "${username}:${username}" "/home/${username}/.dotfiles"
       return
@@ -20,7 +20,7 @@ function cloneRepo() {
 function installDotfiles() {
   while true; do
     cloneRepo
-    cd "/home/${username}/.dotfiles"
+    cd "/home/${username}/.dotfiles" || error "Dotfiles dir does not exist."
 
     if [[ -e alis-install-dotfiles.sh ]]; then
       sudo -u "${username}" bash alis-install-dotfiles.sh

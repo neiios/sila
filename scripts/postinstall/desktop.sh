@@ -1,11 +1,19 @@
 #!/bin/bash
 
-cmd=(whiptail --separate-output --checklist "Select basic packages to install (you most likely want all of them):" 32 96 24)
+cmd=(whiptail --separate-output --checklist "Select packages to install:" 32 96 24)
 optionsGeneral=(
   bluetooth "Bluetooth support" on
   cups "Printing support (CUPS)" on
-  devel "A lot of development tools for various programming languages" on
-  vm "Virtual machines (Qemu+KVM)" on
+  vm "Virtual machines. Probably don't install on a laptop." on
+  c "C/C++ dev tools." on
+  rust "Rust dev tools." on
+  java "Java dev tools." on
+  js "Javascript dev tools." on
+  python "Python dev tools." on
+  go "Go dev tools." on
+  ruby "Ruby dev tools." on
+  assembly "Assembly dev tools." on
+  misc "Other languages (lisp, vala, R, nim, zig et al)." off
   podman "The better container engine (recommended)" on
   docker "The OG container engine" off
 )
@@ -14,7 +22,6 @@ choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 32 96 24)
 optionsDesktop=(
   gnome "GNOME" off
-  gnome-additional-apps "Some additional apps (can be installed later)" off
   kde "KDE Plasma" off
 )
 
@@ -23,37 +30,9 @@ clear
 
 for choice in ${choicesGeneral}; do
   case ${choice} in
-    devel)
-      # TODO: https://wiki.archlinux.org/title/Java#Better_font_rendering
-      pacman -S git \
-        python \
-        gcc gdb make pkgconf clang llvm lldb openmp cmake ninja meson doxygen elfutils \
-        rust \
-        ruby ruby-docs \
-        jre-openjdk jdk-openjdk openjdk-src java-openjfx java-openjfx-src \
-        vala \
-        eslint prettier npm nodejs --noconfirm --needed
-      ;;
-    docker)
-      pacman -S docker docker-compose python-docker --noconfirm --needed
-      systemctl enable docker
-      usermod -aG docker "${username:?Username not set.}"
-      ;;
-    podman)
-      pacman -S podman podman-compose buildah \
-        netavark cni-plugins \
-        qemu-user-static qemu-user-static-binfmt \
-        fuse-overlayfs slirp4netns --noconfirm --needed
-      ;;
     bluetooth)
       pacman -S bluez bluez-utils --noconfirm --needed
       systemctl enable bluetooth.service
-      ;;
-    vm)
-      yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
-      systemctl enable libvirtd.service
-      # TODO: create a default network and start it. Create a default storage pool.
-      usermod -aG libvirt "${username}"
       ;;
     cups)
       pacman -S cups cups-pdf cups-pk-helper cups-filters \
@@ -62,6 +41,57 @@ for choice in ${choicesGeneral}; do
         foomatic-db-nonfree foomatic-db-nonfree-ppds \
         gutenprint foomatic-db-gutenprint-ppds system-config-printer --noconfirm --needed
       systemctl enable cups.socket
+      ;;
+    vm)
+      yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
+      systemctl enable libvirtd.service
+      virsh net-autostart default
+      usermod -aG libvirt "${username:?Username not set.}"
+      ;;
+    c)
+      pacman -S gcc gdb make pkgconf clang llvm lldb \
+        openmp openmpi cmake ninja meson doxygen elfutils --noconfirm --needed
+      ;;
+    rust)
+      pacman -S rust rustup --noconfirm --needed
+      ;;
+    java)
+      pacman -S jre-openjdk jdk-openjdk openjdk-doc openjdk-src \
+        java-openjfx java-openjfx-doc java-openjfx-src \
+        maven gradle ant \
+        kotlin --noconfirm --needed
+      ;;
+    js)
+      pacman -S nodejs npm yarn --noconfirm --needed
+      ;;
+    python)
+      pacman -S python python-pip python-pipx \
+        python-pipenv bpython jupyterlab jupyter-notebook --noconfirm --needed
+      ;;
+    go)
+      pacman -S go gopls go-tools delve tinygo --noconfirm --needed
+      ;;
+    ruby)
+      pacman -S ruby ruby-irb ruby-rdoc ruby-docs --noconfirm --needed
+      ;;
+    assembly)
+      pacman -S binutils fasm nasm yasm --noconfirm --needed
+      ;;
+    misc)
+      pacman -S nim lua r gcc-fortran zig vala \
+        clisp ecl clojure leiningen ocaml erlang elixir --noconfirm --needed
+      ;;
+    podman)
+      pacman -S podman podman-compose buildah \
+        netavark cni-plugins \
+        qemu-user-static qemu-user-static-binfmt \
+        fuse-overlayfs slirp4netns --noconfirm --needed
+      sed -i "s/driver = \"overlay\"/driver = \"btrfs\"/" /etc/containers/storage.conf
+      ;;
+    docker)
+      pacman -S docker docker-compose python-docker --noconfirm --needed
+      systemctl enable docker
+      usermod -aG docker "${username:?Username not set.}"
       ;;
   esac
 done
@@ -103,7 +133,7 @@ for choice in ${choicesDesktop}; do
       # for plasma-workspace
       pacman -S appmenu-gtk-module gpsd --noconfirm --needed
       # power profiles daemon
-      pacman -S power-profiles-daemon python-gobject --noconfirm --needed
+      pacman -S power-profiles-daemon --noconfirm --needed
       # for kde-gtk-config
       pacman -S gnome-themes-extra --noconfirm --needed
       # for gtk tray icons
@@ -122,33 +152,16 @@ EOF
       systemctl enable sddm
       ;;
     gnome)
-      # essential
-      pacman -S gnome-shell mutter gdm xdg-desktop-portal-gnome gnome-keyring gnome-control-center gnome-session gnome-menus gnome-settings-daemon --noconfirm --needed
-      # basics
-      pacman -S gnome-shell-extensions gnome-system-monitor gnome-disk-utility gnome-terminal lollypop gnome-software gnome-user-share nautilus simple-scan sushi tracker tracker3-miners tracker-miners xdg-user-dirs-gtk gnome-tweaks seahorse dconf-editor rygel gnome-color-manager cheese eog evince file-roller totem gnome-remote-desktop --noconfirm --needed
-      # tray icons
-      pacman -S gnome-shell-extension-appindicator libappindicator-gtk2 libappindicator-gtk3 --noconfirm --needed
-      # you do need this, right?
-      pacman -S gnome-calculator gnome-calendar gnome-clocks --noconfirm --needed
-      # other
-      pacman -S gnome-themes-extra gnome-backgrounds gnome-video-effects webp-pixbuf-loader python-nautilus --noconfirm --needed
-      # gvfs and grilo
-      pacman -S grilo-plugins gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb --noconfirm --needed
-      # install breeze theme (some kde apps look really bad without it and dont seem to require it as a dep)
-      pacman -S breeze --noconfirm --needed
-      # power profiles daemon
-      pacman -S power-profiles-daemon python-gobject --noconfirm --needed
-      # enable gdm
+      pacman -S gnome xdg-desktop-portal-gnome \
+        gnome-themes-extra python-nautilus \
+        libappindicator-gtk2 libappindicator-gtk3 \
+        breeze \
+        power-profiles-daemon --noconfirm --needed
       systemctl enable gdm
-      # and some flatpaks
       flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
       # set default settings/root/alis/scripts/postinstall/desktop.sh
       # shellcheck source=/scripts/postinstall/gnome-configure.sh
       source /root/alis/scripts/postinstall/gnome-configure.sh
-      ;;
-    gnome-additional-apps)
-      # other apps
-      pacman -S baobab gnome-books gnome-characters gnome-font-viewer gnome-logs gnome-photos gnome-weather --noconfirm --needed
       ;;
   esac
 done

@@ -46,10 +46,10 @@ rm -rf "/home/${username}/paru-bin"
 sed -i "s/#BottomUp/BottomUp/" /etc/paru.conf
 
 # some basic things
-pacman -S git htop bash-completion vim neovim \
+pacman -S git htop bash-completion neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   dosfstools ntfs-3g btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
-  openssh sshfs rsync nfs-utils avahi cifs-utils \
+  openssh gvfs sshfs rsync nfs-utils avahi cifs-utils \
   cronie curl wget inetutils net-tools nss-mdns \
   wl-clipboard xclip \
   xdg-utils xdg-user-dirs trash-cli \
@@ -74,7 +74,7 @@ usermod -aG realtime "$username"
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
 # i really like muh codecs
-pacman -S jasper libpng libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader kimageformats karchive qt5-imageformats --noconfirm --needed
+pacman -S jasper libpng libraw libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader kimageformats karchive qt5-imageformats --noconfirm --needed
 pacman -S ffmpeg av1an svt-av1 aom dav1d rav1e x265 libde265 x264 xvidcore libvpx rav1e libmatroska mkvtoolnix-cli --noconfirm --needed
 pacman -S lame libmad opus libvorbis speex faac faad2 --noconfirm --needed
 
@@ -106,12 +106,12 @@ sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
 
 # mirrorlist
-sudo -u "${username}" paru -S rate-mirrors-bin
+sudo -u "${username}" paru -S rate-mirrors-bin --noconfirm --needed
 sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch --max-delay=21600
 mv /etc/pacman.d/mirrorlist{,.backup}
 mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 # add alias
-cat <<'EOF' >/etc/bashrc
+cat <<'EOF' >>/etc/bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \

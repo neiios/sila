@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function error() {
   echo "${1:-"Unknown Error"}" 1>&2
   exit 1
@@ -85,7 +87,7 @@ function configureNetwork() {
 }
 
 function installGrub() {
-  pacman -S grub efibootmgr os-prober --noconfirm --needed
+  pacman -S grub efibootmgr os-prober dosfstools --noconfirm --needed
 
   # change udev to systemd
   sed -i "/^HOOKS/ s/udev/systemd/" /etc/mkinitcpio.conf

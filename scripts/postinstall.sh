@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: test with set -eu
+set -e
 
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root"
@@ -25,6 +25,7 @@ sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: AL
 
 # shellcheck source=/scripts/postinstall/basic-install.sh
 source /root/alis/scripts/postinstall/basic-install.sh
+cd "/home/${username}" || exit 1
 # shellcheck source=/scripts/postinstall/drivers.sh
 source /root/alis/scripts/postinstall/drivers.sh
 # shellcheck source=/scripts/postinstall/desktop.sh

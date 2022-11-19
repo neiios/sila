@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 function error() {
   echo "${1:-"Unknown Error"}" 1>&2
   exit 1
