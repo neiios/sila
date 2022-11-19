@@ -24,7 +24,20 @@ function createUser() {
   unset userPassword userPassword2
 }
 
-createUser
+function setTimezone() {
+  hwclock --systohc
+  arr=("Europe/Vilnius" "Timezone")
+  while read -r timezone; do
+    arr+=("${timezone}" "Timezone")
+  done <<<"$(timedatectl list-timezones)"
+  cmd=(whiptail --nocancel --title "Timezone" --menu "Select a timezone from the list:" 32 50 24)
+  chosenTimezone=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
+  timedatectl set-timezone "${chosenTimezone}"
+}
+
+createUser || errror "Failed to create a user."
+
+setTimezone || error "Failed to set a timezone."
 
 # configure pacman
 sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf

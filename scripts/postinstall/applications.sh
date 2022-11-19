@@ -30,7 +30,7 @@ function installFromList() {
     # install
     case "$format" in
       f) sudo -u "${username:?Username not set.}" flatpak install -y --noninteractive flathub "${packages[@]}" ;;
-      a) sudo -u "${username:?Username not set.}" paru -S "${packages[@]}" --noconfrm --needed ;;
+      a) sudo -u "${username:?Username not set.}" paru -S "${packages[@]}" --noconfirm --needed ;;
       p) pacman -S "${packages[@]}" --noconfirm --needed ;;
     esac
 

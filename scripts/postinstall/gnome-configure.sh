@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set +e
+
 # generated with:
 # gsettings list-recursively > /tmp/gsettings.before
 # gsettings list-recursively > /tmp/gsettings.after
@@ -36,6 +38,8 @@ sudo -u "$username" dbus-launch --exit-with-session gsettings set org.gnome.mutt
 echo "[org.gnome.desktop.peripherals.mouse]" | sudo tee /usr/share/glib-2.0/schemas/69_acceleration.gschema.override
 echo "accel-profile='flat'" | sudo tee -a /usr/share/glib-2.0/schemas/69_acceleration.gschema.override
 sudo glib-compile-schemas /usr/share/glib-2.0/schemas
+
+set -e
 
 # hide desktop entries
 # echo "[Desktop Entry]

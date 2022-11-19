@@ -25,12 +25,6 @@ function setHostname() {
 EOF
 }
 
-function setTimezone() {
-  # TODO: unhardcode it
-  ln -sf /usr/share/zoneinfo/Europe/Vilnius /etc/localtime
-  hwclock --systohc
-}
-
 function createLocales() {
   sed -i "s/#C.UTF-8 UTF-8/C.UTF-8 UTF-8/" /etc/locale.gen
   sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
@@ -130,8 +124,6 @@ function installGrub() {
 source /root/alis/scripts/vars.sh
 
 setHostname || error "Failed to set a hostname."
-
-setTimezone || error "Failed to set a timezone."
 
 createLocales || error "Failed to create locales."
 

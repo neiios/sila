@@ -19,7 +19,7 @@ optionsGeneral=(
 )
 choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
 
-cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 32 96 24)
+cmdDesktop=(whiptail --separate-output --checklist "Select the desktop environment you want to install:\n\nNothing is an option as well.\n\nYou can install a desktop from your dotfiles later." 18 36 8)
 optionsDesktop=(
   gnome "GNOME" off
   kde "KDE Plasma" off
@@ -44,7 +44,7 @@ for choice in ${choicesGeneral}; do
       ;;
     vm)
       yes y | pacman -S virt-manager qemu-full iptables-nft libvirt dnsmasq dmidecode bridge-utils openbsd-netcat
-      systemctl enable libvirtd.service
+      systemctl enable --now libvirtd.service
       virsh net-autostart default
       usermod -aG libvirt "${username:?Username not set.}"
       ;;
@@ -53,7 +53,7 @@ for choice in ${choicesGeneral}; do
         openmp openmpi cmake ninja meson doxygen elfutils --noconfirm --needed
       ;;
     rust)
-      pacman -S rust rustup --noconfirm --needed
+      pacman -S rust --noconfirm --needed
       ;;
     java)
       pacman -S jre-openjdk jdk-openjdk openjdk-doc openjdk-src \
