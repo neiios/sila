@@ -23,7 +23,8 @@ function installDotfiles() {
     cd "/home/${username}/.dotfiles" || error "Dotfiles dir does not exist."
 
     if [[ -e alis-install-dotfiles.sh ]]; then
-      sudo -u "${username}" bash alis-install-dotfiles.sh
+      # just like with gnome configuration need to be careful about the dbus session
+      sudo -u "${username}" dbus-run-session -- bash alis-install-dotfiles.sh
       return
     else
       dialog --erase-on-exit --title "Error" --yesno "The alis-install-dotfiles.sh script can't be found.\n\nCancel dotfile installation?" 0 0 && return

@@ -74,7 +74,8 @@ pacman -S git htop bash-completion neovim \
   sof-firmware \
   flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
 
-flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
+flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install -y --noninteractive --system flathub com.github.tchx84.Flatseal
 
 # pipewire
 pacman -S pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse pipewire-jack pipewire-x11-bell wireplumber wireplumber-docs \

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cmd=(dialog --erase-on-exit --title "Packages" --checklist "Select packages to install (defaults are fine in most cases):" 0 0 0)
+cmdGeneral=(dialog --erase-on-exit --stdout --separate-output --nocancel
+  --title "Packages"
+  --checklist "Select packages to install (defaults are fine in most cases):" 0 0 0)
 optionsGeneral=(
   bluetooth "Bluetooth support" on
   cups "Printing support (CUPS)" on
@@ -17,14 +19,16 @@ optionsGeneral=(
   podman "The better container engine (recommended)" on
   docker "The OG container engine" off
 )
-choicesGeneral=$("${cmd[@]}" "${optionsGeneral[@]}" 2>&1 >/dev/tty)
+choicesGeneral=$("${cmdGeneral[@]}" "${optionsGeneral[@]}")
 
-cmdDesktop=(dialog --erase-on-exit --title "Desktop environment" --menu "Select the DE you want to install:\nNothing is an option as well.\nYou can always install a DE or a WM from your dotfiles later." 0 0 0)
+cmdDesktop=(dialog --erase-on-exit --stdout --nocancel
+  --title "Desktop environment"
+  --menu "Select the DE you want to install:\nNothing is an option as well.\nYou can always install a DE or a WM from your dotfiles later." 0 0 0)
 optionsDesktop=(
   gnome "GNOME"
   kde "KDE Plasma"
 )
-choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}" 2>&1 >/dev/tty)
+choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}")
 
 for choice in ${choicesGeneral}; do
   case ${choice} in
@@ -42,7 +46,8 @@ for choice in ${choicesGeneral}; do
       ;;
     vm)
       yes y | pacman -S iptables-nft
-      pacman -S virt-manager qemu-full libvirt dnsmasq dmidecode bridge-utils openbsd-netcat --noconfirm --needed
+      pacman -S virt-manager qemu libvirt \
+        samba dnsmasq dmidecode bridge-utils openbsd-netcat --noconfirm --needed
       systemctl enable --now libvirtd.service
       virsh net-autostart default
       usermod -aG libvirt "${username:?Username not set.}"
@@ -159,7 +164,10 @@ EOF
         power-profiles-daemon --noconfirm --needed
       systemctl enable gdm
       flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
-      bash /root/alis/scripts/postinstall/gnome-configure.sh
+      # need to have dbus session for this to work
+      cp /root/alis/scripts/postinstall/gnome-configure.sh /tmp/gnome-configure.sh
+      chown "${username}:${username}" /tmp/gnome-configure.sh
+      sudo -u "${username}" dbus-run-session -- bash /tmp/gnome-configure.sh
       ;;
   esac
 done
