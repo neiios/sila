@@ -29,7 +29,7 @@ function installFromList() {
 
     # install
     case "$format" in
-      f) flatpak install -y --noninteractive flathub "${packages[*]}" ;;
+      f) flatpak install -y --noninteractive --system flathub "${packages[@]}" ;;
       a) sudo -u "${username:?Username not set.}" paru -S "${packages[@]}" --noconfirm --needed ;;
       p) pacman -S "${packages[@]}" --noconfirm --needed ;;
     esac

@@ -17,6 +17,7 @@ function error() {
 if [[ $(dmesg | grep "Hypervisor detected" -c) -ne 0 ]]; then
   echo "Virtual machine detected. Installing additional tools."
   pacman -S qemu-guest-agent spice-vdagent virtualbox-guest-utils --noconfirm --needed
+  systemctl enable qemu-guest-agent.service
   sleep 5
 fi
 pacman -S dialog --noconfirm --needed >/dev/null 2>&1
@@ -24,7 +25,7 @@ pacman -S dialog --noconfirm --needed >/dev/null 2>&1
 # ask user for confirmation
 dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
   --no-button "Cancel" \
-  --yesno "Press 'Continue' to run the postinstall script." 8 40 || {
+  --yesno "Press 'Continue' to run the postinstall script. Keep in mind that you may need to connect to the wifi before continuing." 8 40 || {
   rm /root/.profile
   error "User exited."
 }

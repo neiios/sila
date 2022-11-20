@@ -58,6 +58,13 @@ cd "/home/${username}/paru-bin" || error "Paru directory does not exist."
 sudo -u "$username" makepkg -si --noconfirm --needed
 rm -rf "/home/${username}/paru-bin"
 sed -i "s/#BottomUp/BottomUp/" /etc/paru.conf
+cd "/home/${username}" || error "Home dir doesnt exist. Something really bad happened."
+
+# mirrorlist
+sudo -u "${username}" paru -S rate-mirrors-bin --noconfirm --needed
+sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch --max-delay=21600
+mv /etc/pacman.d/mirrorlist{,.backup}
+mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 
 # some basic things
 pacman -S git htop bash-completion neovim \
@@ -119,12 +126,6 @@ zramctl
 # avahi name resolution
 sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
-
-# mirrorlist
-sudo -u "${username}" paru -S rate-mirrors-bin --noconfirm --needed
-sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch --max-delay=21600
-mv /etc/pacman.d/mirrorlist{,.backup}
-mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 
 # add aliases
 grep -q "alias vim" /etc/bash.bashrc \
