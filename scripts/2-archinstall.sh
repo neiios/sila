@@ -72,7 +72,6 @@ function configureRootUser() {
 
   # configure root password
   echo "root:$rootPassword" | chpasswd
-  echo 'alias vim=nvim' >>/etc/bash.bashrc
   unset rootPassword rootPassword2
 }
 

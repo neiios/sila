@@ -27,6 +27,7 @@ cmdDesktop=(dialog --erase-on-exit --stdout --nocancel
 optionsDesktop=(
   gnome "GNOME"
   kde "KDE Plasma"
+  none "Select if you want to install DE or WM from your dotfiles."
 )
 choicesDesktop=$("${cmdDesktop[@]}" "${optionsDesktop[@]}")
 
@@ -54,7 +55,7 @@ for choice in ${choicesGeneral}; do
       ;;
     c)
       pacman -S gcc gdb make pkgconf clang llvm lldb \
-        openmp openmpi cmake ninja meson doxygen elfutils \
+        openmp openmpi cmake ninja meson doxygen gtest elfutils \
         qt5 qt6 --noconfirm --needed
       ;;
     rust)
@@ -146,7 +147,7 @@ for choice in ${choicesDesktop}; do
       # various nice-to-haves
       pacman -S kdialog --noconfirm --needed
       # flatpak theme
-      flatpak install -y --noninteractive flathub org.gtk.Gtk3theme.Breeze
+      flatpak install -y --noninteractive --system flathub org.gtk.Gtk3theme.Breeze
       # configure sddm
       mkdir -p /etc/sddm.conf.d/
       cat <<EOF >/etc/sddm.conf.d/kde_settings.conf
@@ -157,13 +158,14 @@ EOF
       systemctl enable sddm
       ;;
     gnome)
-      pacman -S gnome xdg-desktop-portal-gnome gnome-tweaks \
+      pacman -S gnome xdg-desktop-portal-gnome gnome-tweaks lollypop \
         gnome-themes-extra python-nautilus \
         libappindicator-gtk2 libappindicator-gtk3 \
         breeze \
         power-profiles-daemon --noconfirm --needed
+      pacman -Rns gnome-user-docs yelp gnome-maps gnome-contacts gnome-music --noconfirm || echo "You can fail, that's okay."
       systemctl enable gdm
-      flatpak install -y --noninteractive flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
+      flatpak install -y --noninteractive --system flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
       # need to have dbus session for this to work
       cp /root/alis/scripts/postinstall/gnome-configure.sh /tmp/gnome-configure.sh
       chown "${username}:${username}" /tmp/gnome-configure.sh

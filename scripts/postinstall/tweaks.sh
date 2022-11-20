@@ -44,10 +44,11 @@ EOF
       ;;
     desktop-cleanup)
       sudo -u "${username:?Username not set}" mkdir -pv "/tmp/desktop"
-      sudo -u "${username}" cp /usr/share/applications/{electron*.desktop,sxiv.desktop,lstopo.desktop,*openjdk*.desktop,*zathura*.desktop,calf.desktop,cppcheck*.desktop,ranger.desktop,qv4l2.desktop,qdbusviewer.desktop,qvidcap.desktop,linguist.desktop,designer.desktop,assistant.desktop,htop.desktop,avahi-*.desktop,bssh.desktop,bvnc.desktop,xdvi.desktop,winetricks.desktop,vim.desktop,nvim.desktop,*fontforge*.desktop} "/tmp/desktop/" || echo "It's fine. You can fail"
-      sudo -u "${username}" echo 'Hidden=true' | sudo -u "${username}" tee -a "/tmp/desktop/*"
+      # very long boi
+      sudo -u "${username}" cp /usr/share/applications/{jupyter*.desktop,ipython.desktop,*.bpython.desktop,electron*.desktop,r.desktop,sxiv.desktop,lstopo.desktop,*openjdk*.desktop,*zathura*.desktop,calf.desktop,cppcheck*.desktop,ranger.desktop,qv4l2.desktop,qdbusviewer.desktop,qvidcap.desktop,linguist.desktop,designer.desktop,assistant.desktop,htop.desktop,avahi-*.desktop,bssh.desktop,bvnc.desktop,xdvi.desktop,winetricks.desktop,vim.desktop,nvim.desktop,*fontforge*.desktop} "/tmp/desktop/" || echo "It's fine. You can fail"
+      sudo -u "${username}" echo 'Hidden=true' | sudo -u "${username}" tee -a /tmp/desktop/*
       sudo -u "${username}" mkdir -pv "/home/${username}/.local/share/applications"
-      sudo -u "${username}" mv "/tmp/desktop/*" "/home/${username:?Username not set.}/.local/share/applications/"
+      sudo -u "${username}" mv /tmp/desktop/* "/home/${username:?Username not set.}/.local/share/applications/" && echo "Trash applications are hidden."
       ;;
     sddm-wayland)
       cat <<EOF >/etc/sddm.conf.d/10-sddm-wayland.conf
@@ -87,7 +88,7 @@ EOF
       sudo -u "${username:?Username not set.}" paru -S ttf-ms-fonts --noconfirm --needed
       ;;
     tlp)
-      pacman -Rns power-profiles-daemon
+      pacman -Rns power-profiles-daemon --noconfirm --needed
       pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
       sudo -u "${username}" paru -S tlpui --noconfirm --needed
       systemctl enable tlp.service

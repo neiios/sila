@@ -18,7 +18,7 @@ function createUser() {
   done
 
   # create a user
-  useradd -m "${username}"
+  useradd -m "${username}" || echo "WARNING: User already exists."
   usermod -aG wheel "${username}"
   echo "${username}:${userPassword}" | chpasswd
   unset userPassword userPassword2
@@ -30,7 +30,7 @@ function setTimezone() {
   while read -r timezone; do
     arr+=("${timezone}" "Timezone")
   done <<<"$(timedatectl list-timezones)"
-  cmd=(dialog --erase-on-exit --nocancel --title "Timezone" --menu "Select a timezone from the list:" 0 0 0)
+  cmd=(dialog --erase-on-exit --nocancel --title "Timezone" --menu "Select a timezone from the list:" 24 0 16)
   chosenTimezone=$("${cmd[@]}" "${arr[@]}" 2>&1 >/dev/tty)
   timedatectl set-timezone "${chosenTimezone}"
   echo "Timezone set to ${chosenTimezone}"
@@ -74,7 +74,7 @@ pacman -S git htop bash-completion neovim \
   sof-firmware \
   flatpak flatpak-xdg-utils flatpak-builder elfutils patch xdg-desktop-portal-gtk --noconfirm --needed
 
-flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+su "${username}" -c "flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo"
 flatpak install -y --noninteractive --system flathub com.github.tchx84.Flatseal
 
 # pipewire
@@ -125,8 +125,13 @@ sudo -u "${username}" paru -S rate-mirrors-bin --noconfirm --needed
 sudo -u "${username}" rate-mirrors --save=/tmp/mirrorlist --protocol=https arch --max-delay=21600
 mv /etc/pacman.d/mirrorlist{,.backup}
 mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
-# add alias
-cat <<'EOF' >>/etc/bash.bashrc
+
+# add aliases
+grep -q "alias vim" /etc/bash.bashrc \
+  || echo "alias vim=nvim" >>/etc/bash.bashrc
+
+grep -q "alias rate-mirrors-arch" /etc/bash.bashrc \
+  || cat <<'EOF' >>/etc/bash.bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \

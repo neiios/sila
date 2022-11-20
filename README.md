@@ -63,5 +63,6 @@ You can find an example of such a script in [my dotfiles repo](https://github.co
 
 ## Screenshots
 
-![Tutorial](https://github.com/richard96292/alis/blob/master/screenshots/tutorial.png)
-![Disk encryption](https://github.com/richard96292/alis/blob/master/screenshots/encryption.png)
+![Tutorial](https://github.com/richard96292/alis/blob/master/images/tutorial.png)
+![Disk encryption](https://github.com/richard96292/alis/blob/master/images/encryption.png)
+![Installing applications](https://github.com/richard96292/alis/blob/master/images/applications.png)

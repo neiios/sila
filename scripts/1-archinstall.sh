@@ -11,7 +11,7 @@ function tutorial() {
   # tutorial
   dialog --erase-on-exit \
     --title "Tutorial" \
-    --msgbox "Up/Down arrows - navigate the list\n\nLeft/Right arrows or Tab - move to different parts of the dialog box\n\nEnter - confirm the dialog box\n\nSpace - toggle the selected item" 0 0
+    --msgbox "Up/Down arrows - navigate the list\nLeft/Right arrows or Tab - move to different parts of the dialog box\nEnter - confirm the dialog box\nSpace - toggle the selected item" 0 0
 }
 
 function getEncryptionPass() {

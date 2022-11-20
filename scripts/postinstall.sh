@@ -13,12 +13,18 @@ function error() {
 }
 
 # misc
+# vm check
+if [[ $(dmesg | grep "Hypervisor detected" -c) -ne 0 ]]; then
+  echo "Virtual machine detected. Installing additional tools."
+  pacman -S qemu-guest-agent spice-vdagent virtualbox-guest-utils --noconfirm --needed
+  sleep 5
+fi
 pacman -S dialog --noconfirm --needed >/dev/null 2>&1
 
 # ask user for confirmation
 dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
   --no-button "Cancel" \
-  --yesno "Press 'Continue' to run the postinstall script." 0 0 || {
+  --yesno "Press 'Continue' to run the postinstall script." 8 40 || {
   rm /root/.profile
   error "User exited."
 }

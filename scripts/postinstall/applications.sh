@@ -29,10 +29,7 @@ function installFromList() {
 
     # install
     case "$format" in
-      # flatpak doesnt want to work with sudo -u and --user flag
-      # fucking monkas https://github.com/flatpak/flatpak/pull/4638
-      # use su instead
-      f) su "${username:?Username not set.}" -c "flatpak install -y --noninteractive --user flathub ${packages[*]}" ;;
+      f) flatpak install -y --noninteractive flathub "${packages[*]}" ;;
       a) sudo -u "${username:?Username not set.}" paru -S "${packages[@]}" --noconfirm --needed ;;
       p) pacman -S "${packages[@]}" --noconfirm --needed ;;
     esac
