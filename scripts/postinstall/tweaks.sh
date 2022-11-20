@@ -23,7 +23,7 @@ for choice in ${choicesTweaks}; do
       systemctl disable NetworkManager-wait-online.service
       ;;
     ax210-firmware)
-      rm /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
+      rm -f /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
       ;;
     xorg-libinput-accel)
       cat <<EOF >/etc/X11/xorg.conf.d/50-mouse-acceleration.conf
@@ -37,7 +37,8 @@ EndSection
 EOF
       ;;
     mei_me)
-      echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
+      grep -q "blacklist mei_me" /etc/modprobe.d/blacklist.conf \
+        || echo "blacklist mei_me" >>/etc/modprobe.d/blacklist.conf
       ;;
     ntfs)
       echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' >/etc/udev/rules.d/ntfs3_by_default.rules
@@ -80,7 +81,8 @@ EOF
       ;;
     elan-trackpad)
       # https://bbs.archlinux.org/viewtopic.php?id=266406
-      echo "blacklist elan_i2c" >>/etc/modprobe.d/blacklist.conf
+      grep -q "blacklist elan_i2c" /etc/modprobe.d/blacklist.conf \
+        || echo "blacklist elan_i2c" >>/etc/modprobe.d/blacklist.conf
       # simillar bug report
       # https://gitlab.freedesktop.org/libinput/libinput/-/issues/694
       ;;
@@ -88,7 +90,7 @@ EOF
       sudo -u "${username:?Username not set.}" paru -S ttf-ms-fonts --noconfirm --needed
       ;;
     tlp)
-      pacman -Rns power-profiles-daemon --noconfirm --needed
+      pacman -Rns power-profiles-daemon --noconfirm || echo "Power profiles not installed."
       pacman -S tlp ethtool smartmontools tlp-rdw --noconfirm --needed
       sudo -u "${username}" paru -S tlpui --noconfirm --needed
       systemctl enable tlp.service

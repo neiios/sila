@@ -13,6 +13,19 @@ function error() {
 }
 
 # misc
+while ! ping -c 1 gnu.org; do
+  if ! command -v dialog &>/dev/null; then
+    echo "You are not connected to the internet. Connect to the wifi in the next menu (it will appear in 5 seconds)."
+    sleep 5
+  else
+    dialog --erase-on-exit --title "Internet connection" --yes-button "Continue" \
+      --no-button "Cancel" \
+      --yesno "You are not connected to the internet. Connect to the wifi?" 8 40 || error "User exited."
+  fi
+  nmtui
+done
+echo "Internet connection is available."
+
 # vm check
 if [[ $(dmesg | grep "Hypervisor detected" -c) -ne 0 ]]; then
   echo "Virtual machine detected. Installing additional tools."
@@ -25,7 +38,7 @@ pacman -S dialog --noconfirm --needed >/dev/null 2>&1
 # ask user for confirmation
 dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
   --no-button "Cancel" \
-  --yesno "Press 'Continue' to run the postinstall script. Keep in mind that you may need to connect to the wifi before continuing." 8 40 || {
+  --yesno "Press 'Continue' to run the postinstall script." 8 40 || {
   rm /root/.profile
   error "User exited."
 }

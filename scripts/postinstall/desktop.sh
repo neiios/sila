@@ -56,7 +56,7 @@ for choice in ${choicesGeneral}; do
     c)
       pacman -S gcc gdb make pkgconf clang llvm lldb \
         openmp openmpi cmake ninja meson doxygen gtest elfutils \
-        qt5 qt6 --noconfirm --needed
+        qt5 qt6 gtk3 gtk3-docs gtk3-demos gtk4 gtk4-docs gtk4-demos --noconfirm --needed
       ;;
     rust)
       pacman -S rust --noconfirm --needed
