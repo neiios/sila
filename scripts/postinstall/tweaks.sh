@@ -7,6 +7,8 @@ optionsTweaks=(
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
   mei_me "Blacklist mei_me kernel module" off
   ntfs "Use ntfs kernel module by default" off
+  bt-autostart "Disable automatic bluetooth start" off
+  bt-experimental "Enable experimental bluetooth features" off
   desktop-cleanup "Cast a magic incantation to remove trash .desktop files" on
   sddm-wayland "Run sddm on wayland" off
   tearfree-amd "Xorg TearFree AMD" off
@@ -42,6 +44,13 @@ EOF
       ;;
     ntfs)
       echo 'SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"' >/etc/udev/rules.d/ntfs3_by_default.rules
+      ;;
+    bt-autostart)
+      sed -i "s/#AutoEnable=true/AutoEnable=false/" /etc/bluetooth/main.conf
+      ;;
+    bt-experimental)
+      sed -i "s/#Experimental = false/Experimental = true/" /etc/bluetooth/main.conf
+      sed -i "s/#KernelExperimental = false/KernelExperimental = true/" /etc/bluetooth/main.conf
       ;;
     desktop-cleanup)
       sudo -u "${username:?Username not set}" mkdir -pv "/tmp/desktop"
