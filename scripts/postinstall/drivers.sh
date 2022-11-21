@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # drivers input
-cmdDrivers=(dialog --erase-on-exit --title "Drivers" --checklist "Select the drivers you want to use:" 0 0 0)
+cmdDrivers=(dialog --erase-on-exit --title "Drivers" --menu "Select the drivers you want to use:" 0 0 0)
 optionsDrivers=(
-  amd "AMD" on
-  nvidia-proprietary "Nvidia (proprietary)" off
-  intel-new "Intel (from Broadwell)" off
-  intel-old "Intel (older CPUs)" off
+  amd "AMD"
+  nvidia-proprietary "Nvidia (proprietary)"
+  intel-new "Intel (from Broadwell)"
+  intel-old "Intel (older CPUs)"
 )
 choicesDrivers=$("${cmdDrivers[@]}" "${optionsDrivers[@]}" 2>&1 >/dev/tty)
 
