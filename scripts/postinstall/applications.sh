@@ -40,6 +40,6 @@ function installFromList() {
 }
 
 # apps
-installFromList "/root/alis/scripts/postinstall/csv/software.csv" "Select the applications you want to install:"
+installFromList "/root/sila/scripts/postinstall/csv/software.csv" "Select the applications you want to install:"
 # gaming
-installFromList "/root/alis/scripts/postinstall/csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."
+installFromList "/root/sila/scripts/postinstall/csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."

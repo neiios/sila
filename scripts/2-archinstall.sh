@@ -121,7 +121,7 @@ function installGrub() {
 # main
 # dont run this script by itself without setting needed env vars
 # shellcheck source=/scripts/vars.sh
-source /root/alis/scripts/vars.sh
+source /root/sila/scripts/vars.sh
 
 setHostname || error "Failed to set a hostname."
 
@@ -138,4 +138,4 @@ rmmod pcspkr
 echo "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
 
 # run postinstall script after reboot
-echo "bash /root/alis/scripts/postinstall.sh" >>/root/.profile
+echo "bash /root/sila/scripts/postinstall.sh" >>/root/.profile

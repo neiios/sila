@@ -167,7 +167,7 @@ EOF
       systemctl enable gdm
       flatpak install -y --noninteractive --system flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
       # need to have dbus session for this to work
-      cp /root/alis/scripts/postinstall/gnome-configure.sh /tmp/gnome-configure.sh
+      cp /root/sila/scripts/postinstall/gnome-configure.sh /tmp/gnome-configure.sh
       chown "${username}:${username}" /tmp/gnome-configure.sh
       sudo -u "${username}" dbus-run-session -- bash /tmp/gnome-configure.sh
       ;;

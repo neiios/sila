@@ -36,7 +36,7 @@ fi
 pacman -S dialog --noconfirm --needed >/dev/null 2>&1
 
 # ask user for confirmation
-dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
+dialog --erase-on-exit --title "SILA part 2" --yes-button "Continue" \
   --no-button "Cancel" \
   --yesno "Press 'Continue' to run the postinstall script." 8 40 || {
   rm /root/.profile
@@ -47,18 +47,18 @@ dialog --erase-on-exit --title "ALIS part 2" --yes-button "Continue" \
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 
 # shellcheck source=/scripts/postinstall/basic-install.sh
-source /root/alis/scripts/postinstall/basic-install.sh
+source /root/sila/scripts/postinstall/basic-install.sh
 cd "/home/${username}" || exit 1
 # shellcheck source=/scripts/postinstall/drivers.sh
-source /root/alis/scripts/postinstall/drivers.sh
+source /root/sila/scripts/postinstall/drivers.sh
 # shellcheck source=/scripts/postinstall/desktop.sh
-source /root/alis/scripts/postinstall/desktop.sh
+source /root/sila/scripts/postinstall/desktop.sh
 # shellcheck source=/scripts/postinstall/applications.sh
-source /root/alis/scripts/postinstall/applications.sh
+source /root/sila/scripts/postinstall/applications.sh
 # shellcheck source=/scripts/postinstall/tweaks.sh
-source /root/alis/scripts/postinstall/tweaks.sh
+source /root/sila/scripts/postinstall/tweaks.sh
 # shellcheck source=/scripts/postinstall/dotfiles.sh
-source /root/alis/scripts/postinstall/dotfiles.sh
+source /root/sila/scripts/postinstall/dotfiles.sh
 
 # fix permissions
 chown -R "${username}:${username}" "/home/${username}"
@@ -74,7 +74,7 @@ neofetch
 sleep 5
 
 # clean up
-rm -rf "/root/.profile" "/root/alis" "/home/${username}/.npm"
+rm -rf "/root/.profile" "/root/sila" "/home/${username}/.npm"
 
 # final notice
 dialog --erase-on-exit \

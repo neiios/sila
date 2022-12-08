@@ -22,16 +22,16 @@ function installDotfiles() {
     cloneRepo
     cd "/home/${username}/.dotfiles" || error "Dotfiles dir does not exist."
 
-    if [[ -e alis-install-dotfiles.sh ]]; then
+    if [[ -e sila-install-dotfiles.sh ]]; then
       # just like with gnome configuration need to be careful about the dbus session
-      sudo -u "${username}" dbus-run-session -- bash alis-install-dotfiles.sh
+      sudo -u "${username}" dbus-run-session -- bash sila-install-dotfiles.sh
       return
     else
-      dialog --erase-on-exit --title "Error" --yesno "The alis-install-dotfiles.sh script can't be found.\n\nCancel dotfile installation?" 0 0 && return
+      dialog --erase-on-exit --title "Error" --yesno "The sila-install-dotfiles.sh script can't be found.\n\nCancel dotfile installation?" 0 0 && return
     fi
   done
 }
 
-if (dialog --erase-on-exit --title "Dotfiles" --defaultno --yesno "You can optionally install your dotfiles from a git repository.\nYou will need to enter the dotfile repository link.\nThe script needs alis-install-dotfiles.sh file in the root of the repository.\nDo you want to install the dotfiles?" 0 0); then
+if (dialog --erase-on-exit --title "Dotfiles" --defaultno --yesno "You can optionally install your dotfiles from a git repository.\nYou will need to enter the dotfile repository link.\nThe script needs sila-install-dotfiles.sh file in the root of the repository.\nDo you want to install the dotfiles?" 0 0); then
   installDotfiles
 fi

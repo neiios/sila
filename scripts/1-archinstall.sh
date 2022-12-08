@@ -56,8 +56,8 @@ function partitionDisk() {
   # one last confirmation
   dialog --erase-on-exit --title "Here be dragons" \
     --defaultno --yes-button "Continue" --no-button "Cancel" \
-    --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 \
-    || error "User exited."
+    --yesno "All data on the disk $selectedDisk will be wiped.\nBe sure to double check the drive you have selected." 0 0 ||
+    error "User exited."
 
   # point of no return
   # destroying the disk
@@ -117,10 +117,10 @@ function pacstrapSystem() {
   # generate fstab
   genfstab -U /mnt >>/mnt/etc/fstab
   # transfer files
-  mv /tmp/alis /mnt/root/alis
+  mv /tmp/sila /mnt/root/sila
 
   # transfer variables to chroot
-  cat <<EOF >/mnt/root/alis/scripts/vars.sh
+  cat <<EOF >/mnt/root/sila/scripts/vars.sh
 selectedDisk="$selectedDisk"
 rootPartition="$rootPartition"
 mappedRoot="$mappedRoot"
@@ -163,6 +163,6 @@ mountSubvolumes || error "Failed to mount subvolumes or boot partition."
 
 pacstrapSystem || error "Pacstrap failed."
 
-arch-chroot /mnt /root/alis/scripts/2-archinstall.sh || error "Failed inside chroot."
+arch-chroot /mnt /root/sila/scripts/2-archinstall.sh || error "Failed inside chroot."
 
 finalNotice || error "User exited."
