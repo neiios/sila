@@ -3,6 +3,7 @@
 cmdTweaks=(dialog --erase-on-exit --title "Tweaks" --checklist "Advanced menu. Do not change anything if you don't know what you are doing." 32 96 24)
 optionsTweaks=(
   nm-wait-online "Makes boot time faster by not waiting for network manager to start" off
+  papersize "Set default papersize to A4" on
   ax210-firmware "AX210 firmware fix" off
   xorg-libinput-accel "Disable Mouse acceleration (Xorg override)" off
   mei_me "Blacklist mei_me kernel module" off
@@ -23,6 +24,10 @@ for choice in ${choicesTweaks}; do
   case ${choice} in
     nm-wait-online)
       systemctl disable NetworkManager-wait-online.service
+      ;;
+    papersize)
+      grep -q "a4" /etc/papersize \
+        || echo "a4" >>/etc/papersize
       ;;
     ax210-firmware)
       rm -f /lib/firmware/iwlwifi-ty-a0-gf-a0-6{6,7,8}.ucode.xz
