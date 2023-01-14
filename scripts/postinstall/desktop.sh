@@ -1,5 +1,14 @@
 #!/bin/bash
 
+function tutorial() {
+  # tutorial
+  dialog --erase-on-exit \
+    --title "A friendly reminder" \
+    --msgbox "Up/Down arrows - navigate the list\nLeft/Right arrows or Tab - move to different parts of the dialog box\nEnter - confirm the dialog box\nSpace - toggle the selected item" 0 0
+}
+
+tutorial
+
 cmdGeneral=(dialog --erase-on-exit --stdout --separate-output --nocancel
   --title "Packages"
   --checklist "Select packages to install (defaults are fine in most cases):" 0 0 0)
