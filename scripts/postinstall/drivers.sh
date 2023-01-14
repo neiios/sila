@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # drivers input
-cmdDrivers=(dialog --erase-on-exit --title "Drivers" --menu "Select the drivers you want to use:" 0 0 0)
+cmdDrivers=(dialog --erase-on-exit --title "GPU Drivers" --menu "Select the GPU drivers you want to use:" 0 0 0)
 optionsDrivers=(
   amd "AMD"
   nvidia-proprietary "Nvidia (proprietary)"
