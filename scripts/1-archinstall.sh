@@ -87,7 +87,7 @@ function formatDisk() {
   # format boot
   mkfs.vfat "$bootPartition"
   # format root partition
-  mkfs.btrfs "$mappedRoot"
+  mkfs.btrfs -f "$mappedRoot"
 }
 
 function createSubvolumes() {
