@@ -67,7 +67,7 @@ mv /etc/pacman.d/mirrorlist{,.backup}
 mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 
 # some basic things
-pacman -S git htop bash-completion neovim \
+pacman -S git htop bash-completion nano vim neovim \
   mesa mesa-utils lib32-mesa lib32-mesa-utils vulkan-icd-loader lib32-vulkan-icd-loader libva-utils \
   dosfstools ntfs-3g btrfs-progs libusb usbutils usbguard libusb-compat mtools efibootmgr \
   openssh gvfs sshfs rsync nfs-utils avahi cifs-utils \
@@ -128,11 +128,11 @@ sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
 
 # add aliases
-grep -q "alias vim" /etc/bash.bashrc \
-  || echo "alias vim=nvim" >>/etc/bash.bashrc
+grep -q "alias vim" /etc/bash.bashrc ||
+  echo "alias vim=nvim" >>/etc/bash.bashrc
 
-grep -q "alias rate-mirrors-arch" /etc/bash.bashrc \
-  || cat <<'EOF' >>/etc/bash.bashrc
+grep -q "alias rate-mirrors-arch" /etc/bash.bashrc ||
+  cat <<'EOF' >>/etc/bash.bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \
