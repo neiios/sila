@@ -84,7 +84,7 @@ for choice in ${choicesGeneral}; do
         python-pipenv bpython jupyterlab jupyter-notebook --noconfirm --needed
       ;;
     go)
-      pacman -S go gopls go-tools delve tinygo --noconfirm --needed
+      pacman -S go gopls go-tools delve --noconfirm --needed
       ;;
     ruby)
       pacman -S ruby ruby-irb ruby-rdoc ruby-docs --noconfirm --needed
