@@ -85,7 +85,7 @@ su "${username}" -c "flatpak remote-add --if-not-exists --user flathub https://d
 flatpak install -y --noninteractive --system flathub com.github.tchx84.Flatseal
 
 # pipewire
-pacman -S pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse pipewire-jack pipewire-x11-bell wireplumber wireplumber-docs \
+pacman -S pipewire pipewire-audio pipewire-alsa pipewire-docs pipewire-pulse pipewire-jack pipewire-x11-bell wireplumber \
   pipewire-v4l2 pipewire-zeroconf gst-plugin-pipewire \
   rtkit realtime-privileges \
   lib32-pipewire lib32-pipewire-jack lib32-pipewire-v4l2 --noconfirm --needed
@@ -128,11 +128,11 @@ sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
 
 # add aliases
-grep -q "alias vim" /etc/bash.bashrc ||
-  echo "alias vim=nvim" >>/etc/bash.bashrc
+grep -q "alias vim" /etc/bash.bashrc \
+  || echo "alias vim=nvim" >>/etc/bash.bashrc
 
-grep -q "alias rate-mirrors-arch" /etc/bash.bashrc ||
-  cat <<'EOF' >>/etc/bash.bashrc
+grep -q "alias rate-mirrors-arch" /etc/bash.bashrc \
+  || cat <<'EOF' >>/etc/bash.bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \
