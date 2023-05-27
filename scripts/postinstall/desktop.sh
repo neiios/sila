@@ -25,8 +25,8 @@ optionsGeneral=(
   ruby "Ruby dev tools." on
   assembly "Assembly dev tools." on
   misc "Other languages (lisp, vala, R, nim, zig et al)." off
-  podman "The better container engine (recommended)" on
-  docker "The OG container engine" off
+  podman "The better container engine (recommended)" off
+  docker "The OG container engine" on
 )
 choicesGeneral=$("${cmdGeneral[@]}" "${optionsGeneral[@]}")
 
