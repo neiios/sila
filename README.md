@@ -53,6 +53,18 @@ git clone https://github.com/richard96292/sila /tmp/sila
 bash /tmp/sila/scripts/1-archinstall.sh
 ```
 
+## In case postinstall fails
+
+Most likely, some package names have changed.
+I can't do anything about that.
+The repo is cloned to `/root/sila`.
+You need to find the package and remove it from a script.
+After that, be sure to submit a pull request with your fixes.
+
+You can always cancel the script with `Ctrl-C` when it is running.
+Then you can either run `exit` and log in as root again or start the postinstall script manually.
+If you run the script a second time just select the same options. It _should_ work fine.
+
 ## Advanced features
 
 ### User configuration installation
