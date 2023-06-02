@@ -23,7 +23,7 @@ function installDotfiles() {
     cd "/home/${username}/.dotfiles" || error "Dotfiles dir does not exist."
 
     if [[ -e sila-install-dotfiles.sh ]]; then
-      # just like with gnome configuration need to be careful about the dbus session and systemd for a user
+      # just like with gnome configuration need to be careful about the dbus session and systemd for a user TODO: see gnome configure stuff
       sudo su -l "${username}" "dbus-run-session -- bash sila-install-dotfiles.sh"
       return
     else

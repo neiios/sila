@@ -16,17 +16,9 @@ optionsGeneral=(
   bluetooth "Bluetooth support" on
   cups "Printing support (CUPS)" on
   vm "Virtual machines. Probably don't install on a laptop." on
-  c "C/C++ dev tools." on
-  rust "Rust dev tools." on
-  java "Java dev tools." on
-  js "Javascript dev tools." on
-  python "Python dev tools." on
-  go "Go dev tools." on
-  ruby "Ruby dev tools." on
-  assembly "Assembly dev tools." on
-  misc "Other languages (lisp, vala, R, nim, zig et al)." off
-  podman "The better container engine (recommended)" off
-  docker "The OG container engine" on
+  dev-stuff "C/C++ dev tools." on
+  podman "The better container engine (advanced)" off
+  docker "The OG container engine (recommended)" on
 )
 choicesGeneral=$("${cmdGeneral[@]}" "${optionsGeneral[@]}")
 
@@ -62,39 +54,12 @@ for choice in ${choicesGeneral}; do
       virsh net-autostart default
       usermod -aG libvirt "${username:?Username not set.}"
       ;;
-    c)
+    dev-stuff)
       pacman -S gcc gdb make pkgconf clang llvm lldb \
         openmp openmpi cmake ninja meson doxygen gtest elfutils \
-        qt5 qt6 gtk3 gtk3-docs gtk3-demos gtk4 gtk4-docs gtk4-demos --noconfirm --needed
-      ;;
-    rust)
-      pacman -S rust --noconfirm --needed
-      ;;
-    java)
-      pacman -S jre-openjdk jdk-openjdk openjdk-doc openjdk-src \
-        java-openjfx java-openjfx-doc java-openjfx-src \
-        maven gradle ant \
-        kotlin --noconfirm --needed
-      ;;
-    js)
-      pacman -S nodejs npm yarn --noconfirm --needed
-      ;;
-    python)
-      pacman -S python python-pip python-pipx \
-        python-pipenv bpython jupyterlab jupyter-notebook --noconfirm --needed
-      ;;
-    go)
-      pacman -S go gopls go-tools delve --noconfirm --needed
-      ;;
-    ruby)
-      pacman -S ruby ruby-irb ruby-rdoc ruby-docs --noconfirm --needed
-      ;;
-    assembly)
-      pacman -S binutils fasm nasm yasm --noconfirm --needed
-      ;;
-    misc)
-      pacman -S nim lua r gcc-fortran zig vala \
-        clisp ecl clojure leiningen ocaml erlang elixir --noconfirm --needed
+        binutils fasm nasm yasm \
+        nodejs npm yarn \
+        python python-pip --noconfirm --needed
       ;;
     podman)
       pacman -S podman podman-compose buildah \
@@ -175,7 +140,7 @@ EOF
       pacman -Rns gnome-user-docs yelp gnome-maps gnome-contacts gnome-music --noconfirm || echo "You can fail, that's okay."
       systemctl enable gdm
       flatpak install -y --noninteractive --system flathub io.github.realmazharhussain.GdmSettings com.mattjakeman.ExtensionManager
-      # need to have dbus session for this to work
+      # need to have dbus session for this to work TODO: this feels like a giant hack and i am not even sure if it works properly
       cp /root/sila/scripts/postinstall/gnome-configure.sh /tmp/gnome-configure.sh
       chown "${username}:${username}" /tmp/gnome-configure.sh
       sudo -u "${username}" dbus-run-session -- bash /tmp/gnome-configure.sh
