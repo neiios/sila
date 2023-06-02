@@ -31,6 +31,6 @@ p,helvum,GTK patchbay for PipeWire,off,helvum,
 p,qpwgraph,PipeWire Graph Qt GUI Interface,on,qpwgraph,
 p,easyeffects,A great equalizer and many more things (trust me you need it!),on,easyeffects,
 a,jamesdsp,A good easyeffects alternative (AUR),off,jamesdsp,
-p,latex,TeXLive-most and a lot of dependencies,on,texlive-most texlive-lang texlive-langextra biber ghostscript python perl ruby dialog python-pygments,sudo -u $username paru -S texlive-latexindent-meta --noconfirm --needed
+p,latex,TeXLive-most and a lot of dependencies,on,texlive texlive-lang texlive-langextra biber ghostscript python perl ruby dialog python-pygments,sudo -u $username paru -S texlive-latexindent-meta --noconfirm --needed
 p,ansible,IT automation platform,off,ansible ansible-lint python-pywinrm python-netaddr sshpass python-argcomplete python-boto3,
 p,calibre,Ebook management application,off,calibre,
