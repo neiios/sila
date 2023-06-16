@@ -80,17 +80,35 @@ function configureNetwork() {
   systemctl enable NetworkManager
 }
 
-function installGrub() {
-  pacman -S grub efibootmgr os-prober dosfstools --noconfirm --needed
+function installSystemdBoot() {
+  cat <<EOF >/boot/loader/loader.conf
+default       arch.conf
+timeout       0
+console-mode  max
+editor        no
+EOF
 
-  # change udev to systemd
-  sed -i "/^HOOKS/ s/udev/systemd/" /etc/mkinitcpio.conf
-  # remove keyboard
-  sed -i "/^HOOKS/ s/keyboard //" /etc/mkinitcpio.conf
-  # add keyboard after autodetect
-  sed -i "/^HOOKS/ s/autodetect/& keyboard/" /etc/mkinitcpio.conf
-  # add sd-vconsole after keyboard
-  sed -i "/^HOOKS/ s/keyboard/& sd-vconsole/" /etc/mkinitcpio.conf
+  cat <<EOF >/boot/loader/entries/arch.conf
+title    Arch Linux
+linux    /vmlinuz-linux
+initrd   /initramfs-linux.img
+EOF
+
+  if [[ $ENCRYPTION -eq 1 ]]; then
+    cat <<EOF >/boot/loader/entries/arch.conf
+options  rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash
+EOF
+  else
+    cat <<EOF >/boot/loader/entries/arch.conf
+options root="UUID=$(blkid --match-tag UUID -o value "$rootPartition")" rootflags=subvol=@ quiet splash rw
+EOF
+  fi
+
+  bootctl install
+}
+
+function installGrub() {
+  pacman -S grub os-prober --noconfirm --needed
 
   # change these options only if the drive should be encrypted
   if [[ $ENCRYPTION -eq 1 ]]; then
@@ -101,21 +119,33 @@ function installGrub() {
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
   fi
 
-  mkinitcpio -P
-
-  # edit config
   sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
   sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/" /etc/default/grub
 
-  # script can be used for both uefi and bios machines
-  if [[ $UEFI -eq 1 ]]; then
-    grub-install --target=x86_64-efi --bootloader-id=ARCH --efi-directory=/boot --recheck
-  else
-    grub-install --target=i386-pc "$selectedDisk"
-  fi
+  grub-install --target=i386-pc "$selectedDisk"
 
-  # create config
   grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+function installBootloader() {
+  pacman -S plymouth edk2-shell efibootmgr efibootmgr dosfstools --noconfirm --needed
+
+  # change udev to systemd
+  sed -i "/^HOOKS/ s/udev/systemd/" /etc/mkinitcpio.conf
+  # remove keyboard
+  sed -i "/^HOOKS/ s/keyboard //" /etc/mkinitcpio.conf
+  # add keyboard after autodetect
+  sed -i "/^HOOKS/ s/autodetect/& keyboard/" /etc/mkinitcpio.conf
+  # add sd-vconsole after keyboard
+  sed -i "/^HOOKS/ s/keyboard/& sd-vconsole/" /etc/mkinitcpio.conf
+  sed -i "/^HOOKS/ s/consolefont/& plymouth/" /etc/mkinitcpio.conf
+
+  mkinitcpio -P
+  if [[ $UEFI -eq 1 ]]; then
+    installSystemdBoot
+  else
+    installGrub
+  fi
 }
 
 # main
@@ -131,7 +161,7 @@ configureRootUser || error "Failed to configure the root user."
 
 configureNetwork || error "Failed to configure a network."
 
-installGrub || error "Failed to install grub bootloader."
+installBootloader || error "Failed to install the bootloader."
 
 # fuck the beeper
 rmmod pcspkr
