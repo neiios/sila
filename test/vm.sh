@@ -63,7 +63,7 @@ function prepare_folder() {
     sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
         "reflector --save /etc/pacman.d/mirrorlist --country Germany, --protocol https --latest 20 --sort rate"
     sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
-        "echo "Sila is ready. Press Ctrl-d" >>/dev/tty1"
+        "echo "Sila is ready. Press Ctrl-d. You can press it a couple of times if it doesn\'t work." >>/dev/tty1"
 }
 
 repo_path="${2:-"/home/egor/Dev/sila"}"

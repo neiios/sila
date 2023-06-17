@@ -106,8 +106,6 @@ function installGrub() {
 
   # change these options only if the drive should be encrypted
   if [[ $ENCRYPTION -eq 1 ]]; then
-    # add sd-encrypt after block
-    sed -i "/^HOOKS/ s/block/& sd-encrypt/" /etc/mkinitcpio.conf
     sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
     grubCmdline="rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@"
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
@@ -133,6 +131,10 @@ function installBootloader() {
   # add sd-vconsole after keyboard
   sed -i "/^HOOKS/ s/keyboard/& sd-vconsole/" /etc/mkinitcpio.conf
   sed -i "/^HOOKS/ s/fsck/& plymouth/" /etc/mkinitcpio.conf
+
+  if [[ $ENCRYPTION -eq 1 ]]; then
+    sed -i "/^HOOKS/ s/block/& sd-encrypt/" /etc/mkinitcpio.conf
+  fi
 
   mkinitcpio -P
 
