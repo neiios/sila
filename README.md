@@ -24,7 +24,7 @@ Arch Linux Install Script (ALIS) spelled backwards.
 
 - [Dual boot](#dual-boot)
 - No secure boot.
-- Only a limited number of locales is generated at install time.
+- Only a limited number of locales are generated at install time.
 
 ## Step-by-step instructions:
 
@@ -80,7 +80,7 @@ As the last step in the installation process, the user can install the dotfiles 
 You will need to enter your dotfile repo URL link.
 The git repository has to be public for the script to access it.
 The default value is `https://github.com/richard96292/dotfiles`.
-The script will search for an sila-install-script.sh in the root directory of the cloned repo and execute it.
+The script will search for a sila-install-script.sh in the root directory of the cloned repo and execute it.
 You can find an example of such a script in [my dotfiles repo](https://github.com/richard96292/dotfiles).
 
 ## Screenshots

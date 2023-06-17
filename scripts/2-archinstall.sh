@@ -107,7 +107,7 @@ function installGrub() {
   # change these options only if the drive should be encrypted
   if [[ $ENCRYPTION -eq 1 ]]; then
     sed -i '/GRUB_CMDLINE_LINUX=""/d' /etc/default/grub
-    grubCmdline="rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@"
+    grubCmdline="rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash"
     echo GRUB_CMDLINE_LINUX="$grubCmdline" >>/etc/default/grub
   fi
 
@@ -120,7 +120,7 @@ function installGrub() {
 }
 
 function installBootloader() {
-  pacman -S plymouth edk2-shell efibootmgr efibootmgr dosfstools --noconfirm --needed
+  pacman -S plymouth edk2-shell efibootmgr dosfstools --noconfirm --needed
 
   # change udev to systemd
   sed -i "/^HOOKS/ s/udev/systemd/" /etc/mkinitcpio.conf
@@ -156,7 +156,6 @@ configureNetwork
 installBootloader
 
 # fuck the beeper
-rmmod pcspkr
 echo "blacklist pcspkr" >/etc/modprobe.d/nobeep.conf
 
 # run postinstall script after reboot

@@ -18,15 +18,15 @@ function create_vm() {
     echo "Creating a virtual machine"
 
     if [[ "$vm_type" == "bios" ]]; then
-        virt-install --connect qemu:///system --boot uefi \
+        virt-install --connect qemu:///system \
             --name archlinux --ram 4096 --disk size=40 --vcpus 4 \
-            --osinfo archlinux --video qxl \
+            --osinfo archlinux --video virtio \
             --cdrom "${repo_path}/archlinux.iso" \
             --filesystem "$repo_path,sila-repo-tag" &
     else
         virt-install --connect qemu:///system --boot uefi \
             --name archlinux --ram 4096 --disk size=40 --vcpus 4 \
-            --osinfo archlinux --video qxl \
+            --osinfo archlinux --video virtio \
             --cdrom "${repo_path}/archlinux.iso" \
             --filesystem "$repo_path,sila-repo-tag" &
     fi
@@ -58,12 +58,11 @@ function cleanup_vm() {
 function prepare_folder() {
     sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
         "mount --mkdir -t 9p -o trans=virtio,version=9p2000.L sila-repo-tag /tmp/sila"
+    sleep 5
     sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
-        "echo 'bash /tmp/sila/scripts/1-archinstall.sh' >>/root/.zprofile"
+        'echo "bash /tmp/sila/scripts/1-archinstall.sh" >>/root/.zprofile'
     sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
-        "reflector --save /etc/pacman.d/mirrorlist --country Germany, --protocol https --latest 20 --sort rate"
-    sshpass -p root ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "root@$vm_ip" \
-        "echo "Sila is ready. Press Ctrl-d. You can press it a couple of times if it doesn\'t work." >>/dev/tty1"
+        "echo "Sila is ready. Press Ctrl-d. You can press it a couple of times if it does not work." >>/dev/tty1"
 }
 
 repo_path="${2:-"/home/egor/Dev/sila"}"

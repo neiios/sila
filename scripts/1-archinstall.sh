@@ -140,6 +140,12 @@ function finalNotice() {
 }
 
 # misc
+sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
+sed -i "s/^#VerbosePkgLists/VerbosePkgLists/" /etc/pacman.conf
+sed -i "s/^#Color/Color/" /etc/pacman.conf
+sed -i "s/^#ParallelDownloads = 5/ParallelDownloads = 10/" /etc/pacman.conf
+reflector --save /etc/pacman.d/mirrorlist --country AU,BA,HR,FR,DE,IT,MC,RS,SI,CH, --protocol https --latest 10 --sort score
+
 pacman -Sy dialog --noconfirm --needed
 timedatectl set-ntp true
 ls /sys/firmware/efi &>/dev/null && UEFI=1 || UEFI=0

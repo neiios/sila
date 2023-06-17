@@ -44,7 +44,7 @@ setTimezone || error "Failed to set a timezone."
 sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
 sed -i "s/^#VerbosePkgLists/VerbosePkgLists/" /etc/pacman.conf
 sed -i "s/^#Color/Color/" /etc/pacman.conf
-sed -i "s/^#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
+sed -i "s/^#ParallelDownloads = 5/ParallelDownloads = 10/" /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
@@ -128,11 +128,11 @@ sed -i "s/mymachines /&mdns_minimal [NOTFOUND=return] /" /etc/nsswitch.conf
 systemctl enable avahi-daemon.service
 
 # add aliases
-grep -q "alias vim" /etc/bash.bashrc \
-  || echo "alias vim=nvim" >>/etc/bash.bashrc
+grep -q "alias vim" /etc/bash.bashrc ||
+  echo "alias vim=nvim" >>/etc/bash.bashrc
 
-grep -q "alias rate-mirrors-arch" /etc/bash.bashrc \
-  || cat <<'EOF' >>/etc/bash.bashrc
+grep -q "alias rate-mirrors-arch" /etc/bash.bashrc ||
+  cat <<'EOF' >>/etc/bash.bashrc
 alias rate-mirrors-arch='export TMPFILE="$(mktemp)"; \
   rate-mirrors --save=$TMPFILE --protocol=https arch --max-delay=21600 \
     && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \
