@@ -1,14 +1,11 @@
 #!/bin/bash
 
-set -e
-
-function error() {
-  echo "${1:-"Unknown Error"}" 1>&2
-  exit 1
-}
+set -euo pipefail
+IFS=$'\n\t'
 
 function setHostname() {
   # get hostname from the user
+  invalidMessage=""
   while true; do
     hostname=$(dialog --erase-on-exit --nocancel --title "Hostname" \
       --inputbox "${invalidMessage}Enter the hostname for this computer:" 0 0 3>&1 1>&2 2>&3)
@@ -61,6 +58,7 @@ EOF
 
 function configureRootUser() {
   # get root password
+  invalidPasswordMessage=""
   while true; do
     rootPassword=$(dialog --erase-on-exit --nocancel --title "Root password" \
       --insecure --passwordbox "${invalidPasswordMessage}Enter the root password:" 0 0 3>&1 1>&2 2>&3)
@@ -81,6 +79,8 @@ function configureNetwork() {
 }
 
 function installSystemdBoot() {
+  bootctl install
+
   cat <<EOF >/boot/loader/loader.conf
 default       arch.conf
 timeout       0
@@ -95,12 +95,10 @@ initrd   /initramfs-linux.img
 EOF
 
   if [[ $ENCRYPTION -eq 1 ]]; then
-    echo "options  rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash" >>/boot/loader/entries/arch.conf
+    echo "options rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash" >>/boot/loader/entries/arch.conf
   else
     echo "options root=UUID=\"$(blkid --match-tag UUID -o value "$rootPartition")\" rootflags=subvol=@ quiet splash rw" >>/boot/loader/entries/arch.conf
   fi
-
-  bootctl install
 }
 
 function installGrub() {
@@ -134,30 +132,26 @@ function installBootloader() {
   sed -i "/^HOOKS/ s/autodetect/& keyboard/" /etc/mkinitcpio.conf
   # add sd-vconsole after keyboard
   sed -i "/^HOOKS/ s/keyboard/& sd-vconsole/" /etc/mkinitcpio.conf
-  sed -i "/^HOOKS/ s/consolefont/& plymouth/" /etc/mkinitcpio.conf
+  sed -i "/^HOOKS/ s/fsck/& plymouth/" /etc/mkinitcpio.conf
 
   mkinitcpio -P
-  if [[ $UEFI -eq 1 ]]; then
+
+  if [[ "$UEFI" == "1" ]]; then
     installSystemdBoot
   else
     installGrub
   fi
 }
 
-# main
 # dont run this script by itself without setting needed env vars
 # shellcheck source=/scripts/vars.sh
 source /root/sila/scripts/vars.sh
 
-setHostname || error "Failed to set a hostname."
-
-createLocales || error "Failed to create locales."
-
-configureRootUser || error "Failed to configure the root user."
-
-configureNetwork || error "Failed to configure a network."
-
-installBootloader || error "Failed to install the bootloader."
+setHostname
+createLocales
+configureRootUser
+configureNetwork
+installBootloader
 
 # fuck the beeper
 rmmod pcspkr
