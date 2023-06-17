@@ -117,7 +117,7 @@ function pacstrapSystem() {
   # generate fstab
   genfstab -U /mnt >>/mnt/etc/fstab
   # transfer files
-  mv /tmp/sila /mnt/root/sila
+  cp /tmp/sila /mnt/root/sila
 
   # transfer variables to chroot
   cat <<EOF >/mnt/root/sila/scripts/vars.sh

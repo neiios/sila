@@ -95,13 +95,9 @@ initrd   /initramfs-linux.img
 EOF
 
   if [[ $ENCRYPTION -eq 1 ]]; then
-    cat <<EOF >/boot/loader/entries/arch.conf
-options  rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash
-EOF
+    echo "options  rd.luks.name=$(blkid --match-tag UUID -o value "$rootPartition")=luks root=$mappedRoot rootflags=subvol=@ quiet splash" >>/boot/loader/entries/arch.conf
   else
-    cat <<EOF >/boot/loader/entries/arch.conf
-options root="UUID=$(blkid --match-tag UUID -o value "$rootPartition")" rootflags=subvol=@ quiet splash rw
-EOF
+    echo "options root=UUID=\"$(blkid --match-tag UUID -o value "$rootPartition")\" rootflags=subvol=@ quiet splash rw" >>/boot/loader/entries/arch.conf
   fi
 
   bootctl install
