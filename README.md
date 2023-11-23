@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line no-inline-html -->
 <h1 align="center">SILA</h1>
 
 ## What is SILA?
@@ -22,11 +23,11 @@ Arch Linux Install Script (ALIS) spelled backwards.
 
 ## Limitations
 
-- [Dual boot](#dual-boot)
+- Dual Boot
 - No secure boot.
 - Only a limited number of locales are generated at install time.
 
-## Step-by-step instructions:
+## Step-by-step instructions
 
 1. Boot the Arch Linux iso. You can use [Ventoy](https://www.ventoy.net/en/index.html) for that.
 1. Run the script using the command below.
@@ -67,11 +68,12 @@ After that, be sure to submit a pull request with your fixes.
 
 ## Advanced features
 
-<h3 id="dual-boot">Dual boot</h3>
+### Dual boot
 
 Having two systems on the _same_ drive is not supported at all.
 And Windows on the _second_ drive will not be detected automatically.
-Follow this [tutorial](https://forum.endeavouros.com/t/tutorial-add-a-systemd-boot-loader-menu-entry-for-a-windows-installation-using-a-separate-esp-partition/37431) if you want Windows to show up in the systemd-boot menu.
+Follow this [tutorial](https://forum.endeavouros.com/t/tutorial-add-a-systemd-boot-loader-menu-entry-for-a-windows-installation-using-a-separate-esp-partition/37431)
+if you want Windows to show up in the systemd-boot menu.
 
 ### User configuration installation
 

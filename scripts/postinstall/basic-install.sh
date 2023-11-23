@@ -52,7 +52,7 @@ pacman -Syy
 sed -i "s/-j2/-j$(($(nproc) - 1))/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
 # install paru
-pacman -S asp bat --noconfirm --needed
+pacman -S git bat --noconfirm --needed
 sudo -u "$username" git clone https://aur.archlinux.org/paru-bin.git "/home/${username}/paru-bin"
 cd "/home/${username}/paru-bin" || error "Paru directory does not exist."
 sudo -u "$username" makepkg -si --noconfirm --needed
@@ -96,7 +96,7 @@ usermod -aG realtime "$username"
 # i like muh codecs
 pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-base-libs gst-plugins-good gst-plugins-bad gst-plugins-bad-libs gst-plugins-ugly --noconfirm --needed
 # i really like muh codecs
-pacman -S jasper libpng libraw libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader kimageformats karchive qt5-imageformats --noconfirm --needed
+pacman -S jasper libpng libraw libtiff libwebp libavif libheif libjxl libopenraw librsvg libwmf webp-pixbuf-loader qt5-imageformats --noconfirm --needed
 pacman -S ffmpeg av1an svt-av1 aom dav1d rav1e x265 libde265 x264 xvidcore libvpx rav1e libmatroska mkvtoolnix-cli --noconfirm --needed
 pacman -S lame libmad opus libvorbis speex faac faad2 --noconfirm --needed
 
