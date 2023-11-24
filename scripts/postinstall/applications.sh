@@ -38,8 +38,9 @@ function installFromList() {
     eval "$custom"
   done
 }
-
 # apps
 installFromList "/root/sila/scripts/postinstall/csv/software.csv" "Select the applications you want to install:"
 # gaming
 installFromList "/root/sila/scripts/postinstall/csv/gaming.csv" "Select the applications you want to install:\n\nIf are a gamer you can install all of them just avoid duplicates."
+# development
+installFromList "/root/sila/scripts/postinstall/csv/development.csv" "Select the applications you want to install:"

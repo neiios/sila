@@ -1,0 +1,10 @@
+# format,name,description,state,packages,custom
+p,code,The Open Source build of Visual Studio Code,on,code,
+a,code-unlock,Unlock additional features and marketplace (AUR),on,code-features code-marketplace code-icons,
+a,clion,C/C++ IDE from Jetbrains(AUR),off,clion clion-cmake clion-gdb clion-lldb clion-jre,
+p,intellij-ce,Java IDE from Jetbrains (Community Edition),off,intellij-idea-community-edition,
+p,pycharm-ce,Python IDE from Jetbrains (Community Edition),off,pycharm-community-edition,
+a,jetbrains-toolbox,Manage all your JetBrains Projects and Tools,off,jetbrains-toolbox,
+p,latex,TeXLive-most and a lot of dependencies,on,texlive texlive-lang texlive-langextra biber ghostscript python perl ruby dialog python-pygments,sudo -u $username paru -S texlive-latexindent-meta --noconfirm --needed
+p,ansible,IT automation platform,off,ansible ansible-lint python-pywinrm python-netaddr sshpass python-argcomplete python-boto3,
+a,postman,Test and document your APIs faster,off,postman-bin,
