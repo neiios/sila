@@ -1,6 +1,11 @@
 <!-- markdownlint-disable-next-line no-inline-html -->
 <h1 align="center">SILA</h1>
 
+## Deprecation notice
+
+The script is no longer maintained.
+You should use [archinstall](https://github.com/archlinux/archinstall) instead.
+
 ## What is SILA?
 
 SILA is a script that configures and installs a fully-featured Arch Linux system.
